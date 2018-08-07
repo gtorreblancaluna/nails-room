@@ -47,30 +47,7 @@ http://www.springframework.org/schema/context/spring-context-3.0.xsd"
 
 	<bean id="accountDao" class="mx.com.proyect.puntoventa.web.dao.impl.SqlMapAccountDao">
 		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
-	</bean>
+	</bean>	
 	
-	<bean id="clientDao" class="mx.com.proyect.puntoventa.web.dao.impl.SqlMapClientDAO">
-		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
-	</bean>
-	
-	<bean id="inventoryDao" class="mx.com.proyect.puntoventa.web.dao.impl.SqlMapInventoryDao">
-		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
-	</bean>
-	
-	<bean id="officeDao" class="mx.com.proyect.puntoventa.web.dao.impl.SqlMapOfficeDao">
-		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
-	</bean>
-	
-	<bean id="colorDao" class="mx.com.proyect.puntoventa.web.dao.impl.SqlMapColorDao">
-		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
-	</bean>
-	
-	<bean id="saleNoteDao" class="mx.com.proyect.puntoventa.web.dao.impl.SqlMapSaleNoteDao">
-		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
-	</bean>
-	
-	<bean id="providerDao" class="mx.com.proyect.puntoventa.web.dao.impl.SqlMapProviderDao">
-		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
-	</bean>
 
 </beans>

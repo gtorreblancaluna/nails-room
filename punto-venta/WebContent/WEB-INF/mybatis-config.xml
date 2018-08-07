@@ -16,27 +16,8 @@
 		
 		
 		<typeAlias alias="accountDTO" type="mx.com.proyect.puntoventa.web.model.AccountDTO" />
-		<typeAlias alias="loginForm" type="mx.com.proyect.puntoventa.web.forms.LoginForm" />
-		<typeAlias alias="clientDTO" type="mx.com.proyect.puntoventa.web.model.AccountDTOclient" />
-		<typeAlias alias="itemDTO"   type="mx.com.proyect.puntoventa.web.model.ItemDTO" />
-		<typeAlias alias="storeDTO"   type="mx.com.proyect.puntoventa.web.model.StoreDTO" />
-		<typeAlias alias="officeDTO"   type="mx.com.proyect.puntoventa.web.model.OfficeDTO" />
-		<typeAlias alias="colorDTO"   type="mx.com.proyect.puntoventa.web.model.ColorDTO" />
-		<typeAlias alias="saleStatusDTO"   type="mx.com.proyect.puntoventa.web.model.SaleStatusDTO" />
-
-		<typeAlias alias="providerDTO" type="mx.com.proyect.puntoventa.web.model.ProviderDTO" />
-		<typeAlias alias="jobDTO"   type="mx.com.proyect.puntoventa.web.model.JobDTO" />
-		<typeAlias alias="saleNoteForm"   type="mx.com.proyect.puntoventa.web.forms.SaleNoteForm" />
-		
-		<typeAlias alias="resultQueryItemsSold"   type="mx.com.proyect.puntoventa.web.resultsQuerys.ResultQueryItemsSold" />
-		<typeAlias alias="resultQuerySaleNote"   type="mx.com.proyect.puntoventa.web.resultsQuerys.ResultQuerySaleNote" />
-		<typeAlias alias="resultQueryDelivery"   type="mx.com.proyect.puntoventa.web.resultsQuerys.ResultQueryDelivery" />
-		<typeAlias alias="saleNoteFilter"   type="mx.com.proyect.puntoventa.web.forms.SaleNoteFilter" />		
-		<typeAlias alias="saleDetailDTO"   type="mx.com.proyect.puntoventa.web.model.SaleDetailDTO" />	
-		<typeAlias alias="saleNoteDTO"   type="mx.com.proyect.puntoventa.web.model.SaleNoteDTO" />		
-		<typeAlias alias="deliveryDTO"   type="mx.com.proyect.puntoventa.web.model.DeliveryDTO" />		
-		<typeAlias alias="deliveryDetailDTO"   type="mx.com.proyect.puntoventa.web.model.DeliveryDetailDTO" />		
-		<typeAlias alias="customerFilter"   type="mx.com.proyect.puntoventa.web.forms.CustomerFilter" />		
+		<typeAlias alias="loginForm" type="mx.com.proyect.puntoventa.web.forms.LoginForm" />		
+		<typeAlias alias="jobDTO"   type="mx.com.proyect.puntoventa.web.model.JobDTO" />				
 		<typeAlias alias="userFilter"   type="mx.com.proyect.puntoventa.web.forms.UserFilter" />		
 		
 		
