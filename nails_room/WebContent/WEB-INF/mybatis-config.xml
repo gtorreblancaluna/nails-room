@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<!-- cometario 2017.05.10 -->
+<configuration>
+	<settings>
+
+		<setting name="logImpl" value="LOG4J" />
+
+	</settings>
+	<typeAliases>
+
+		<!-- Declaracion de los bean de tipos de datos de entrada y del manejador. -->
+
+			
+		<typeAlias alias="puestoDTO"   type="mx.com.nails_room.model.PuestoDTO" />	
+		<typeAlias alias="usuarioDTO"   type="mx.com.nails_room.model.UsuarioDTO" />	
+		<typeAlias alias="datosGeneralesPersonaDTO"   type="mx.com.nails_room.model.DatosGeneralesPersonaDTO" />		
+		
+		
+		
+
+	</typeAliases>
+	
+
+</configuration>

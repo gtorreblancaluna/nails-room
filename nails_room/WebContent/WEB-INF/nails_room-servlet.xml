@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+	
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/security 
+        http://www.springframework.org/schema/security/spring-security-3.1.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.1.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.1.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.1.xsd"
+	default-autowire="byName">
+	
+	
+	<context:component-scan base-package="mx.com.nails_room.view" />
+	<context:component-scan base-package="mx.com.nails_room.service.impl" />
+	<context:component-scan base-package="mx.com.nails_room.dao.impl" />
+	<context:annotation-config />
+	<mvc:annotation-driven />
+	
+
+	<mvc:resources location="/css/" mapping="/css/**" cache-period="604800" />
+	<mvc:resources location="/images/" mapping="/images/**"	cache-period="31556926" />
+	<mvc:resources location="/js/" mapping="/js/**"	cache-period="31556926" />
+	<mvc:resources location="/media/" mapping="/media/**"	cache-period="31556926" />
+	<mvc:resources location="/resources/" mapping="/resources/**"	cache-period="604800" />
+	<mvc:resources location="/sounds/" mapping="/sounds/**"	cache-period="31556926" />
+
+
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.JstlView" />
+		<property name="prefix" value="/WEB-INF/jsp/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+
+	<bean name="/login.do"
+		class="org.springframework.web.servlet.mvc.ParameterizableViewController">
+		<property name="viewName" value="login" />
+	</bean>
+	
+		<!-- Configure to plugin JSON as request and response in method handler -->
+<!-- 	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter"> -->
+<!-- 		<property name="messageConverters"> -->
+<!-- 			<list> -->
+<!-- 				<ref bean="jsonMessageConverter"/> -->
+<!-- 			</list> -->
+<!-- 		</property> -->
+<!-- 	</bean> -->
+	
+	<!-- Configure bean to convert JSON to POJO and vice versa -->
+<!-- 	<bean id="jsonMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/> -->
+	
+
+
+</beans>

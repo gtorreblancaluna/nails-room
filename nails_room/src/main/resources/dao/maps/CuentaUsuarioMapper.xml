@@ -1,0 +1,106 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mx.com.nails_room.dao.CuentaUsuarioDAO">
+
+	<resultMap id="usuarioResultMap" type="usuarioDTO">
+		<result property="usuarioId" column="cl_usuario" />		
+		<result property="nombre" column="nombre" />
+		<result property="ap_paterno" column="ap_paterno" />
+		<result property="ap_materno" column="ap_materno" />
+		<result property="email" column="email" />		
+		<result property="contrasenia" column="password" />
+		<result property="fechaAlta" column="fe_alta" />		
+		<result property="esAdmin" column="fg_admin" />
+		<result property="activo" column="fg_activo" />		
+		<result property="puestoDTO.puestoId" column="puestoId" />
+		<result property="puestoDTO.descripcion" column="descripcion_puesto" />		
+	</resultMap>
+	
+	<resultMap id="resultMapPuesto" type="puestoDTO">
+		<result property="puestoId" column="cl_puesto" />		
+		<result property="description" column="ds_descripcion" />
+		<result property="activo" column="fg_estado" />		
+	</resultMap>
+
+	<select id="findByIdUser" resultMap="usuarioResultMap" parameterType="java.lang.Long">
+		SELECT u.*, p.cl_puesto AS puestoId, p.ds_descripcion AS descripcion_puesto
+		FROM c_usuario u
+		INNER JOIN c_puesto p ON (u.cl_puesto = p.cl_puesto)		
+		WHERE cl_usuario = #{id}
+	</select>
+	
+	<select id="validar" resultMap="usuarioResultMap" parameterType="usuarioDTO">
+		SELECT u.*, p.cl_puesto AS puestoId, p.ds_descripcion AS descripcion_puesto
+		FROM c_usuario u
+		INNER JOIN c_puesto p ON (u.cl_puesto = p.cl_puesto)	
+		WHERE u.email = #{email} AND u.password = #{contrasenia} 
+		AND u.fg_activo = '1'
+	</select>
+
+	<select id="getAllUsers" resultMap="usuarioResultMap">
+		SELECT u.*, p.cl_puesto AS puestoId, p.ds_descripcion AS descripcion_puesto,
+		s.nombre AS nombre_sucursal
+		FROM c_usuario u
+		INNER JOIN c_puesto p ON (u.cl_puesto = p.cl_puesto)	
+		INNER JOIN c_sucursal s ON (u.cl_sucursal = s.cl_sucursal)
+		WHERE u.fg_activo = '1'
+	</select>
+
+	<insert id="insertUser" parameterType="usuarioDTO">
+		INSERT INTO c_usuario
+		(cl_puesto,nombre,ap_paterno,ap_materno,email,fe_alta,password,fg_admin,fg_activo,cl_sucursal)
+		VALUES		
+		(#{job.jobId},#{name},#{firstName},#{secondName},#{email},#{addDate},#{password},#{admin},"1",#{office.officeId})
+	</insert>
+	<update id="updateUser" parameterType="usuarioDTO">
+		UPDATE c_usuario SET
+		cl_puesto = #{job.jobId},
+		nombre = #{name},
+		ap_paterno = #{firstName},
+		ap_materno = #{secondName},
+		email =	#{email},
+		password = #{password},
+		cl_sucursal = #{office.officeId}
+		WHERE cl_usuario = #{userId}
+	</update>
+	<delete id="deleteUser" parameterType="usuarioDTO">
+		UPDATE c_usuario SET fg_activo = '0' WHERE cl_usuario = #{userId}
+	</delete>
+	
+	<select id="getAccount" parameterType="java.lang.String" resultMap="usuarioResultMap">
+		SELECT * FROM c_usuario WHERE email = #{email}
+	</select>
+	
+	<select id="getAllJobs" resultMap="resultMapPuesto">
+		SELECT * FROM c_puesto WHERE fg_estatus = '1' ORDER BY ds_descripcion
+	</select>
+	
+<!-- 	<select id="getUserByFilter" parameterType="userFilter" resultMap="usuarioResultMap"> -->
+<!-- 		SELECT u.*, p.cl_puesto AS puestoId, p.ds_descripcion AS descripcion_puesto, -->
+<!-- 		s.nombre AS nombre_sucursal -->
+<!-- 		FROM c_usuario u -->
+<!-- 		INNER JOIN c_puesto p ON (u.cl_puesto = p.cl_puesto)	 -->
+<!-- 		INNER JOIN c_sucursal s ON (u.cl_sucursal = s.cl_sucursal) -->
+<!-- 		WHERE u.fg_activo = '1' -->
+<!-- 		<if test="nameFilter != null and nameFilter != '' "> -->
+<!-- 			AND u.nombre LIKE CONCAT('%',#{nameFilter},'%') -->
+<!-- 		</if> -->
+<!-- 		<if test="firstNameFilter != null and firstNameFilter != '' "> -->
+<!-- 			AND u.ap_paterno LIKE CONCAT('%',#{firstNameFilter},'%') -->
+<!-- 		</if> -->
+<!-- 		<if test="lastNameFilter != null and lastNameFilter != '' "> -->
+<!-- 			AND u.ap_materno LIKE CONCAT('%',#{lastNameFilter},'%') -->
+<!-- 		</if> -->
+<!-- 		<if test="emailFilter != null and emailFilter != '' "> -->
+<!-- 			AND u.email LIKE CONCAT('%',#{emailFilter},'%') -->
+<!-- 		</if> -->
+<!-- 		<if test="jobIdFilter != null and jobIdFilter != 0 "> -->
+<!-- 			AND u.cl_puesto = #{jobIdFilter} -->
+<!-- 		</if> -->
+<!-- 		<if test="officeIdFilter != null and officeIdFilter != 0 "> -->
+<!-- 			AND u.cl_sucursal = #{officeIdFilter} -->
+<!-- 		</if>		 -->
+<!-- 		ORDER BY nombre -->
+<!-- 	</select> -->
+	
+	
+</mapper>
