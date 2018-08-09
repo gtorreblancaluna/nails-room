@@ -182,7 +182,7 @@ ENGINE = InnoDB;
 
 -- FIN DEL SCRIPT
 
-INSERT INTO c_usuario (cl_puesto,cl_sucursal,nombre,ap_paterno,ap_materno,email,password,fg_admin,fg_activo) VALUES ('1','1','Gerardo','Torreblanca','Luna','gtorre@email.com','123456','1','1');
+INSERT INTO c_usuario (cl_puesto,nombre,ap_paterno,ap_materno,email,password,fg_admin,fg_activo) VALUES ('1','Gerardo','Torreblanca','Luna','gtorre@email.com','123456','1','1');
 
 INSERT INTO c_estatus_venta (ds_descripcion) VALUES ('Registrado');
 INSERT INTO c_estatus_venta (ds_descripcion) VALUES ('Cancelado');
