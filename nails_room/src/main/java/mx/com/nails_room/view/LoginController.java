@@ -58,7 +58,7 @@ public class LoginController {
 			userSession = new UserSession(null);
 		
 		if(usuarioDTO == null) {
-			modelAndView.addObject("message","Usuario o contrase\u00F1a no coinciden");
+			modelAndView.addObject("messageError","Usuario o contrase\u00F1a no coinciden");
 			modelAndView.setViewName("login");
 			return modelAndView;
 		}else{			

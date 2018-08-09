@@ -7,8 +7,8 @@ import mx.com.nails_room.model.UsuarioDTO;
 public class SqlMapCuentaUsuario extends SqlSessionDaoSupport implements CuentaUsuarioDAO{
 
 	@Override
-	public UsuarioDTO validar(UsuarioDTO usuarioDTO) {
-		return ((UsuarioDTO) getSqlSession().selectOne("usuarioDTO", usuarioDTO));
+	public UsuarioDTO validar(UsuarioDTO usuarioDTO) {			
+		return getSqlSession().selectOne("validar", usuarioDTO);		
 	}
 
 }

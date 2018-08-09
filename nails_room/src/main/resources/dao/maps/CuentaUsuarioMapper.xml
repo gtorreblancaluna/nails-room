@@ -11,7 +11,7 @@
 		<result property="fechaAlta" column="fe_alta" />		
 		<result property="esAdmin" column="fg_admin" />
 		<result property="activo" column="fg_activo" />		
-		<result property="puestoDTO.puestoId" column="puestoId" />
+		<result property="puestoDTO.puestoId" column="cl_puesto" />
 		<result property="puestoDTO.descripcion" column="descripcion_puesto" />		
 	</resultMap>
 	
@@ -29,7 +29,7 @@
 	</select>
 	
 	<select id="validar" resultMap="usuarioResultMap" parameterType="usuarioDTO">
-		SELECT u.*, p.cl_puesto AS puestoId, p.ds_descripcion AS descripcion_puesto
+		SELECT u.*, p.cl_puesto,p.ds_descripcion AS descripcion_puesto
 		FROM c_usuario u
 		INNER JOIN c_puesto p ON (u.cl_puesto = p.cl_puesto)	
 		WHERE u.email = #{email} AND u.password = #{contrasenia} 

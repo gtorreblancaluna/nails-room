@@ -3,20 +3,22 @@ package mx.com.nails_room.model;
 public class PuestoDTO {
 	
 	private int puestoId;
-	private String descipcion;
-	private String activo;
+	private String descripcion;
+	private String activo;	
+	
+	public String getDescripcion() {
+		return descripcion;
+	}
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
 	public int getPuestoId() {
 		return puestoId;
 	}
 	public void setPuestoId(int puestoId) {
 		this.puestoId = puestoId;
 	}
-	public String getDescipcion() {
-		return descipcion;
-	}
-	public void setDescipcion(String descipcion) {
-		this.descipcion = descipcion;
-	}
+	
 	public String getActivo() {
 		return activo;
 	}
