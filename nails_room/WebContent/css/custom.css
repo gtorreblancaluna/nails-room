@@ -8,3 +8,4 @@ body{background-image: url(../images/back_vintage.jpg);}
 .bgcol{background-color: #f1c16d3d;}
 .info-modal-header{background-color: #eae7e7;border-radius: 5px;}
 .containerShowResultQuery{height: 800px;overflow: auto;margin-top: 10px;margin-bottom: 10px;}
+.container-header{color:white; text-align:center;margin: 3%;}
