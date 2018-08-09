@@ -16,40 +16,49 @@
 <body>
 		
 	<div class="container">
-		<c:if test="${message != null}">
-			<div class="message"><c:out value="${message}"></c:out></div>
-			</c:if>
-			<form:form modelAttribute="usuarioDTO" action="procesarLogin.do" method="post" name="loginForm">
-			<div class="row">	
-						<br>
-						<div class="col-12">
-							
-						</div>
-					<div class="col-6" >
-						<label>Email: </label>
-						<input type="text" id="email" name="email" placeholder="Email" class="form-control">
-					
-				
-					</div>
-					<div class="col-6">
-						<label>Contrase&ntilde;a: </label>
-						<input type="password" id="password" name="contrasenia" placeholder="Contrase&ntilde;a" class="form-control">
-
-					</div>
-					
-					<div class="col-12">
-					<br><br>
-
-						
-					</div>
-					
-			</div>
-<%-- 			</form> --%>
-			<button type="submit" class="form-control" value="">Entrar</button>
-			</form:form>
-			
-			
+		<c:if test="${messageSucess != null}">
+		<div class="alert alert-success">
+  			<strong>Success!</strong> ${messageSucess}
 		</div>
+
+		</c:if>
+		<c:if test="${messageError != null}">
+		<div class="alert alert-danger">
+  			<strong>Error! </strong> ${messageError}
+		</div>
+		</c:if>
+
+		<form:form modelAttribute="usuarioDTO" action="procesarLogin.do"	method="post" name="loginForm">
+			<div class="row">
+				<br>
+				<div class="col-12"></div>
+				<div class="col-6">
+					<label>Email: </label> <input type="text" id="email" name="email"
+						placeholder="Email" class="form-control">
+
+
+				</div>
+				<div class="col-6">
+					<label>Contrase&ntilde;a: </label> <input type="password"
+						id="password" name="contrasenia" placeholder="Contrase&ntilde;a"
+						class="form-control">
+
+				</div>
+
+				<div class="col-12">
+					<br>
+					<br>
+
+
+				</div>
+
+			</div>
+			<%-- 			</form> --%>
+			<button type="submit" class="form-control" value="">Entrar</button>
+		</form:form>
+
+
+	</div>
 		
 	
 	
