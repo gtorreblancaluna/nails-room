@@ -1,22 +1,29 @@
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
-<footer id="myFooter" style="width: 100%;margin:45px;color: transparent;">
-<div class="card-footer text-muted">
+<footer class="navbar navbar-fixed-bottom " style="color:white;padding:2%;background-color: #000;">
+<div class="">
 	<div class="row">
-		<div class="col-5">
-			<ul>
-				<li><a>Hst - POS System </a></li>
-				<li><a>Contacto Cel.442-519-29-16</a></li>
-				<li><a>Punto de venta personalizado Muebleria Florida Sucursales</a></li>
-			</ul>
+		<div class="col text-center">
+			<img alt="" style="width: 10%;" src="images/mostaza_logo.jpeg">
 		</div>
-		<div class="col">
-			<ul>
-				<li></li>
-				<li><a>contacto: lulopezdo@gmail.com</a></li>
-				<li><a href="https://download.teamviewer.com/download/TeamViewerQS.exe">Asistencia via TeamViewer</a></li>
-				
-			</ul>
-		</div>
+		<c:if test="${not empty userSession.usuario.email}">
+<!-- 		Mostrar informacion del usuario -->
+			<div style="padding-top: 3%;">
+				<div class="row">
+					<div class="col-md-4 text-center">
+						<label>NOMBRE: ${userSession.usuario.nombre} ${userSession.usuario.ap_paterno} ${userSession.usuario.ap_materno}</label>
+					</div>
+					<div class="col-md-4 text-center">
+						<label>EMAIL: ${userSession.usuario.email}</label>
+					</div>
+					<div class="col-md-4 text-center">
+						<label>PUESTO: ${userSession.usuario.puestoDTO.descripcion}</label>
+					</div>
+				</div>		
+			</div>
+		</c:if>
 	</div>
 </div>
 
