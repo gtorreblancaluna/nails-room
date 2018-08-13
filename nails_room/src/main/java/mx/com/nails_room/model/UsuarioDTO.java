@@ -11,8 +11,6 @@ public class UsuarioDTO extends DatosGeneralesPersonaDTO{
 	private String esAdmin;	
 	private Float comision;
 	
-	
-	
 	public int getUsuarioId() {
 		return usuarioId;
 	}
