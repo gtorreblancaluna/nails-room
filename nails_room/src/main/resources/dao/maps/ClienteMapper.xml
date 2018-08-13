@@ -1,0 +1,66 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mx.com.nails_room.dao.ClienteDAO">
+
+	<resultMap id="clienteResultMap" type="clienteDTO">
+		<result property="clienteId" column="cl_cliente" />
+		<result property="nombre" column="nombre" />
+		<result property="ap_paterno" column="ap_paterno" />
+		<result property="ap_materno" column="ap_materno" />
+		<result property="email" column="email" />
+		<result property="fechaRegistro" column="fecha_registro" />
+		<result property="activo" column="fg_activo" />
+		<result property="telefono1" column="tel1" />
+		<result property="telefono2" column="tel2" />
+		<result property="direccion" column="direccion" />
+	</resultMap>
+	
+	<select id="obtenerClientesPorFiltro" parameterType="filtroUsuario" resultMap="clienteResultMap">
+		SELECT *
+		FROM c_cliente u
+		WHERE u.fg_activo = '1'
+		<if test="nombreFiltro != null and nombreFiltro != '' ">
+			AND u.nombre LIKE CONCAT('%',#{nombreFiltro},'%')
+		</if>
+		<if test="apPaternoFiltro != null and apPaternoFiltro != '' ">
+			AND u.ap_paterno LIKE CONCAT('%',#{apPaternoFiltro},'%')
+		</if>
+		<if test="apMaternoFiltro != null and apMaternoFiltro != '' ">
+			AND u.ap_materno LIKE CONCAT('%',#{apMaternoFiltro},'%')
+		</if>
+		<if test="emailFiltro != null and emailFiltro != '' ">
+			AND u.email LIKE CONCAT('%',#{emailFiltro},'%')
+		</if>
+		<if	test="fechaRegistroInicial != null and fechaRegistroFinal != null and fechaRegistroInicial != '' and fechaRegistroFinal != '' ">
+			<![CDATA[ 
+				AND u.fecha_registro >= CONCAT(#{fechaRegistroInicial},' 000000') AND u.fecha_registro <= CONCAT(#{fechaRegistroFinal},' 235959')
+			]]>
+		</if>		
+		ORDER BY u.nombre
+	</select>
+	
+	<select id="agregarCliente" parameterType="clienteDTO">
+		INSERT INTO c_cliente
+		(nombre,ap_paterno,ap_materno,email,tel1,tel2,direccion)
+		VALUES		
+		(#{nombre},#{ap_paterno},#{ap_materno},#{email},#{telefono1},#{telefono2},#{direccion})
+	</select>
+	
+	<update id="eliminarCliente" parameterType="clienteDTO">
+		UPDATE c_cliente
+		SET fg_activo = '0'
+		WHERE cl_cliente = #{clienteId}
+	</update>
+	
+	<update id="editarCliente" parameterType="clienteDTO">
+		UPDATE c_cliente SET		
+		nombre = #{nombre},		
+		ap_paterno = #{ap_paterno},		
+		ap_materno = #{ap_materno},		
+		email =	#{email},		
+		tel1 = #{telefono1},		
+		tel2 = #{telefono2},		
+		direccion = #{direccion}			
+		WHERE cl_cliente = #{clienteId}
+	</update>
+
+</mapper>

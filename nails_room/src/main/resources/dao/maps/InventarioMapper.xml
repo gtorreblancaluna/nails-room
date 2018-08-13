@@ -1,0 +1,42 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mx.com.nails_room.dao.InventarioDAO">
+
+<resultMap id="articuloResultMap" type="articuloDTO">
+		<result property="articuloId" column="cl_articulo" />
+		<result property="fechaAlta" column="fecha_alta" />
+		<result property="descripcion" column="descripcion" />
+		<result property="unidadMedida" column="unidad_medida" />
+		<result property="precioVenta" column="precio_venta" />
+		<result property="cantidadExistente" column="cantidad_existente" />
+		<result property="esProducto" column="es_producto" />
+		<result property="activo" column="fg_activo" />
+	</resultMap>
+
+
+	<select id="obtenerArticulosPorFiltro" parameterType="filtroArticulo" resultMap="articuloResultMap">
+		SELECT *
+		FROM c_articulo
+		WHERE fg_activo = '1'
+		<if test="descripcionFiltro != null and descripcionFiltro != '' ">
+			AND descripcion LIKE CONCAT('%',#{descripcionFiltro},'%')
+		</if>
+		<if test="articuloIdFiltro != null and articuloIdFiltro != '' ">
+			AND cl_articulo = #{articuloIdFiltro}
+		</if>
+		
+		<if	test="fechaInicioAltaFiltro != null and fechaFinalAltaFiltro != null and fechaInicioAltaFiltro != '' and fechaFinalAltaFiltro != '' ">
+			<![CDATA[ 
+				AND fecha_alta >= CONCAT(#{fechaInicioAltaFiltro},' 000000') AND fecha_alta <= CONCAT(#{fechaFinalAltaFiltro},' 235959')
+			]]>
+		</if>		
+		ORDER BY descripcion
+	</select>
+	
+	<insert id="agregarArticulo" parameterType="articuloDTO">
+		INSERT INTO c_articulo
+		(descripcion,unidad_medida,precio_venta,cantidad_existente,es_producto)
+		VALUES
+		(#{descripcion},#{unidadMedida},#{precioVenta},#{cantidadExistente},#{esProducto})
+	</insert>
+
+</mapper>

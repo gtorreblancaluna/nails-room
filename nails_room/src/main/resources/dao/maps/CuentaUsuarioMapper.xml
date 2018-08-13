@@ -8,7 +8,7 @@
 		<result property="ap_materno" column="ap_materno" />
 		<result property="email" column="email" />		
 		<result property="contrasenia" column="password" />
-		<result property="fechaAlta" column="fe_alta" />		
+		<result property="fechaAlta" column="fecha_registro" />		
 		<result property="esAdmin" column="fg_admin" />
 		<result property="activo" column="fg_activo" />		
 		<result property="puestoDTO.puestoId" column="cl_puesto" />
@@ -17,7 +17,7 @@
 	
 	<resultMap id="resultMapPuesto" type="puestoDTO">
 		<result property="puestoId" column="cl_puesto" />		
-		<result property="description" column="ds_descripcion" />
+		<result property="descripcion" column="ds_descripcion" />
 		<result property="activo" column="fg_estado" />		
 	</resultMap>
 
@@ -36,31 +36,33 @@
 		AND u.fg_activo = '1'
 	</select>
 
-	<select id="getAllUsers" resultMap="usuarioResultMap">
-		SELECT u.*, p.cl_puesto AS puestoId, p.ds_descripcion AS descripcion_puesto,
-		s.nombre AS nombre_sucursal
-		FROM c_usuario u
-		INNER JOIN c_puesto p ON (u.cl_puesto = p.cl_puesto)	
-		INNER JOIN c_sucursal s ON (u.cl_sucursal = s.cl_sucursal)
-		WHERE u.fg_activo = '1'
-	</select>
-
-	<insert id="insertUser" parameterType="usuarioDTO">
+	<insert id="insertarUsuario" parameterType="usuarioDTO">
 		INSERT INTO c_usuario
-		(cl_puesto,nombre,ap_paterno,ap_materno,email,fe_alta,password,fg_admin,fg_activo,cl_sucursal)
+		(cl_puesto,nombre,ap_paterno,ap_materno,email,password)
 		VALUES		
-		(#{job.jobId},#{name},#{firstName},#{secondName},#{email},#{addDate},#{password},#{admin},"1",#{office.officeId})
+		(#{puestoDTO.puestoId},#{nombre},#{ap_paterno},#{ap_materno},#{email},#{contrasenia})
 	</insert>
-	<update id="updateUser" parameterType="usuarioDTO">
-		UPDATE c_usuario SET
-		cl_puesto = #{job.jobId},
-		nombre = #{name},
-		ap_paterno = #{firstName},
-		ap_materno = #{secondName},
-		email =	#{email},
-		password = #{password},
-		cl_sucursal = #{office.officeId}
-		WHERE cl_usuario = #{userId}
+	<update id="editarUsuario" parameterType="usuarioDTO">
+		UPDATE c_usuario SET		
+		<if test="puestoDTO != null and puestoDTO.puestoId != null and puestoDTO.puestoId != '' ">
+			cl_puesto = #{puestoDTO.puestoId},
+		</if>
+		<if test="nombre != null and nombre != '' ">
+			nombre = #{nombre},
+		</if>
+		<if test="ap_paterno != null and ap_paterno != '' ">
+			ap_paterno = #{ap_paterno},
+		</if>
+		<if test="ap_materno != null and ap_materno != '' ">
+			ap_materno = #{ap_materno},
+		</if>
+		<if test="email != null and email != '' ">
+			email =	#{email},
+		</if>
+		<if test="contrasenia != null and contrasenia != '' ">
+			password = #{contrasenia}	
+		</if>			
+		WHERE cl_usuario = #{usuarioId}
 	</update>
 	<delete id="deleteUser" parameterType="usuarioDTO">
 		UPDATE c_usuario SET fg_activo = '0' WHERE cl_usuario = #{userId}
@@ -70,37 +72,32 @@
 		SELECT * FROM c_usuario WHERE email = #{email}
 	</select>
 	
-	<select id="getAllJobs" resultMap="resultMapPuesto">
-		SELECT * FROM c_puesto WHERE fg_estatus = '1' ORDER BY ds_descripcion
+	<select id="obtenerPuestos" resultMap="resultMapPuesto">
+		SELECT * FROM c_puesto WHERE fg_estado = '1' ORDER BY ds_descripcion
 	</select>
 	
-<!-- 	<select id="getUserByFilter" parameterType="userFilter" resultMap="usuarioResultMap"> -->
-<!-- 		SELECT u.*, p.cl_puesto AS puestoId, p.ds_descripcion AS descripcion_puesto, -->
-<!-- 		s.nombre AS nombre_sucursal -->
-<!-- 		FROM c_usuario u -->
-<!-- 		INNER JOIN c_puesto p ON (u.cl_puesto = p.cl_puesto)	 -->
-<!-- 		INNER JOIN c_sucursal s ON (u.cl_sucursal = s.cl_sucursal) -->
-<!-- 		WHERE u.fg_activo = '1' -->
-<!-- 		<if test="nameFilter != null and nameFilter != '' "> -->
-<!-- 			AND u.nombre LIKE CONCAT('%',#{nameFilter},'%') -->
-<!-- 		</if> -->
-<!-- 		<if test="firstNameFilter != null and firstNameFilter != '' "> -->
-<!-- 			AND u.ap_paterno LIKE CONCAT('%',#{firstNameFilter},'%') -->
-<!-- 		</if> -->
-<!-- 		<if test="lastNameFilter != null and lastNameFilter != '' "> -->
-<!-- 			AND u.ap_materno LIKE CONCAT('%',#{lastNameFilter},'%') -->
-<!-- 		</if> -->
-<!-- 		<if test="emailFilter != null and emailFilter != '' "> -->
-<!-- 			AND u.email LIKE CONCAT('%',#{emailFilter},'%') -->
-<!-- 		</if> -->
-<!-- 		<if test="jobIdFilter != null and jobIdFilter != 0 "> -->
-<!-- 			AND u.cl_puesto = #{jobIdFilter} -->
-<!-- 		</if> -->
-<!-- 		<if test="officeIdFilter != null and officeIdFilter != 0 "> -->
-<!-- 			AND u.cl_sucursal = #{officeIdFilter} -->
-<!-- 		</if>		 -->
-<!-- 		ORDER BY nombre -->
-<!-- 	</select> -->
+	<select id="obtenerUsuariosPorFiltro" parameterType="filtroUsuario" resultMap="usuarioResultMap">
+		SELECT u.*, p.cl_puesto AS puestoId, p.ds_descripcion AS descripcion_puesto
+		FROM c_usuario u
+		INNER JOIN c_puesto p ON (u.cl_puesto = p.cl_puesto)	
+		WHERE u.fg_activo = '1'
+		<if test="nombreFiltro != null and nombreFiltro != '' ">
+			AND u.nombre LIKE CONCAT('%',#{nombreFiltro},'%')
+		</if>
+		<if test="apPaternoFiltro != null and apPaternoFiltro != '' ">
+			AND u.ap_paterno LIKE CONCAT('%',#{apPaternoFiltro},'%')
+		</if>
+		<if test="apMaternoFiltro != null and apMaternoFiltro != '' ">
+			AND u.ap_materno LIKE CONCAT('%',#{apMaternoFiltro},'%')
+		</if>
+		<if test="emailFiltro != null and emailFiltro != '' ">
+			AND u.email LIKE CONCAT('%',#{emailFiltro},'%')
+		</if>
+		<if test="puestoIdFiltro != null and puestoIdFiltro != 0 ">
+			AND u.cl_puesto = #{puestoIdFiltro}
+		</if>			
+		ORDER BY nombre
+	</select>
 	
 	
 </mapper>
