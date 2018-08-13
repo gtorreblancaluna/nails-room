@@ -7,22 +7,21 @@
 <html>
 <head>
 <style type="text/css">
-.panelOpciones{margin: 10%;}
+.panelOpciones{}
 .panelOpciones a {		
 	  font: bold 17px Arial;
 	  text-decoration: none;
 	  background-color: #FFF;
 	  color: #333333;
-/* 	  padding: 2px 6px 2px 6px; */
-/* 	  border-top: 1px solid #CCCCCC; */
-/* 	  border-right: 1px solid #333333; */
-/* 	  border-bottom: 1px solid #333333; */
-/* 	  border-left: 1px solid #CCCCCC; */
-/* 	  border: 1px solid #e2a93b; */
-/* 	  float: left;     */
-	  padding: 60px;
+	  float: left;
+	  width:150px;
+	  height:150px;
 	  margin: 4%;
 	  border-radius: 3px;
+  }
+  
+  .panelOpciones a label{		
+	 padding-top: 45%;
   }
 .panelBorder{
 	border-style: solid;
@@ -39,21 +38,24 @@
 <title>Nails Room :: bienvenido</title>
 </head>
 <body>
+
+<div class="container">
+
 <div class="container-header">
 	<h1>I N I C I O</h1>
 </div>
-<div class="container">
-<div class="page ">
+	<div class=" ">
 		<div class="row">
 			<div class="col-sm-12 panelBorder">
-				<div class="panelOpciones text-center border border-primary">
-					<a href="javascript:void(0);">CAJA</a>
-					<a href="javascript:void(0);">VENTAS</a>
-					<a href="javascript:void(0);">REPORTES</a>					
+				<div class="panelOpciones text-center">
+					<a href="javascript:void(0);"><label>C A J A</label></a>
+					<a href="javascript:void(0);"><label>V E N T A S</label></a>
+					<a href="javascript:void(0);"><label>R E P O R T E S</label></a>					
 				</div>
-			</div>
-			
+			</div>			
 		</div>
+		
+		
 	</div>	
 	
 </div>

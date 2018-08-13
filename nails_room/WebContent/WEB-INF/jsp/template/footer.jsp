@@ -2,7 +2,8 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
-<footer class="navbar navbar-fixed-bottom " style="color:white;padding:2%;background-color: #000;">
+<footer class="" style="color:white;background-color: #000;">
+
 <div class="">
 	<div class="row">
 		<div class="col text-center">
@@ -10,7 +11,7 @@
 		</div>
 		<c:if test="${not empty userSession.usuario.email}">
 <!-- 		Mostrar informacion del usuario -->
-			<div style="padding-top: 3%;">
+			<div style="">
 				<div class="row">
 					<div class="col-md-4 text-center">
 						<label>NOMBRE: ${userSession.usuario.nombre} ${userSession.usuario.ap_paterno} ${userSession.usuario.ap_materno}</label>
