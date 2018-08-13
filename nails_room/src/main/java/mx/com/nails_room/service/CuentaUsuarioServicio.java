@@ -12,5 +12,6 @@ public interface CuentaUsuarioServicio {
 	public void agregar(UsuarioDTO usuarioDTO);
 	public List<UsuarioDTO> obtenerPuestos();
 	public void editar(UsuarioDTO usuarioDTO);
+	public List<UsuarioDTO> obtenerTodosUsuarios();
 	
 }

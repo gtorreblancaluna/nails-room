@@ -1,6 +1,6 @@
 body{background-image: url(../images/back_vintage.jpg);}
 .centered { text-align: center;}
-.container{font-size:12px;color:#fff;    margin-bottom: 50px;}
+.container{font-size:12px;color:#fff;margin-bottom: 50px;}
 .btn-dark{background-color: #000;color:#fff !important;}
 .modal-content{color:#000; width:50%;margin: auto; /* width: 1000px; height: 600px; margin: auto; margin-top: 30px;overflow: auto;*/}
 .row-color { background-color: #000000ad; color: #fff;}
@@ -8,4 +8,5 @@ body{background-image: url(../images/back_vintage.jpg);}
 .bgcol{background-color: #9595953d;}
 .info-modal-header{background-color: #eae7e7;border-radius: 5px;}
 .containerShowResultQuery{height: auto;overflow: auto;margin-top: 10px;margin-bottom: 10px;}
+.containerShowResultQuery table tr td{background-color: #000;}
 .container-header{color:white; text-align:center;margin: 3%;}

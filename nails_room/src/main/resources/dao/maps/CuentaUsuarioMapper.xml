@@ -99,5 +99,13 @@
 		ORDER BY nombre
 	</select>
 	
+	<select id="obtenerTodosUsuarios" resultMap="usuarioResultMap">
+		SELECT u.*, p.cl_puesto AS puestoId, p.ds_descripcion AS descripcion_puesto
+		FROM c_usuario u
+		INNER JOIN c_puesto p ON (u.cl_puesto = p.cl_puesto)	
+		WHERE u.fg_activo = '1'
+		OREDER BY u.nombre
+	</select>
+	
 	
 </mapper>

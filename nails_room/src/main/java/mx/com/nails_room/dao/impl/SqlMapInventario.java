@@ -24,12 +24,12 @@ public class SqlMapInventario extends SqlSessionDaoSupport implements Inventario
 	@Override
 	public void editar(ArticuloDTO articuloDTO) {
 		// TODO Auto-generated method stub
-
+		getSqlSession().update("editarArticulo",articuloDTO);
 	}
 
 	@Override
 	public void eliminar(ArticuloDTO articuloDTO) {
-		// TODO Auto-generated method stub
+		getSqlSession().update("eliminarArticulo",articuloDTO);
 
 	}
 

@@ -8,11 +8,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Nails Room :: Usuarios</title>
-<style>		    
-    
-
-</style>
-
+<link rel="stylesheet" type="text/css" href="css/data-tables.css">
 </head>
 <body>
  <div class="container" style="">
@@ -256,11 +252,25 @@
     </div>
 
 
+<script type="text/javascript" src="js/data-tables.js"></script>
 <script type="text/javascript">
 $( document ).ready(function() {
+	$('.tableShowResultQuery').DataTable();
+	
 	//confirmar eliminar	
 	$('form[name="deleteUserForm"]').submit(function() {
 	   return confirm("confirma para continuar");	   
+	});
+	
+	// validar cambiar contraseña
+	$('form[name="updatePassword"]').submit(function() {
+		var esAdmin = '${userSession.usuario.puestoDTO.puestoId}'
+		if(esAdmin == '1'){
+		   return confirm("confirma para continuar");
+		}else{
+			alert("Necesitas permisos de administrador para cambiar contraseña ")
+			return false;
+		}
 	});
 	
 	// validacion para agregar usuario

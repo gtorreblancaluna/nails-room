@@ -38,5 +38,31 @@
 		VALUES
 		(#{descripcion},#{unidadMedida},#{precioVenta},#{cantidadExistente},#{esProducto})
 	</insert>
+	
+	<update id="editarArticulo" parameterType="articuloDTO">
+		UPDATE c_articulo 
+		<set>
+			<if test="descripcion != null and descripcion != '' ">
+				descripcion = #{descripcion},
+			</if>
+			<if test="unidadMedida != null and unidadMedida != '' ">
+				unidad_medida = #{unidadMedida},
+			</if>
+			<if test="precioVenta != null and precioVenta != '' ">
+				precio_venta = #{precioVenta},
+			</if>
+			<if test="cantidadExistente != null and cantidadExistente != '' ">
+				cantidad_existente = #{cantidadExistente},
+			</if>
+			<if test="esProducto != null and esProducto != '' ">
+				es_producto = #{esProducto}
+			</if>
+		</set>
+		WHERE cl_articulo = #{articuloId}
+	</update>
+	
+	<update id="eliminarArticulo" parameterType="articuloDTO">
+		UPDATE c_articulo SET fg_activo = '0' WHERE cl_articulo = #{articuloId}		
+	</update>
 
 </mapper>

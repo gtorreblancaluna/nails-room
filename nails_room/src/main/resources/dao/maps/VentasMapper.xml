@@ -1,0 +1,71 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mx.com.nails_room.dao.ClienteDAO">
+
+	<resultMap id="ventaResultMap" type="ventasDTO">
+		<result property="ventaId" column="cl_venta" />
+		<result property="fechaRegistro" column="fecha_registro" />		
+		<!-- Datos del cliente -->
+		<result property="cliente.clienteId" column="cl_cliente" />
+		<result property="cliente.nombre" column="nombre_cliente" />
+		<result property="cliente.ap_paterno" column="ap_paterno_cliente" />
+		<result property="cliente.ap_materno" column="ap_materno_cliente" />
+		<!-- Datos del usuario -->
+		<result property="usuario.nombre" column="nombre_usuario" />
+		<result property="usuario.ap_paterno" column="ap_paterno_usuario" />
+		<result property="usuario.ap_materno" column="ap_materno_usuario" />		
+		<!-- Datos caja -->
+		<result property="caja.cajaId" column="cl_caja" />
+		<result property="caja.descripcion" column="descripcion_caja" />
+		<result property="caja.fechaApertura" column="fecha_apertura_caja" />
+		<!-- Datos estacion trabajo -->
+		<result property="estacionTrabajo.estacionTrabajoId" column="cl_estacion_trabajo" />
+		<result property="estacionTrabajo.descripcion" column="descripcion_estacion" />	
+		<!-- Datos estado venta -->
+		<result property="estadoVenta.estadoVentaId" column="cl_estado_venta" />		
+		<result property="estadoVenta.descripcion" column="descripcion_estado" />
+		
+		<result property="descripcion" column="ds_descripcion" />
+		<result property="pagoEfectivo" column="es_pago_efectivo" />
+		<result property="pagoTarjeta" column="es_pago_tarjeta" />
+	</resultMap>
+	
+	<select id="obtenerVentasPorFiltro" parameterType="filtroVentas" resultMap="ventaResultMap">
+		SELECT venta.*,
+		cliente.nombre AS nombre_cliente,
+		cliente.ap_paterno AS ap_paterno_cliente,
+		cliente.ap_materno AS ap_materno_cliente,
+		cliente.email AS email_cliente,
+		usuario.nombre AS nombre_usuario,
+		usuario.ap_paterno AS ap_paterno_usuario,
+		usuario.ap_materno AS ap_materno_usuario,
+		usuario.email AS email_usuario,
+		caja.ds_descripcion AS descripcion_caja,
+		caja.fe_apertura AS fecha_apertura_caja,
+		estacion.ds_descripcion AS descripcion_estacion,
+		estado.ds_descripcion AS descripcion_estado
+		FROM c_venta venta
+		INNER JOIN c_cliente cliente ON (venta.cl_cliente = cliente.cl_cliente)
+		INNER JOIN c_usuario usuario ON (venta.cl_usuario = usuario.cl_usuario)
+		INNER JOIN c_caja caja ON (venta.cl_caja = caja.cl_caja)
+		INNER JOIN c_estacion_trabajo estacion ON (venta.cl_estacion_trabajo = estacion.cl_estacion_trabajo)
+		INNER JOIN c_estado_venta estado ON (venta.cl_estado_venta = estado.cl_estado_venta)
+		<where>
+			<if test="descripcionFiltro != null and descripcionFiltro != '' ">
+				AND venta.ds_descripcion LIKE CONCAT('%',#{descripcionFiltro},'%')
+			</if>
+			<if test="nombreClienteFiltro != null and nombreClienteFiltro != '' ">
+				AND cliente.nombre LIKE CONCAT('%',#{nombreClienteFiltro},'%')
+			</if>
+			<if test="idUsuarioFiltro != null and idUsuarioFiltro != '' ">
+				AND venta.cl_usuario = #{idUsuarioFiltro}
+			</if>			
+			<if	test="fechaInicioFiltro != null and fechaFinFiltro != null and fechaInicioFiltro != '' and fechaFinFiltro != '' ">
+				<![CDATA[ 
+					AND venta.fecha_registro >= CONCAT(#{fechaInicioFiltro},' 000000') AND venta.fecha_registro <= CONCAT(#{fechaFinFiltro},' 235959')
+				]]>
+			</if>
+		</where>		
+		ORDER BY venta.cl_venta DESC
+	</select>
+
+</mapper>

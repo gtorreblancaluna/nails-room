@@ -12,7 +12,9 @@ USE bdsalon;
 CREATE TABLE c_estacion_trabajo(
 cl_estacion_trabajo INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
 ds_descripcion VARCHAR(255),
-fg_estatus ENUM('1','0') NOT NULL DEFAULT '1',
+-- estado = 1 ocupado, estado = 0 libre
+fg_estado ENUM('1','0') NOT NULL DEFAULT '1',
+-- (OPCIONAL) orden para mostrar en el panel
 orden DECIMAL(9,2),
 PRIMARY KEY (cl_estacion_trabajo)
 )

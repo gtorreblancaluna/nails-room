@@ -37,4 +37,10 @@ public class SqlMapCuentaUsuario extends SqlSessionDaoSupport implements CuentaU
 		getSqlSession().update("editarUsuario",usuarioDTO);
 	}
 
+	@Override
+	public List<UsuarioDTO> obtenerTodosUsuarios() {
+		// TODO Auto-generated method stub
+		return getSqlSession().selectList("obtenerTodosUsuarios");
+	}
+
 }

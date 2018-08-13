@@ -42,27 +42,31 @@
 		<!--2018.08.11 Formulario para aplicar busqueda por filtro -->
 	<form:form modelAttribute="filtroUsuario" action="clientes.do" method="post" name="filtroUsuario" id="obtenerPorFiltro" >
 		<div class="container-result">	
-			<p>Consultar clientes por filtro</p>
+			<p>Consultar ventas por filtro</p>
 			<table class="table tableFilter bgcol">
 			<tbody>
 				<tr>
 					<td>
-						<span class="input-group-text">Fecha inicio:<input type="date" name="fechaRegistroInicial" id="" class="form-control"> </span>
+						<span class="input-group-text">Fecha inicio:<input type="date" name="fechaInicioFiltro" id="" class="form-control"> </span>
 					</td>
 					<td>
-						<span class="input-group-text">Fecha final:<input type="date" name="fechaRegistroFinal" id="" class="form-control"> </span>
+						<span class="input-group-text">Fecha final:<input type="date" name="fechaFinFiltro" id="" class="form-control"> </span>
 					</td>
 					<td>
-						<span class="input-group-text">Nombre:<input type="text" name="nombreFiltro" id="" class="form-control"> </span>
+						<span class="input-group-text">Descripci&oacute;n:<input type="text" name="descripcionFiltro" id="" class="form-control"> </span>
 					</td>
 					<td>
-						<span class="input-group-text">Apellido paterno:<input type="text" name="apPaternoFiltro" id="" class="form-control"> </span>
+						<span class="input-group-text">Nombre cliente:<input type="text" name="nombreClienteFiltro" id="" class="form-control"> </span>
 					</td>
 					<td>
-						<span class="input-group-text">Apellido materno:<input type="text" name="apMaternoFiltro" id="" class="form-control"></span>
-					</td>
-					<td>
-						<span class="input-group-text">Email:<input type="text" name="emailFiltro" id="" class="form-control"></span>
+						<span class="input-group-text">Usuario : 
+							<select name="idUsuarioFiltro" class="form-control" id="idUsuarioFiltro">
+										<option value="0">- Seleccione -</option>
+									<c:forEach items="${listaUsuarios}" var="usuario">
+										<option value="${usuario.usuarioId}">${usuario.nombre}</option>
+									</c:forEach>	
+							</select>
+						</span>
 					</td>
 									
 				</tr>
@@ -71,7 +75,7 @@
 					 <input type="submit" class="btn btn-dark" name="filtro" value="Enviar" />	
 					</td>
 					<td colspan=1>
-					<button type="button" class="btn btn-dark" data-toggle="modal" data-target="#modalAddUser">Agregar cliente</button>
+					<button type="button" class="btn btn-dark" data-toggle="modal" data-target="#modalAddUser">Agregar venta</button>
 					</td>
 					
 				</tr>
@@ -83,35 +87,36 @@
 	
 	
 		<!-- Mostramos los usuarios -->
-		<c:if test="${not empty listaClientes}">
+		<c:if test="${not empty listaVentas}">
 		<div class="containerShowResultQuery container-result">
 		<table class="table tableShowResultQuery">
 		<thead>
 			<tr>
 				<th>Id</th>
-				<th>Nombre</th>
-				<th>Ap Paterno</th>
-				<th>Ap Materno</th>
-				<th>Email</th>				
-				<th>Tel1</th>
-				<th>Tel2</th>
-				<th>Direcci&oacute;n</th>
-				<th></th>
+				<th>Descripci&oacute;n</th>
+				<th>Fecha registro</th>
+				<th>Cliente</th>
+				<th>Atendi&oacute;</th>				
+				<th>Fecha apertura caja</th>
+				<th>Isla</th>
+				<th>Estado</th>
+				<th>Efectivo/TC</th>
 				<th></th>		
 			</tr>
 		</thead>
 		<tbody>
-			<c:forEach items="${listaClientes}" var="cliente">		
+			<c:forEach items="${listaVentas}" var="venta">		
 		 		<tr>
-		 			<td>${cliente.clienteId}</td>
-		 			<td>${cliente.nombre}</td>
-		 			<td>${cliente.ap_paterno}</td>
-		 			<td>${cliente.ap_materno}</td>
-		 			<td>${cliente.email}</td>
-		 			<td>${cliente.telefono1}</td>
-		 			<td>${cliente.telefono2}</td>
-		 			<td>${cliente.direccion}</td>		 			
-					<td><button type="button" class="btn btn-dark btnUpdateUser" id="btnUpdateUser" data-toggle="modal" data-target="#modalUpdateUser">Editar</button></td>
+		 			<td>${venta.ventaId}</td>
+		 			<td>${venta.descripcion}</td>
+		 			<td>${venta.fechaRegistro}</td>
+		 			<td>${venta.cliente.nombre} ${venta.cliente.ap_paterno}</td>
+		 			<td>${venta.usuario.nombre} ${venta.usuario.ap_paterno}</td>
+		 			<td>${venta.caja.fechaApertura}</td>
+		 			<td>${venta.estacionTrabajo.descripcion}</td>
+		 			<td>${venta.estadoVenta.descripcion}</td>	
+		 			<td>${venta.pagoEfectivo eq '1' ? 'Efectivo' : 'TC'}</td>	 			
+					<td><button type="button" class="btn btn-dark btnUpdate" id="btnUpdate" data-toggle="modal" data-value="${venta.ventaId} }">Editar</button></td>
 		 			<td>		 			
 			 			<form:form action="clientes.do" method="post" name="deleteForm" id="deleteForm">
 							<input type="hidden" name="clienteId" id="deleteCustomerId" value="${cliente.clienteId}">			 	

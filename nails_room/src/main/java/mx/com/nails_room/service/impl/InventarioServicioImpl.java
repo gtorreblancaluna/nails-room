@@ -25,18 +25,17 @@ public class InventarioServicioImpl implements InventarioServicio {
 	@Override
 	public void agregar(ArticuloDTO articuloDTO) {
 		inventarioDao.agregar(articuloDTO);
-
 	}
 
 	@Override
 	public void editar(ArticuloDTO articuloDTO) {
 		// TODO Auto-generated method stub
-
+		inventarioDao.editar(articuloDTO);
 	}
 
 	@Override
 	public void eliminar(ArticuloDTO articuloDTO) {
-		// TODO Auto-generated method stub
+		inventarioDao.eliminar(articuloDTO);
 
 	}
 

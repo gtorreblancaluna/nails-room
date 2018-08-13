@@ -3,6 +3,7 @@ package mx.com.nails_room.view;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,8 +13,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import mx.com.nails_room.forms.FiltroUsuario;
+import mx.com.nails_room.model.UserSession;
 import mx.com.nails_room.model.UsuarioDTO;
 import mx.com.nails_room.service.CuentaUsuarioServicio;
+
+import static mx.com.nails_room.commons.ApplicationConstants.PUESTO_ADMINISTRADOR;
 
 @Controller
 public class UsuariosController {	
@@ -50,9 +54,21 @@ public class UsuariosController {
 	}	
 	@PostMapping(value = "/usuarios.do", params = "cambiarContrasenia")
 	public String cambiarContrasenia(@ModelAttribute UsuarioDTO usuarioDTO,HttpServletRequest request, Model model) {		
-		cuentaUsuarioServicio.editar(usuarioDTO);
-		model.addAttribute("messageView","Se cambio con exito la contrase&ntilde;a ");
-		return "usuarioExito";
+		HttpSession httpSession = request.getSession();
+		UserSession userSession = (UserSession) httpSession.getAttribute("userSession");
+		if(userSession != null && userSession.getUsuario() != null) {
+			if(userSession.getUsuario().getPuestoDTO().getPuestoId() == PUESTO_ADMINISTRADOR) {
+				cuentaUsuarioServicio.editar(usuarioDTO);
+				model.addAttribute("messageView","Se cambio con exito la contrase&ntilde;a ");
+				return "usuarioExito";
+			}else {
+				model.addAttribute("messageError","Para realizar esta accion necesitas permisos de ADMINISTRADOR ");
+				return "usuario";
+			}
+		}else {
+			model.addAttribute("messageError","No se encontro usuario logueado, porfavor logeate correctamente ");
+			return "usuario";
+		}
 	}	
 
 }

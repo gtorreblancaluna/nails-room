@@ -8,11 +8,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Nails Room :: Inventario</title>
-<style>		    
-    
-
-</style>
-
+<link rel="stylesheet" type="text/css" href="css/data-tables.css">
 </head>
 <body>
  <div class="container" style="">
@@ -110,7 +106,7 @@
 		 			<td>${articulo.precioVenta}</td>
 		 			<td>${articulo.cantidadExistente}</td>
 		 			<td>${articulo.esProducto eq '1' ? 'Producto' : 'Servicio'}</td> 			
-					<td><button type="button" class="btn btn-dark btnUpdate" id="btnUpdate" data-toggle="modal" data-target="#modalUpdate">Editar</button></td>
+					<td><button type="button" class="btn btn-dark btnUpdate" id="" data-toggle="" data-target="" data-value="${articulo.esProducto}">Editar</button></td>
 		 			<td>		 			
 			 			<form:form action="inventario.do" method="post" name="deleteForm" id="deleteForm">
 							<input type="hidden" name="articuloId" id="deleteCustomerId" value="${articulo.articuloId}">			 	
@@ -194,7 +190,7 @@
         <h4 class="modal-title">Editar Articulo</h4>
       </div>
       <div class="modal-body">     
-		<form:form modelAttribute="articuloDTO" action="inventario.do" method="post" name="updateForm" id="updateForm">
+		<form:form modelAttribute="articuloDTO" action="inventario.do" method="post" name="updateForm" id="updateProductForm">
 		<input type="hidden" name="articuloId" id="articuloId">
 				<div class="form-group">
 					<label>Descripci&oacute;n: </label>
@@ -214,7 +210,7 @@
 				</div>
 							
 					<div class="form-group">
-					<input type="submit" class="btn btn-dark login-button" name="editarArticulo" value="Enviar" />					
+					<input type="submit" class="btn btn-dark login-button" name="editar" value="Enviar" />					
 				</div>
 		</form:form>
       </div>      
@@ -230,7 +226,7 @@
         <h4 class="modal-title">Editar Servicio</h4>
       </div>
       <div class="modal-body">     
-		<form:form modelAttribute="articuloDTO" action="inventario.do" method="post" name="updateForm" id="updateForm">
+		<form:form modelAttribute="articuloDTO" action="inventario.do" method="post" name="updateForm" id="updateServiceForm">
 		<input type="hidden" name="articuloId" id="articuloId">
 				<div class="form-group">
 					<label>Descripci&oacute;n: </label>
@@ -243,7 +239,7 @@
 				</div>			
 							
 					<div class="form-group">
-					<input type="submit" class="btn btn-dark login-button" name="editarServicio" value="Enviar" />					
+					<input type="submit" class="btn btn-dark login-button" name="editar" value="Enviar" />					
 				</div>
 		</form:form>
       </div>      
@@ -256,9 +252,10 @@
     
 
 
-
+<script type="text/javascript" src="js/data-tables.js"></script>
 <script type="text/javascript">
 $( document ).ready(function() {
+	$('.tableShowResultQuery').DataTable();
 	//confirmar eliminar	
 	$('form[name="deleteForm"]').submit(function() {
 	   return confirm("confirma para continuar");	   
@@ -289,39 +286,46 @@ $( document ).ready(function() {
 	});
 	
 	
-	$( '.btnUpdate' ).click(function() {
-		var $updateForm = $("#updateUserForm");
-		 var $row = jQuery(this).closest('tr');
-		    var $columns = $row.find('td');
+	
+	
+$( '.btnUpdate' ).click(function() {
+	var esProducto = $(this).attr("data-value");
+	var idForm = '';
+	if(esProducto == '1'){
+		idForm = '#modalUpdateProduct';
+ 		var $updateForm = $("#updateProductForm");
+	}else{
+		idForm = '#modalUpdateService';
+		var $updateForm = $("#updateServiceForm");
+	}
+    var $row = jQuery(this).closest('tr');
+    var $columns = $row.find('td');
 
-		    $columns.addClass('row-highlight');
-		    var values = "";
+    $columns.addClass('row-highlight');
+    var values = "";
 
-		    jQuery.each($columns, function(i, item) {
-		        values = values + 'td' + (i + 1) + ':' + item.innerHTML + '<br/>';
-		        if(i===0)
-		        	$updateForm.find('#articuloId').val(item.innerHTML);
-		        if(i===1)
-		        	$updateForm.find('#name').val(item.innerHTML);
-		        if(i===2)
-		        	$updateForm.find('#apPaterno').val(item.innerHTML);
-		        if(i===3)
-		        	$updateForm.find('#apMaterno').val(item.innerHTML);
-		        if(i===4)
-		        	$updateForm.find('#email').val(item.innerHTML);
-		        if(i===5)
-		        	$updateForm.find('#tel1').val(item.innerHTML);
-		        if(i===6)
-		        	$updateForm.find('#tel2').val(item.innerHTML);
-		        if(i===7)
-		        	$updateForm.find('#direccion').val(item.innerHTML);
-		       
-		    });
+    jQuery.each($columns, function(i, item) {
+        values = values + 'td' + (i + 1) + ':' + item.innerHTML + '<br/>';
+        if(i===0)
+        	$updateForm.find('#articuloId').val(item.innerHTML);
+        if(i===2)
+        	$updateForm.find('#descripcion').val(item.innerHTML);
+        if(i===3)
+        	$updateForm.find('#unidadMedida').val(item.innerHTML);
+        if(i===4)
+        	$updateForm.find('#precioVenta').val(item.innerHTML);
+        if(i===5)
+        	$updateForm.find('#cantidadExistente').val(item.innerHTML);		       
+       
+    });
+    
+    $(idForm).modal('show');
 		   
 	});
 	
 	 	
-});
+}); // end document ready
+
 </script>
 
 </body>

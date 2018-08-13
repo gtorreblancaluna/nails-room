@@ -46,4 +46,10 @@ public class CuentaUsuarioServicioImpl implements CuentaUsuarioServicio{
 		
 	}
 
+	@Override
+	public List<UsuarioDTO> obtenerTodosUsuarios() {
+		// TODO Auto-generated method stub
+		return cuentaUsuarioDao.obtenerTodosUsuarios();
+	}
+
 }

@@ -21,7 +21,7 @@ public class ClientesController {
 	private ClienteServicio clienteServicio;
 	
 	@GetMapping(value = "/clientes.do")
-	public String mostrarPorFiltro(HttpServletRequest request, Model model) {		
+	public String mostrarInicio(HttpServletRequest request, Model model) {		
 		model.addAttribute("clienteDTO", new ClienteDTO());
 		return "cliente";
 	}	

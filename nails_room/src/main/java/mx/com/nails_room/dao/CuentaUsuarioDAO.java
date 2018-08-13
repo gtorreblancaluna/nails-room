@@ -12,4 +12,5 @@ public interface CuentaUsuarioDAO {
 	public void insertar(UsuarioDTO usuarioDTO);
 	public List<UsuarioDTO> obtenerPuestos();
 	public void editar(UsuarioDTO usuarioDTO);
+	public List<UsuarioDTO> obtenerTodosUsuarios();
 }

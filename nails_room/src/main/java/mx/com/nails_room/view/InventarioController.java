@@ -46,19 +46,13 @@ public class InventarioController {
 		model.addAttribute("messageView","Se agrego exitosamente el servicio: "+articuloDTO.getDescripcion());
 		return "inventarioExito";
 	}	
-	@PostMapping(value = "/inventario.do", params = "editarArticulo")
+	@PostMapping(value = "/inventario.do", params = "editar")
 	public String editarArticulo(@ModelAttribute ArticuloDTO articuloDTO,HttpServletRequest request, Model model) {		
 		inventarioServicio.editar(articuloDTO);
 		model.addAttribute("messageView","Se edito exitosamente el articulo: "+articuloDTO.getDescripcion());
 		return "inventarioExito";
-	}
+	}	
 	
-	@PostMapping(value = "/inventario.do", params = "editarServicio")
-	public String editarServicio(@ModelAttribute ArticuloDTO articuloDTO,HttpServletRequest request, Model model) {		
-		inventarioServicio.editar(articuloDTO);
-		model.addAttribute("messageView","Se edito exitosamente el servicio: "+articuloDTO.getDescripcion());
-		return "inventarioExito";
-	}
 	
 	@PostMapping(value = "/inventario.do", params = "eliminar")
 	public String eliminar(@ModelAttribute ArticuloDTO articuloDTO,HttpServletRequest request, Model model) {		
