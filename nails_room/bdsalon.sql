@@ -14,7 +14,7 @@ cl_estacion_trabajo INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
 ds_descripcion VARCHAR(255),
 fg_estatus ENUM('1','0') NOT NULL DEFAULT '1',
 orden DECIMAL(9,2),
-PRIMARY KEY (cl_venta)
+PRIMARY KEY (cl_estacion_trabajo)
 )
 ENGINE = InnoDB;
 
@@ -49,11 +49,11 @@ CREATE TABLE c_cliente(
   ap_paterno VARCHAR(45),
   ap_materno VARCHAR(45),
   email VARCHAR(45),
-  fe_alta TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   tel1 VARCHAR(25),
   tel2 VARCHAR(25),
   direccion VARCHAR(255),
-  status ENUM('1','0'),  
+  fg_activo ENUM('1','0') NOT NULL DEFAULT '1', 
   PRIMARY KEY(cl_cliente)   
 )
 ENGINE = InnoDB;
@@ -76,7 +76,7 @@ CREATE TABLE c_usuario (
   ap_materno VARCHAR(45),
   email VARCHAR(45),
   password VARCHAR(45),
-  fe_alta TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   fg_admin ENUM('1','0') NOT NULL DEFAULT '0',
   fg_activo ENUM('1','0') NOT NULL DEFAULT '1',
   PRIMARY KEY(cl_usuario),  
@@ -87,6 +87,21 @@ CREATE TABLE c_usuario (
  )
 ENGINE = InnoDB;
 
+CREATE TABLE c_caja(
+cl_caja INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+cl_usuario INTEGER UNSIGNED NOT NULL,
+fecha_apertura TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+fecha_cierre TIMESTAMP NULL,
+fg_activo ENUM('1','0') NOT NULL DEFAULT '1',
+ds_descripcion VARCHAR(255),
+PRIMARY KEY (cl_caja),
+CONSTRAINT fk_cl_usuario FOREIGN KEY fk_cl_usuario (cl_usuario) 
+	REFERENCES c_usuario(cl_usuario)
+	ON DELETE CASCADE
+    ON UPDATE CASCADE
+)
+ENGINE = InnoDB;
+
 
 
 -- Tabla Inventarios
@@ -95,12 +110,10 @@ cl_articulo INTEGER unsigned NOT NULL AUTO_INCREMENT,
 fecha_alta TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 descripcion VARCHAR(255) NOT NULL,
 unidad_medida VARCHAR(20),
-cantidad_entrada DECIMAL(9,2) NOT NULL,
-cantidad_salida DECIMAL(9,2),
 precio_venta DECIMAL(9,2),
 cantidad_existente DECIMAL(9,2),
 es_producto ENUM('1','0') NOT NULL DEFAULT '1',
-fg_estatus ENUM('1','0') NOT NULL DEFAULT '1',
+fg_activo ENUM('1','0') NOT NULL DEFAULT '1',
 PRIMARY KEY(cl_articulo)
 )
 ENGINE = InnoDB;
@@ -108,22 +121,34 @@ ENGINE = InnoDB;
 -- 2018.05.22 GTL Tabla Ventas 
 CREATE TABLE c_venta(
 cl_venta INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
-fe_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 cl_cliente INTEGER UNSIGNED NOT NULL,
 cl_usuario INTEGER UNSIGNED NOT NULL,
+cl_caja INTEGER UNSIGNED NOT NULL,
+cl_estacion_trabajo INTEGER UNSIGNED NOT NULL,
 cl_estado_venta INTEGER UNSIGNED NOT NULL,
 ds_descripcion VARCHAR(255),
+es_pago_efectivo ENUM('1','0') NOT NULL DEFAULT '1',
+es_pago_tarjeta ENUM('1','0') NOT NULL DEFAULT '0',
 PRIMARY KEY (cl_venta),
-CONSTRAINT fk_venta_cl_cliente FOREIGN KEY fk_venta_cl_cliente (cl_cliente) 
-	REFERENCES c_cliente(cl_cliente)
-	ON DELETE CASCADE
-    ON UPDATE CASCADE,    
-CONSTRAINT fk_venta_cl_usuario FOREIGN KEY fk_venta_cl_usuario (cl_usuario) 
-	REFERENCES c_usuario(cl_usuario)
+CONSTRAINT fk_venta_cl_cliente FOREIGN KEY fk_venta_cl_cliente (cl_cliente)
+	REFERENCES c_cliente (cl_cliente)
 	ON DELETE CASCADE
     ON UPDATE CASCADE,
-CONSTRAINT fk_cl_estatus_venta FOREIGN KEY fk_cl_estatus_venta (cl_estado_venta) 
-	REFERENCES c_estado_venta(cl_estado_venta)
+CONSTRAINT fk_venta_cl_usuario FOREIGN KEY fk_venta_cl_usuario (cl_usuario)
+	REFERENCES c_usuario (cl_usuario)
+	ON DELETE CASCADE
+    ON UPDATE CASCADE,
+CONSTRAINT fk_cl_estado_venta FOREIGN KEY fk_cl_estado_venta (cl_estado_venta)
+	REFERENCES c_estado_venta (cl_estado_venta)
+	ON DELETE CASCADE
+    ON UPDATE CASCADE,
+CONSTRAINT fk_cl_caja FOREIGN KEY fk_cl_caja (cl_caja) 
+	REFERENCES c_caja (cl_caja)
+	ON DELETE CASCADE
+    ON UPDATE CASCADE,
+CONSTRAINT fk_cl_estacion_trabajo FOREIGN KEY fk_cl_estacion_trabajo (cl_estacion_trabajo)
+	REFERENCES c_estacion_trabajo (cl_estacion_trabajo)
 	ON DELETE CASCADE
     ON UPDATE CASCADE
 )
@@ -136,6 +161,8 @@ cl_venta INTEGER UNSIGNED NOT NULL,
 cl_articulo INTEGER UNSIGNED NOT NULL,
 cantidad INTEGER NOT NULL,
 precio_articulo DECIMAL(9,2),
+-- orden entrada, sirve para agrupar el orden en que se agregaron los articulos, 1, 2, 3
+orden_entrada DECIMAL(9,2),
 PRIMARY KEY (cl_detalle_venta),
 CONSTRAINT fk_cl_venta FOREIGN KEY fk_cl_venta (cl_venta) 
 	REFERENCES c_venta(cl_venta)
@@ -148,21 +175,6 @@ CONSTRAINT fk_cl_articulo FOREIGN KEY fk_cl_articulo (cl_articulo)
 )
 ENGINE = InnoDB;
 
-
-CREATE TABLE c_caja(
-cl_caja INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
-cl_usuario INTEGER UNSIGNED NOT NULL,
-fecha_apertura TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-fecha_cierre TIMESTAMP NULL,
-fg_estatus ENUM('1','0') NOT NULL DEFAULT '1',
-ds_descripcion VARCHAR(255),
-PRIMARY KEY (cl_caja),
-CONSTRAINT fk_cl_usuario FOREIGN KEY fk_cl_usuario (cl_usuario) 
-	REFERENCES c_usuario(cl_usuario)
-	ON DELETE CASCADE
-    ON UPDATE CASCADE
-)
-ENGINE = InnoDB;
 
 CREATE TABLE k_detalle_caja(
 cl_detalle_caja INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -178,19 +190,18 @@ CONSTRAINT fk_cl_detalle_caja FOREIGN KEY fk_cl_detalle_caja (cl_caja)
 )
 ENGINE = InnoDB;
 
-
-
 -- FIN DEL SCRIPT
 
-INSERT INTO c_usuario (cl_puesto,nombre,ap_paterno,ap_materno,email,password,fg_admin,fg_activo) VALUES ('1','Gerardo','Torreblanca','Luna','gtorre@email.com','123456','1','1');
+INSERT INTO c_estado_venta (ds_descripcion) VALUES ('Preventa');
+INSERT INTO c_estado_venta (ds_descripcion) VALUES ('Cancelado');
+INSERT INTO c_estado_venta (ds_descripcion) VALUES ('Finalizado');
 
-INSERT INTO c_estatus_venta (ds_descripcion) VALUES ('Registrado');
-INSERT INTO c_estatus_venta (ds_descripcion) VALUES ('Cancelado');
-INSERT INTO c_estatus_venta (ds_descripcion) VALUES ('Autorizado');
-INSERT INTO c_estatus_venta (ds_descripcion) VALUES ('Archivado');
-INSERT INTO c_estatus_venta (ds_descripcion) VALUES ('Entregado');
+INSERT INTO c_puesto (ds_descripcion) VALUES ('Administrador');
+INSERT INTO c_puesto (ds_descripcion) VALUES ('Mostrador');
+INSERT INTO c_puesto (ds_descripcion) VALUES ('Vendedor');
+INSERT INTO c_puesto (ds_descripcion) VALUES ('Aplicador');
 
-INSERT INTO c_puesto (ds_descripcion) VALUES ('administrador');
-INSERT INTO c_puesto (ds_descripcion) VALUES ('vendedor');
-INSERT INTO c_puesto (ds_descripcion) VALUES ('chofer');
-INSERT INTO c_puesto (ds_descripcion) VALUES ('proveedor');
+INSERT INTO c_usuario (cl_puesto,nombre,ap_paterno,ap_materno,email,password,fg_admin,fg_activo) VALUES ('1','admin','admin','admin','admin','123456','1','1');
+
+
+
