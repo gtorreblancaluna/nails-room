@@ -45,7 +45,15 @@ http://www.springframework.org/schema/context/spring-context-3.0.xsd"
 		<property name="configLocation" value="WEB-INF/mybatis-config.xml" />
 	</bean>
 
-	<bean id="accountDao" class="mx.com.nails_room.dao.impl.SqlMapCuentaUsuario">
+	<bean id="cuentaUsuarioDao" class="mx.com.nails_room.dao.impl.SqlMapCuentaUsuario">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>	
+	
+	<bean id="clientesDao" class="mx.com.nails_room.dao.impl.SqlMapCliente">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>	
+	
+	<bean id="inventarioDao" class="mx.com.nails_room.dao.impl.SqlMapInventario">
 		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
 	</bean>	
 	
