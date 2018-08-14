@@ -1,6 +1,7 @@
 package mx.com.nails_room.model;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 public class VentasDTO {
 	
@@ -15,7 +16,14 @@ public class VentasDTO {
 	private String pagoTarjeta;
 	private Timestamp fechaRegistro;
 	private EstadoVentaDTO estadoVenta;	
+	private List<DetalleVentaDTO> detalleVenta;
 	
+	public List<DetalleVentaDTO> getDetalleVenta() {
+		return detalleVenta;
+	}
+	public void setDetalleVenta(List<DetalleVentaDTO> detalleVenta) {
+		this.detalleVenta = detalleVenta;
+	}
 	public EstadoVentaDTO getEstadoVenta() {
 		return estadoVenta;
 	}
