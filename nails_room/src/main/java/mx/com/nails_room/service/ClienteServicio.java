@@ -11,5 +11,6 @@ public interface ClienteServicio {
 	public List<ClienteDTO> obtenerPuestos();
 	public void editar(ClienteDTO clienteDTO);
 	public void eliminar(ClienteDTO clienteDTO);
+	public List<ClienteDTO> obtenerClientesPorNombre(String valor);
 	
 }

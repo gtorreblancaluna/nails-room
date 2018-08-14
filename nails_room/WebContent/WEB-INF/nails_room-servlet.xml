@@ -15,6 +15,7 @@
 	default-autowire="byName">
 	
 	
+	<context:component-scan base-package="mx.com.nails_room.service.facade" />
 	<context:component-scan base-package="mx.com.nails_room.view" />
 	<context:component-scan base-package="mx.com.nails_room.service.impl" />
 	<context:component-scan base-package="mx.com.nails_room.dao.impl" />

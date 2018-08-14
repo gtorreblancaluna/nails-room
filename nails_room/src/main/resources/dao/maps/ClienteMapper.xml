@@ -38,12 +38,15 @@
 		ORDER BY u.nombre
 	</select>
 	
-	<select id="agregarCliente" parameterType="clienteDTO">
+	<insert id="agregarCliente" parameterType="clienteDTO">
+		<selectKey resultType="java.lang.Integer" keyProperty="clienteId" order="AFTER">
+			SELECT LAST_INSERT_ID() as id
+		</selectKey>
 		INSERT INTO c_cliente
 		(nombre,ap_paterno,ap_materno,email,tel1,tel2,direccion)
 		VALUES		
 		(#{nombre},#{ap_paterno},#{ap_materno},#{email},#{telefono1},#{telefono2},#{direccion})
-	</select>
+	</insert>
 	
 	<update id="eliminarCliente" parameterType="clienteDTO">
 		UPDATE c_cliente
@@ -62,5 +65,12 @@
 		direccion = #{direccion}			
 		WHERE cl_cliente = #{clienteId}
 	</update>
+	
+	<select id="obtenerClientesPorNombre" parameterType="java.lang.String" resultMap="clienteResultMap">
+		SELECT *
+		FROM c_cliente
+		WHERE fg_activo = '1'
+		AND CONCAT(ap_paterno,' ',ap_materno) LIKE CONCAT('%',#{valor},'%')
+	</select>
 
 </mapper>

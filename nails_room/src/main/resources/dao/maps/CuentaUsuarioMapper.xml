@@ -104,7 +104,7 @@
 		FROM c_usuario u
 		INNER JOIN c_puesto p ON (u.cl_puesto = p.cl_puesto)	
 		WHERE u.fg_activo = '1'
-		OREDER BY u.nombre
+		ORDER BY u.nombre
 	</select>
 	
 	

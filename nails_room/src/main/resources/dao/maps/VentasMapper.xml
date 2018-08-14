@@ -1,7 +1,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="mx.com.nails_room.dao.VentasDAO">
 
-	<resultMap id="ventaResultMap" type="ventasDTO">
+	<resultMap id="ventaResultMap" type="ventaDTO">
 		<result property="ventaId" column="cl_venta" />
 		<result property="fechaRegistro" column="fecha_registro" />		
 		<!-- Datos del cliente -->
@@ -37,6 +37,13 @@
 		<result property="cantidad" column="cantidad" />	
 		<result property="precioArticulo" column="precio_articulo" />
 		<result property="ordenEntrada" column="orden_entrada" />		
+	</resultMap>
+	
+	<resultMap id="resultEstacion" type="estacionTrabajoDTO">	
+		<result property="estacionTrabajoId" column="cl_estacion_trabajo" />
+		<result property="descripcion" column="ds_descripcion" />	
+		<result property="activo" column="fg_estado" />
+		<result property="orden" column="orden" />
 	</resultMap>
 	
 	<select id="obtenerVentasPorFiltro" parameterType="filtroVentas" resultMap="ventaResultMap">
@@ -78,7 +85,7 @@
 		ORDER BY venta.cl_venta DESC
 	</select>
 	
-	<select id="obtenerVentasPorId" parameterType="java.lang.Integer" resultMap="ventaResultMap">
+	<select id="obtenerVentaPorId" parameterType="java.lang.Integer" resultMap="ventaResultMap">
 		SELECT venta.*,
 		cliente.nombre AS nombre_cliente,
 		cliente.ap_paterno AS ap_paterno_cliente,
@@ -107,6 +114,58 @@
 		FROM k_detalle_venta detalle
 		INNER JOIN c_articulo articulo ON (detalle.cl_articulo = articulo.cl_articulo)
 		WHERE cl_venta = #{ventaId}
+	</select>
+	
+	<select id="obtenerEstacionesTrabajo" resultMap="resultEstacion" >
+		SELECT * FROM c_estacion_trabajo WHERE fg_estado = '1' ORDER BY ds_descripcion
+	</select>
+	
+	<insert id="agregarVenta" parameterType="ventaDTO">
+		<selectKey resultType="java.lang.Integer" keyProperty="ventaId" order="AFTER">
+			SELECT LAST_INSERT_ID() as id
+		</selectKey>
+		INSERT INTO c_venta
+		(
+			cl_cliente,
+			cl_usuario,
+			cl_caja,
+			cl_estacion_trabajo,
+			cl_estado_venta,
+			ds_descripcion
+		)
+		VALUES
+		(
+			#{cliente.clienteId},
+			#{usuario.usuarioId},
+			#{caja.cajaId},
+			#{estacionTrabajo.estacionTrabajoId},
+			#{estadoVenta.estadoVentaId},
+			#{descripcion}
+		)
+	</insert>
+	
+	<insert id="agregarDetalleVenta" parameterType="java.util.Map">
+		INSERT INTO k_detalle_venta
+		(
+			cl_venta,
+			cl_articulo,
+			cantidad,
+			precio_articulo,
+			orden_entrada
+		)
+		VALUES
+		(
+			#{ventaId},
+			#{detalle.articulo.articuloId},
+			#{detalle.cantidad},
+			#{detalle.precioArticulo},
+			#{ordenEntrada}
+		)
+		
+	</insert>
+	
+	<select id="obtenerUltimoDatoDetalleVenta" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		SELECT orden_entrada FROM k_detalle_venta WHERE cl_venta = #{ventaId} ORDER BY cl_detalle_venta limit 1
 	</select>
 
 </mapper>

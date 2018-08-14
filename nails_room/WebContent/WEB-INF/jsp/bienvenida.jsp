@@ -48,8 +48,8 @@
 		<div class="row">
 			<div class="col-sm-12 panelBorder">
 				<div class="panelOpciones text-center">
-					<a href="javascript:void(0);"><label>C A J A</label></a>
-					<a href="javascript:void(0);"><label>V E N T A S</label></a>
+					<a href="caja.do"><label>C A J A</label></a>
+					<a href="ventas.do"><label>V E N T A S</label></a>
 					<a href="javascript:void(0);"><label>R E P O R T E S</label></a>					
 				</div>
 			</div>			

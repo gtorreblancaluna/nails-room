@@ -12,7 +12,8 @@
 
 		<!-- Declaracion de los bean de tipos de datos de entrada y del manejador. -->
 
-		<typeAlias alias="ventasDTO"   type="mx.com.nails_room.model.VentasDTO" />	
+		<typeAlias alias="estacionTrabajoDTO"   type="mx.com.nails_room.model.EstacionTrabajoDTO" />
+		<typeAlias alias="ventaDTO"   type="mx.com.nails_room.model.VentaDTO" />	
 		<typeAlias alias="detalleVentaDTO"   type="mx.com.nails_room.model.DetalleVentaDTO" />	
 		<typeAlias alias="articuloDTO"   type="mx.com.nails_room.model.ArticuloDTO" />	
 		<typeAlias alias="puestoDTO"   type="mx.com.nails_room.model.PuestoDTO" />	

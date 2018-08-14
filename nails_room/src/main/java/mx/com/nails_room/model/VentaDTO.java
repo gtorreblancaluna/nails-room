@@ -3,7 +3,7 @@ package mx.com.nails_room.model;
 import java.sql.Timestamp;
 import java.util.List;
 
-public class VentasDTO {
+public class VentaDTO {
 	
 	private int ventaId;
 	private ClienteDTO cliente;

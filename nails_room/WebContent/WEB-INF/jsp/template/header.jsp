@@ -28,7 +28,16 @@
 						<li><a href="usuarios.do">Usuarios</a></li>
 						<li><a href="clientes.do">Clientes</a></li>
 						<li><a href="inventario.do">Inventario</a></li>
-					</ul></li>
+					</ul>
+				</li>
+				
+				<li class="dropdown"><a class="dropdown-toggle"
+					data-toggle="dropdown" href="javascript:void(0);">Gesti&oacute;n</a>
+					<ul class="dropdown-menu">
+						<li><a href="ventas.do">Ventas</a></li>
+						<li><a href="caja.do">Caja</a></li>
+					</ul>
+				</li>
 
 
 			</c:if>

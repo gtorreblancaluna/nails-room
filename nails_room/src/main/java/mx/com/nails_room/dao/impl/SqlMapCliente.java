@@ -37,4 +37,10 @@ public class SqlMapCliente extends SqlSessionDaoSupport implements ClienteDAO {
 		
 	}
 
+	@Override
+	public List<ClienteDTO> obtenerClientesPorNombre(String valor) {
+		// TODO Auto-generated method stub
+		return getSqlSession().selectList("obtenerClientesPorNombre",valor);
+	}
+
 }

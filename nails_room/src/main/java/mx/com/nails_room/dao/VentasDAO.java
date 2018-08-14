@@ -3,14 +3,16 @@ package mx.com.nails_room.dao;
 import java.util.List;
 
 import mx.com.nails_room.forms.FiltroVentas;
-import mx.com.nails_room.model.VentasDTO;
+import mx.com.nails_room.model.EstacionTrabajoDTO;
+import mx.com.nails_room.model.VentaDTO;
 
 public interface VentasDAO {
 	
-	public List<VentasDTO> obtenerPorFiltro(FiltroVentas filtroVentas);
-	public void agregar(VentasDTO ventasDTO);
-	public List<VentasDTO> obtenerPuestos();
-	public void editar(VentasDTO ventasDTO);
-	public void eliminar(VentasDTO ventasDTO);
+	public List<VentaDTO> obtenerPorFiltro(FiltroVentas filtroVentas);
+	public void agregar(VentaDTO venta);
+	public List<VentaDTO> obtenerPuestos();
+	public void editar(VentaDTO ventasDTO);
+	public void eliminar(VentaDTO ventasDTO);
+	public List<EstacionTrabajoDTO> obtenerEstacionesTrabajo();
 
 }

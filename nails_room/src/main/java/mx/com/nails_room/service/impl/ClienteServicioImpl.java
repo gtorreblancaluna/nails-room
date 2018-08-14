@@ -44,5 +44,11 @@ public class ClienteServicioImpl implements ClienteServicio{
 		
 	}
 
+	@Override
+	public List<ClienteDTO> obtenerClientesPorNombre(String valor) {
+		// TODO Auto-generated method stub
+		return clienteDao.obtenerClientesPorNombre(valor);
+	}
+
 	
 }

@@ -10,4 +10,5 @@ public interface InventarioServicio {
 	public void editar(ArticuloDTO articuloDTO);
 	public void eliminar(ArticuloDTO articuloDTO);
 	
+	
 }
