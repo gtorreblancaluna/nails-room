@@ -218,11 +218,14 @@
 			<!-- inicia datos de la venta -->
 			<div id="tabVentas" class="tab-pane fade disabled">
 			<div class="form-group row">
-				<div class="col-xs-6">
+				<div class="col-xs-4">
 					<label>Cliente: <span id="spanNombreCliente"></span></label>
 				</div>
-				<div class="col-xs-6">
+				<div class="col-xs-4">
 					<label>Total a pagar: <span id="totalPagar"></span></label>
+				</div>
+				<div class="col-xs-4">
+					<label>Total de articulos: <span id="totalArticulos"></span></label>
 				</div>
 			</div>
 				<div class="form-group row">
@@ -257,7 +260,7 @@
 					<table class="table tablaVentaArticulos">
 						<thead>
 							<tr>
-<!-- 								<th>#</th> -->
+								<th>#</th>
 								<th>Id</th>
 								<th>Cantidad</th>	
 								<th>Descripci&oacute;n</th>

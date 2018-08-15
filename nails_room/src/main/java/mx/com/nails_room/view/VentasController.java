@@ -46,6 +46,7 @@ public class VentasController {
 		
 		ventasServicio.agregar(venta);
 		model.addAttribute("messageView","Se agrego con exito, "+venta.getDetalleVenta().size()+ " articulos");
+		this.obtenerValoresModel(model);
 		return "ventas";
 	}
 	

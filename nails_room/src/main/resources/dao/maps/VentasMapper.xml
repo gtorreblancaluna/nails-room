@@ -57,7 +57,7 @@
 		usuario.ap_materno AS ap_materno_usuario,
 		usuario.email AS email_usuario,
 		caja.ds_descripcion AS descripcion_caja,
-		caja.fe_apertura AS fecha_apertura_caja,
+		caja.fecha_apertura AS fecha_apertura_caja,
 		estacion.ds_descripcion AS descripcion_estacion,
 		estado.ds_descripcion AS descripcion_estado
 		FROM c_venta venta
@@ -96,7 +96,7 @@
 		usuario.ap_materno AS ap_materno_usuario,
 		usuario.email AS email_usuario,
 		caja.ds_descripcion AS descripcion_caja,
-		caja.fe_apertura AS fecha_apertura_caja,
+		caja.fecha_apertura AS fecha_apertura_caja,
 		estacion.ds_descripcion AS descripcion_estacion,
 		estado.ds_descripcion AS descripcion_estado
 		FROM c_venta venta

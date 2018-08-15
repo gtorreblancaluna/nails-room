@@ -37,10 +37,45 @@ $( document ).ready(function() {
 	$(".tablaVentaArticulos tbody").on('click','.btnDelete', function(){
 		if(confirm("\u00BFEliminar fila?"))
 			$(this).closest('tr').remove();		
+		conteoFilasArticulos();
 	});	
 	
-	 
+	// funcion para calcular el subtotal
+	$(".tablaVentaArticulos tbody").on('keyup','.cantidad', function(){
+		var $tr = $(this).closest('tr');
+		var cantidad = $tr.find('.cantidad').val();
+		var precio = $tr.find('.precio').val();
+		$tr.find('.subtotal').val(cantidad*precio);
+		
+	});	
 	
+	// funcion para calcular el subtotal
+	$(".tablaVentaArticulos tbody").on('change','.cantidad', function(){
+		var $tr = $(this).closest('tr');
+		var cantidad = $tr.find('.cantidad').val();
+		var precio = $tr.find('.precio').val();
+		$tr.find('.subtotal').val(cantidad*precio);
+		
+	});	
+	
+	// funcion para calcular el subtotal
+	$(".tablaVentaArticulos tbody").on('keyup','.precio', function(){
+		var $tr = $(this).closest('tr');
+		var cantidad = $tr.find('.cantidad').val();
+		var precio = $tr.find('.precio').val();
+		$tr.find('.subtotal').val(cantidad*precio);
+		
+	});	
+	
+	// funcion para calcular el subtotal
+	$(".tablaVentaArticulos tbody").on('change','.precio', function(){
+		var $tr = $(this).closest('tr');
+		var cantidad = $tr.find('.cantidad').val();
+		var precio = $tr.find('.precio').val();
+		$tr.find('.subtotal').val(cantidad*precio);
+		
+	});	
+		
 	// buscar articulos
 	$( '.btnBuscarArticulo' ).click(function() {		
 		$('#modalSearchItem').modal('show');
@@ -49,41 +84,7 @@ $( document ).ready(function() {
 	});
 	
 	
-	$( '.btnUpdateUser' ).click(function() {
-		var $updateForm = $("#updateUserForm");
-		 var $row = jQuery(this).closest('tr');
-		    var $columns = $row.find('td');
-
-		    $columns.addClass('row-highlight');
-		    var values = "";
-
-		    jQuery.each($columns, function(i, item) {
-		        values = values + 'td' + (i + 1) + ':' + item.innerHTML + '<br/>';
-		        if(i===0)
-		        	$updateForm.find('#clienteId').val(item.innerHTML);
-		        if(i===1)
-		        	$updateForm.find('#name').val(item.innerHTML);
-		        if(i===2)
-		        	$updateForm.find('#apPaterno').val(item.innerHTML);
-		        if(i===3)
-		        	$updateForm.find('#apMaterno').val(item.innerHTML);
-		        if(i===4)
-		        	$updateForm.find('#email').val(item.innerHTML);
-		        if(i===5)
-		        	$updateForm.find('#tel1').val(item.innerHTML);
-		        if(i===6)
-		        	$updateForm.find('#tel2').val(item.innerHTML);
-		        if(i===7)
-		        	$updateForm.find('#direccion').val(item.innerHTML);
-		       
-		    });
-		   
-	});
-	
-	
-
-
-	
+		
 	 	
 }); // end document ready
 
@@ -183,6 +184,7 @@ function llenarTablaArticulos(articulos){
 		+"</tr>");
 	
 	});	// end for each
+	conteoFilasArticulos();
 }
 
 function elegirArticulo(articulo){
@@ -193,18 +195,19 @@ function elegirArticulo(articulo){
 		var precio = parseFloat(articulo.precioVenta);
 		// vamos a agregar a la tabla una fila con el articulo seleccionado
 		$(".tablaVentaArticulos tbody").append("<tr>"	
-//				+"<td>"+ u_cont +"</td>"
+				+"<td><span class='consecutivo'></span></td>"
 				+"<td><input type='hidden' class='form-control articuloId' name='detalleVenta["+u_cont+"].articulo.articuloId' value="+articulo.articuloId+">"+ articulo.articuloId +"</td>"
-				+"<td><input type='number' class='form-control' name='detalleVenta["+u_cont+"].cantidad' value="+(1)+"></td>"
-				+"<td><input type='text' class='form-control' name='detalleVenta["+u_cont+"].articulo.descripcion' value='"+descripcion+"'></td>"
-				+"<td><input type='number' class='form-control' name='detalleVenta["+u_cont+"].precioArticulo' value="+(precio*1)+"></td>"
+				+"<td><input type='number' class='form-control cantidad' name='detalleVenta["+u_cont+"].cantidad' value="+(1)+"></td>"
+				+"<td><input type='text' class='form-control descripcion' name='detalleVenta["+u_cont+"].articulo.descripcion' value='"+descripcion+"' disabled></td>"
+				+"<td><input type='number' class='form-control precio' name='detalleVenta["+u_cont+"].precioArticulo' value="+(precio*1)+"></td>"
 				+"<td><input type='number' class='form-control subtotal' value="+(precio*1)+" disabled></td>"
 				+"<td><input type='button' class='form-control btnDelete' value='Eliminar'></td>"
 		+"</tr>");
 		++u_cont;
 		totalAPagar();
+		conteoFilasArticulos();
 	}else{
-		alert("El articulo "+articulo.descripcion+" ya se encuentra en la lista ")
+		alert("El articulo [ "+articulo.descripcion+" ] ya se encuentra en la lista ")
 	}
 }
 
@@ -218,6 +221,7 @@ function elegirCliente(cliente){
 function validarFormAdd(){
 	var msg = '', valid = true;
 	var msgVenta = '';
+	var msgTablaArticulos = '';
 	var $form = $('#addForm');
 	var cont = 0;
 	
@@ -248,17 +252,32 @@ function validarFormAdd(){
 	}
 	
 	if(clienteId == '' && msg != '')
-		msg += ++cont + '. No hay datos del cliente, selecciona uno de la lista o ingresa datos del nuevo cliente ';
+		msg += ++cont + '. No hay datos del cliente, selecciona uno de la lista o ingresa datos del nuevo cliente \n';
 	
 	// validacion de la venta
 	if(usuarioId == '0')
-		msgVenta += ++cont+'. El usuario es requerido \n';
+		msgVenta += ++cont+'. Selecciona quien atender\u00E1 la estaci\u00F3n de trabajo \n';
 	if(estacionTrabajoId == '0')
-		msgVenta += ++cont+'. Elige una estaci\u00E9n de trabajo \n';
+		msgVenta += ++cont+'. Elige una estaci\u00F3n de trabajo \n';
 	
 	
-	if(msg != '' || msgVenta != ''){
-		alert (msg+msgVenta);
+	// validando la tabla de articulos
+	var totalArticulos = 0;
+	 $(".tablaVentaArticulos tbody tr").each(function () {
+		 ++totalArticulos;
+		 var $tr = $(this).closest('tr');
+		 var cantidad = parseFloat($tr.find('.cantidad').val());
+		 var precio = parseFloat($tr.find('.precio').val());
+		 var descripcion = $tr.find('.descripcion').val();		 
+		 if(cantidad <=0 || cantidad >= 999)
+			 msgTablaArticulos += ++cont + ". La cantidad ingresada para [ "+descripcion+" ] es invalida \n" ;
+	})
+	
+	if(totalArticulos == 0)
+		msgTablaArticulos += ++cont + ". Ingresa por lo menos un articulo o servicio para agregar la nota \n" ;
+	 
+	if(msg != '' || msgVenta != '' || msgTablaArticulos != ''){
+		alert (msg+msgVenta+msgTablaArticulos);
 		valid = false;
 	}
 	return valid;	  
@@ -269,12 +288,22 @@ function validarFormAdd(){
 function totalAPagar(){
 	var total=0;
 	  $(".tablaVentaArticulos tbody tr").each(function () {
-        stotal = $(this).find("td").eq(4).find(".subtotal").val();
+        stotal = $(this).find("td").eq(5).find(".subtotal").val();
         if(stotal != undefined && stotal != "")
       	  total += parseFloat(stotal);
 	  })
   
 	  $('#totalPagar').html(new Intl.NumberFormat('es-MX').format(total));
+}
+
+// contar las filas de la tabla de articulos
+function conteoFilasArticulos(){
+	var total=0;
+	  $(".tablaVentaArticulos tbody tr").each(function () {
+        $(this).find("td").eq(0).find(".consecutivo").text(++total);
+	  })
+  
+	  $('#totalArticulos').text(total);
 }
 
 // verificar elemento en la tabla, si existe ya no dejara agregar
@@ -283,7 +312,7 @@ function verificarArticuloTabla(id){
 	var articuloId = '';
 	
 	  $(".tablaVentaArticulos tbody tr").each(function () {
-		articuloId = $(this).find("td").eq(0).find(".articuloId").val();
+		articuloId = $(this).find("td").eq(1).find(".articuloId").val();
         if(id == articuloId)
         	existe = true;
 	  })
