@@ -33,4 +33,10 @@ public class SqlMapInventario extends SqlSessionDaoSupport implements Inventario
 
 	}
 
+	@Override
+	public ArticuloDTO obtenerPorId(int articuloId) {
+		// TODO Auto-generated method stub
+		return getSqlSession().selectOne("obtenerArticuloPorId",articuloId);
+	}
+
 }

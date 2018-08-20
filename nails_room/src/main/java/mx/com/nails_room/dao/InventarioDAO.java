@@ -11,5 +11,6 @@ public interface InventarioDAO {
 	public void agregar(ArticuloDTO articuloDTO);
 	public void editar(ArticuloDTO articuloDTO);
 	public void eliminar(ArticuloDTO articuloDTO);
+	public ArticuloDTO obtenerPorId(int articuloId);
 
 }

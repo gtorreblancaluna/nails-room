@@ -73,13 +73,24 @@
 							</select>
 						</span>
 					</td>
+					
+					<td>
+						<span class="input-group-text">Estado venta : 
+							<select name="estadoVentaFiltro" class="form-control" id="estadoVentaFiltro">
+										<option value="0">- Seleccione -</option>
+									<c:forEach items="${listaEstado}" var="estado">
+										<option value="${estado.estadoVentaId}">${estado.descripcion}</option>
+									</c:forEach>	
+							</select>
+						</span>
+					</td>
 									
 				</tr>
 				<tr>
 					<td colspan=4>
 					 <input type="submit" class="btn btn-dark" name="filtro" value="Enviar" />	
 					</td>
-					<td colspan=1>
+					<td colspan=2>
 					<button type="button" class="btn btn-dark" data-toggle="modal" data-target="#modalAdd">Agregar venta</button>
 					</td>
 					
@@ -106,7 +117,8 @@
 				<th>Isla</th>
 				<th>Estado</th>
 				<th>Efectivo/TC</th>
-				<th></th>		
+				<th></th>
+<!-- 				<th></th>	 -->
 			</tr>
 		</thead>
 		<tbody>
@@ -121,11 +133,11 @@
 		 			<td>${venta.estacionTrabajo.descripcion}</td>
 		 			<td>${venta.estadoVenta.descripcion}</td>	
 		 			<td>${venta.pagoEfectivo eq '1' ? 'Efectivo' : 'TC'}</td>
-					<td><button type="button" class="btn btn-dark btnUpdate" id="btnUpdate" data-toggle="modal" data-value="${venta.ventaId} }">Editar</button></td>
+					<td><button type="button" class="btn btn-dark btnUpdate" id="btnUpdate" data-value="${venta.ventaId}">Editar</button></td>
 <!-- 		 			<td>		 			 -->
-<%-- 			 			<form:form action="ventas.do" method="post" name="deleteForm" id="deleteForm"> --%>
-<%-- 							<input type="hidden" name="clienteId" id="deleteCustomerId" value="${cliente.clienteId}">			 	 --%>
-<!-- 			 			 	<input type="submit" class="btn btn btn-dark" name="eliminar" value="Eliminar" />	 -->
+<%-- 			 			<form:form modelAttribute="venta" action="ventas.do" method="post" name="finalizarForm" id="finalizarForm"> --%>
+<%-- 							<input type="hidden" name="ventaId" id="ventaId" value="${venta.ventaId}">			 	 --%>
+<!-- 			 			 	<input type="submit" class="btn btn btn-dark" name="finalizar" value="Eliminar" />	 -->
 <%-- 			 			 </form:form> --%>
 <!-- 		 			</td> -->
 		 		</tr>	 	
@@ -278,6 +290,11 @@
 						<input type="submit" class="btn btn-dark" name="agregar" value="Agregar venta" style="width: 100%;"/>					
 					</div>
 				</div>
+				<div class="form-group row">
+					<div class="col-xs-12">
+						<input type="submit" class="btn btn-dark" name="finalizar" value="Guardar y finalizar venta" style="width: 100%;"/>					
+					</div>
+				</div>
 				
 			</div><!-- end tab ventas -->
 		</div>
@@ -287,52 +304,158 @@
     </div>
     </div>
        
- <div id="modalUpdateUser" class="modal fade" role="dialog" >
+       <!-- UPDATE -->
+ <div id="modalUpdate" class="modal fade" role="dialog" >
  <div class="modal-content" style="">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Editar Cliente</h4>
+        <h4 class="modal-title">Actualizar Venta</h4>
       </div>
       <div class="modal-body">     
-		<form:form modelAttribute="clienteDTO" action="ventas.do" method="post" name="updateUserForm" id="updateUserForm">
-		<input type="hidden" name="clienteId" id="clienteId">
-				<div class="form-group">
-					<label>Nombre: </label>
-					<input type="text" id="name" name="nombre" placeholder="Nombre" class="form-control">
+		<form:form modelAttribute="venta" action="ventas.do" method="post" name="updateForm" id="updateForm">
+		
+		<ul class="nav nav-tabs navUpdate">
+		  <li class="active"><a data-toggle="tab" href="#tabClientesUp">Clientes</a></li>
+		  <li><a data-toggle="tab" href="#tabVentasUp">Nota</a></li>
+		</ul>		
+		
+		<div class="tab-content">
+			<div id="tabClientesUp" class="tab-pane fade in active">
+				<div class="form-group row">
+					<input type="hidden" id="clienteId" name="cliente.clienteId">
+					
+					<div class="col-xs-3">
+						<label>Nombre: </label>
+						<input type="text" id="name" name="cliente.nombre" placeholder="Nombre" class="form-control">
+					</div>
+					<div class="col-xs-3">
+						<label>Apellido paterno: </label>
+						<input type="text" id="apPaterno" name="cliente.ap_paterno" placeholder="Apellido Paterno" class="buscarClienteUp form-control">
+					</div>
+					<div class="col-xs-3">
+						<label>Apellido materno: </label>
+						<input type="text" id="apMaterno" name="cliente.ap_materno" placeholder="Apellido Materno" class="buscarClienteUp form-control">
+					</div>
+					<div class="col-xs-3">
+						<label>Email: </label>
+						<input type="text" id="email" name="cliente.email" placeholder="Email" class="form-control">
+					</div>
+					<div class="col-xs-3">
+						<label>Tel&eacute;fono celular: </label>
+						<input type="text" id="tel1" name="cliente.telefono1" placeholder="Telefono celular" class="form-control">
+					</div>
+					<div class="col-xs-3">
+						<label>Tel&eacute;fono casa: </label>
+						<input type="text" id="tel2" name="cliente.telefono2" placeholder="Telefono casa" class="form-control">
+					</div>
+					<div class="col-xs-3">
+						<label>Direcci&oacute;n: </label>
+						<input type="text" id="direccion" name="cliente.direccion" placeholder="Direcci&oacute;n" class="form-control">
+					</div>
+					</div>
+					<div class="form-group row">			
+						<div class="col-xs-12">
+							<input type="button" class="btn btn-dark login-button btnContinuarVentaUpdate"  value="Continuar" />					
+						</div>
+					</div>
+					
+					<div class="form-group row ">
+						
+						<table class="table tablaClientes">
+						    <thead>
+						      <tr>
+						      	<th>#</th>
+						      	<th>Id</th>
+						        <th>Nombre</th>			        
+						        <th>Ap paterno</th>
+						        <th>Ap materno</th>
+						        <th>email</th>
+						        <th>Tel casa</th>
+						        <th>Tel celular</th>
+						        <th>Direcci&oacute;n</th>
+						        <th></th>
+						      </tr>
+						    </thead>
+						     <tbody>
+						     <tr></tr>
+						     </tbody>
+					     </table>
+					</div>
+				
+			</div><!-- end tab clientes -->
+			
+			<!-- inicia datos de la venta -->
+			<div id="tabVentasUp" class="tab-pane fade ">
+			<div class="form-group row">
+				<div class="col-xs-4">
+					<label>Cliente: <span id="spanNombreCliente"></span></label>
 				</div>
-				<div class="form-group">
-					<label>Apellido Paterno: </label>
-					<input type="text" id="apPaterno" name="ap_paterno" placeholder="Apellido Paterno" class="form-control">
+				<div class="col-xs-4">
+					<label>Total a pagar: <span id="totalPagar"></span></label>
 				</div>
-				<div class="form-group">
-					<label>Apellido Materno: </label>
-					<input type="text" id="apMaterno" name="ap_materno" placeholder="Apellido Materno" class="form-control">
+				<div class="col-xs-4">
+					<label>Total de articulos: <span id="totalArticulosUpdate"></span></label>
 				</div>
-				<div class="form-group">
-					<label>Email: </label>
-					<input type="text" id="email" name="email" placeholder="Email" class="form-control">
+			</div>
+				<div class="form-group row">
+					<div class="col-xs-3">
+						<label>Descripci&oacute;n: </label>
+						<input type="text" id="descripcion" name="descripcion" class="form-control">
+					</div>			
+					<div class="col-xs-3">
+						<label>Atiende: </label>
+						<select name="usuario.usuarioId" class="form-control" id="usuarioId">
+							<option value="0">- Seleccione -</option>
+							<c:forEach items="${listaUsuarios}" var="usuario">
+								<option value="${usuario.usuarioId}">${usuario.nombre}</option>
+							</c:forEach>	
+						</select>
+					</div>
+					<div class="col-xs-3">
+						<label>Isla: </label>
+						<select name="estacionTrabajo.estacionTrabajoId" class="form-control" id="estacionTrabajoId">
+							<option value="0">- Seleccione -</option>
+							<c:forEach items="${listaEstacion}" var="estacion">
+								<option value="${estacion.estacionTrabajoId}">${estacion.descripcion}</option>
+							</c:forEach>	
+						</select>
+					</div>
+					<div class="col-xs-3">
+						<label>Seleccionar articulo:</label>	
+						<input type="button" class="btn btn-dark login-button btnBuscarArticulo form-control"  value="Buscar articulo" />
+					</div>					
+				</div>			
+				<div class="form-group row">
+					<table class="table tablaUpdateVentaArticulos">
+						<thead>
+							<tr>
+								<th>#</th>
+								<th>Id</th>
+								<th>Cantidad</th>	
+								<th>Descripci&oacute;n</th>
+								<th>Precio</th>	
+								<th>Subtotal</th>	
+								<th></th>																														
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+				</div>
+				<div class="form-group row">
+					<div class="col-xs-12">
+						<input type="submit" class="btn btn-dark" name="actualizar" value="Actualizar" style="width: 100%;"/>					
+					</div>
 				</div>
 				
-				<div class="form-group">
-					<label>Tel&eacute;fono celular: </label>
-					<input type="text" id="tel1" name="telefono1" placeholder="Telefono celular" class="form-control">
-				</div>
-				<div class="form-group">
-					<label>Tel&eacute;fono casa: </label>
-					<input type="text" id="tel2" name="telefono2" placeholder="Telefono casa" class="form-control">
-				</div>
-				<div class="form-group">
-					<label>Direcci&oacute;n: </label>
-					<input type="text" id="direccion" name="direccion" placeholder="Direcci&oacute;n" class="form-control">
-				</div>
-							
-					<div class="form-group">
-					<input type="submit" class="btn btn-dark login-button" name="editar" value="Enviar" />					
-				</div>
+				
+			</div><!-- end tab ventas -->
+		</div>
+				
 		</form:form>
-      </div>      
+      </div>
     </div>
-    </div>
+    </div> <!-- end form update -->
     
     
     <!-- modal para buscar articulos por filtro -->

@@ -7,7 +7,14 @@ public class FiltroVentas {
 	private String descripcionFiltro;
 	private String nombreClienteFiltro;
 	private String idUsuarioFiltro;
+	private String estadoVentaFiltro;
 	
+	public String getEstadoVentaFiltro() {
+		return estadoVentaFiltro;
+	}
+	public void setEstadoVentaFiltro(String estadoVentaFiltro) {
+		this.estadoVentaFiltro = estadoVentaFiltro;
+	}
 	public String getFechaInicioFiltro() {
 		return fechaInicioFiltro;
 	}

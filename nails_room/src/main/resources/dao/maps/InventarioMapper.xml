@@ -64,5 +64,12 @@
 	<update id="eliminarArticulo" parameterType="articuloDTO">
 		UPDATE c_articulo SET fg_activo = '0' WHERE cl_articulo = #{articuloId}		
 	</update>
+	
+	<select id="obtenerArticuloPorId" parameterType="java.lang.Integer" resultMap="articuloResultMap">
+		SELECT *
+		FROM c_articulo
+		WHERE fg_activo = '1' AND cl_articulo = #{articuloId}	
+		ORDER BY descripcion
+	</select>
 
 </mapper>

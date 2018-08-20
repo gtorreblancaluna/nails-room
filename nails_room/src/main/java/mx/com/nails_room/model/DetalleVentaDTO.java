@@ -8,6 +8,7 @@ public class DetalleVentaDTO {
 	private Float cantidad;
 	private Float precioArticulo;
 	private int ordenEntrada;
+	
 	public int getDetalleVentaId() {
 		return detalleVentaId;
 	}

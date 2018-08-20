@@ -3,16 +3,24 @@
 
 	<resultMap id="ventaResultMap" type="ventaDTO">
 		<result property="ventaId" column="cl_venta" />
-		<result property="fechaRegistro" column="fecha_registro" />		
+		<result property="fechaRegistro" column="fecha_registro" />			
+		<result property="descripcion" column="ds_descripcion" />
+		<result property="pagoEfectivo" column="es_pago_efectivo" />
+		<result property="pagoTarjeta" column="es_pago_tarjeta" />	
 		<!-- Datos del cliente -->
 		<result property="cliente.clienteId" column="cl_cliente" />
 		<result property="cliente.nombre" column="nombre_cliente" />
 		<result property="cliente.ap_paterno" column="ap_paterno_cliente" />
 		<result property="cliente.ap_materno" column="ap_materno_cliente" />
+		<result property="cliente.telefono1" column="telefono1" />
+		<result property="cliente.telefono1" column="telefono2" />
+		<result property="cliente.direccion" column="direccion_cliente" />
 		<!-- Datos del usuario -->
+		<result property="usuario.usuarioId" column="cl_usuario" />
 		<result property="usuario.nombre" column="nombre_usuario" />
 		<result property="usuario.ap_paterno" column="ap_paterno_usuario" />
-		<result property="usuario.ap_materno" column="ap_materno_usuario" />		
+		<result property="usuario.ap_materno" column="ap_materno_usuario" />
+				
 		<!-- Datos caja -->
 		<result property="caja.cajaId" column="cl_caja" />
 		<result property="caja.descripcion" column="descripcion_caja" />
@@ -22,11 +30,7 @@
 		<result property="estacionTrabajo.descripcion" column="descripcion_estacion" />	
 		<!-- Datos estado venta -->
 		<result property="estadoVenta.estadoVentaId" column="cl_estado_venta" />		
-		<result property="estadoVenta.descripcion" column="descripcion_estado" />
-		
-		<result property="descripcion" column="ds_descripcion" />
-		<result property="pagoEfectivo" column="es_pago_efectivo" />
-		<result property="pagoTarjeta" column="es_pago_tarjeta" />		
+		<result property="estadoVenta.descripcion" column="descripcion_estado" />			
 	</resultMap>
 	
 	<resultMap id="ventaDetalleResultMap" type="detalleVentaDTO">
@@ -44,6 +48,12 @@
 		<result property="descripcion" column="ds_descripcion" />	
 		<result property="activo" column="fg_estado" />
 		<result property="orden" column="orden" />
+	</resultMap>
+	
+	<resultMap id="resultEstadoVenta" type="estadoVentaDTO">	
+		<result property="estadoVentaId" column="cl_estado_venta" />
+		<result property="descripcion" column="ds_descripcion" />	
+	
 	</resultMap>
 	
 	<select id="obtenerVentasPorFiltro" parameterType="filtroVentas" resultMap="ventaResultMap">
@@ -73,12 +83,20 @@
 			<if test="nombreClienteFiltro != null and nombreClienteFiltro != '' ">
 				AND cliente.nombre LIKE CONCAT('%',#{nombreClienteFiltro},'%')
 			</if>
-			<if test="idUsuarioFiltro != null and idUsuarioFiltro != '' ">
+			<if test="idUsuarioFiltro != null and idUsuarioFiltro != 0 ">
 				AND venta.cl_usuario = #{idUsuarioFiltro}
+			</if>	
+			<if test="estadoVentaFiltro != null and estadoVentaFiltro != 0 ">
+				AND venta.cl_estado_venta = #{estadoVentaFiltro}
 			</if>			
 			<if	test="fechaInicioFiltro != null and fechaFinFiltro != null and fechaInicioFiltro != '' and fechaFinFiltro != '' ">
 				<![CDATA[ 
 					AND venta.fecha_registro >= CONCAT(#{fechaInicioFiltro},' 000000') AND venta.fecha_registro <= CONCAT(#{fechaFinFiltro},' 235959')
+				]]>
+			</if>
+			<if	test="fechaInicioFiltro != null and fechaFinFiltro == null and fechaInicioFiltro != '' ">
+				<![CDATA[ 
+					AND venta.fecha_registro >= CONCAT(#{fechaInicioFiltro},' 000000')
 				]]>
 			</if>
 		</where>		
@@ -91,6 +109,9 @@
 		cliente.ap_paterno AS ap_paterno_cliente,
 		cliente.ap_materno AS ap_materno_cliente,
 		cliente.email AS email_cliente,
+		cliente.tel1 AS telefono1,
+		cliente.tel2 AS telefono2,
+		cliente.direccion AS direccion_cliente,
 		usuario.nombre AS nombre_usuario,
 		usuario.ap_paterno AS ap_paterno_usuario,
 		usuario.ap_materno AS ap_materno_usuario,
@@ -166,6 +187,14 @@
 	
 	<select id="obtenerUltimoDatoDetalleVenta" parameterType="java.lang.Integer" resultType="java.lang.Integer">
 		SELECT orden_entrada FROM k_detalle_venta WHERE cl_venta = #{ventaId} ORDER BY cl_detalle_venta limit 1
+	</select>
+	
+	<update id="actualizarEstadoVenta" parameterType="java.util.Map">
+		UPDATE c_venta SET cl_estado_venta = #{estado} WHERE cl_venta = #{ventaId}
+	</update>
+	
+	<select id="obtenerEstadosVenta" resultMap="resultEstadoVenta">
+		SELECT * FROM c_estado_venta
 	</select>
 
 </mapper>

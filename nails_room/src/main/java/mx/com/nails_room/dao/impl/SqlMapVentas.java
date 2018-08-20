@@ -12,6 +12,7 @@ import mx.com.nails_room.forms.FiltroVentas;
 import mx.com.nails_room.model.CajaDTO;
 import mx.com.nails_room.model.DetalleVentaDTO;
 import mx.com.nails_room.model.EstacionTrabajoDTO;
+import mx.com.nails_room.model.EstadoVentaDTO;
 import mx.com.nails_room.model.VentaDTO;
 
 public class SqlMapVentas extends SqlSessionDaoSupport implements VentasDAO {
@@ -61,6 +62,29 @@ public class SqlMapVentas extends SqlSessionDaoSupport implements VentasDAO {
 	public List<EstacionTrabajoDTO> obtenerEstacionesTrabajo() {
 		// TODO Auto-generated method stub
 		return getSqlSession().selectList("obtenerEstacionesTrabajo");
+	}
+
+	@Override
+	public VentaDTO obtenerVentaPorId(int ventaId) {
+		// TODO Auto-generated method stub
+		VentaDTO venta = getSqlSession().selectOne("obtenerVentaPorId",ventaId);
+		venta.setDetalleVenta(getSqlSession().selectList("obtenerDetalleVentaPorId",ventaId));
+		 return venta;
+	}
+
+	@Override
+	public void actualizarEstado(int estado, int ventaId) {
+		Map<String,Object> map = new HashMap<>();
+		map.put("ventaId", ventaId);
+		map.put("estado",estado);
+		getSqlSession().update("actualizarEstadoVenta",map);
+		
+	}
+
+	@Override
+	public List<EstadoVentaDTO> obtenerEstadosVenta() {
+		// TODO Auto-generated method stub
+		return getSqlSession().selectList("obtenerEstadosVenta");
 	}
 
 }

@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import mx.com.nails_room.forms.FiltroArticulo;
 import mx.com.nails_room.model.ArticuloDTO;
 import mx.com.nails_room.model.ClienteDTO;
+import mx.com.nails_room.model.VentaDTO;
 import mx.com.nails_room.service.ClienteServicio;
 import mx.com.nails_room.service.InventarioServicio;
+import mx.com.nails_room.service.VentasServicio;
 
 @Controller
 public class VentasFacade {
@@ -26,6 +28,8 @@ public class VentasFacade {
 	private ClienteServicio clienteServicio;
 	@Autowired
 	private InventarioServicio inventarioServicio;
+	@Autowired
+	private VentasServicio ventasServicio;
 	
 	@RequestMapping(value = "/mostrarClientesPorFiltro.do")
 	@ResponseBody
@@ -61,6 +65,30 @@ public class VentasFacade {
 		List<ArticuloDTO> articulos =  inventarioServicio.obtenerPorFiltro(filtroArticulo);
 		
 		myMap.put("articulos", articulos);	
+		
+		 try {
+	            json = mapper.writeValueAsString(myMap);
+	        } catch (JsonProcessingException e) {
+	            // TODO Auto-generated catch block
+	            e.printStackTrace();
+	        } catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}	
+		 
+		return json;
+	}
+	
+	@RequestMapping(value = "/obtenerVentaPorId.do")
+	@ResponseBody
+	public String obtenerVentaPorId(@RequestBody String ventaId) {
+		Map<String,Object> myMap = new HashMap<>();
+		ObjectMapper mapper = new ObjectMapper();
+		String json = "";
+		
+		VentaDTO venta =  ventasServicio.obtenerVentaPorId(new Integer(ventaId));
+		
+		myMap.put("venta", venta);
 		
 		 try {
 	            json = mapper.writeValueAsString(myMap);

@@ -5,12 +5,15 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import mx.com.nails_room.dao.ClienteDAO;
+import mx.com.nails_room.dao.InventarioDAO;
 import mx.com.nails_room.dao.VentasDAO;
 import mx.com.nails_room.forms.FiltroVentas;
+import mx.com.nails_room.model.ArticuloDTO;
 import mx.com.nails_room.model.EstacionTrabajoDTO;
 import mx.com.nails_room.model.EstadoVentaDTO;
 import mx.com.nails_room.model.VentaDTO;
 import mx.com.nails_room.service.VentasServicio;
+import static mx.com.nails_room.commons.ApplicationConstants.VENTA_FINALIZADO;
 
 @Service
 public class VentasServicioImpl implements VentasServicio {
@@ -19,6 +22,8 @@ public class VentasServicioImpl implements VentasServicio {
 	private VentasDAO ventasDao;
 	@Autowired
 	private ClienteDAO clienteDao;
+	@Autowired
+	private InventarioDAO inventarioDao;
 
 	@Override
 	public List<VentaDTO> obtenerPorFiltro(FiltroVentas filtroVentas) {
@@ -61,6 +66,43 @@ public class VentasServicioImpl implements VentasServicio {
 	public List<EstacionTrabajoDTO> obtenerEstacionesTrabajo() {
 		// TODO Auto-generated method stub
 		return ventasDao.obtenerEstacionesTrabajo();
+	}
+
+	@Override
+	public void finalizar(VentaDTO venta) {
+//		venta = this.obtenerVentaPorId(venta.getVentaId());
+		// vamos a descontar articulos del inventario
+		venta.getDetalleVenta().stream().forEach(t -> {
+			ArticuloDTO articulo = inventarioDao.obtenerPorId(t.getArticulo().getArticuloId());
+			if(articulo.getEsProducto().equals("1")) {
+				// solo se descuenta los productos
+				float cantExistente = articulo.getCantidadExistente();
+				float cantDescontar = t.getCantidad();
+				float total = cantExistente - cantDescontar;
+				articulo.setCantidadExistente(total);
+				inventarioDao.editar(articulo);		
+			}
+		});
+		
+		this.actualizarEstado(VENTA_FINALIZADO,venta.getVentaId());
+	}
+
+	@Override
+	public VentaDTO obtenerVentaPorId(int ventaId) {
+		// TODO Auto-generated method stub
+		return ventasDao.obtenerVentaPorId(ventaId);
+	}
+
+	@Override
+	public void actualizarEstado(int estado,int ventaId) {
+		ventasDao.actualizarEstado(estado,ventaId);
+		
+	}
+
+	@Override
+	public List<EstadoVentaDTO> obtenerEstadosVenta() {
+		// TODO Auto-generated method stub
+		return ventasDao.obtenerEstadosVenta();
 	}
 
 }

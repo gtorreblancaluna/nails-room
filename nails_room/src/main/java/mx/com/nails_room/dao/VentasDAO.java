@@ -4,6 +4,7 @@ import java.util.List;
 
 import mx.com.nails_room.forms.FiltroVentas;
 import mx.com.nails_room.model.EstacionTrabajoDTO;
+import mx.com.nails_room.model.EstadoVentaDTO;
 import mx.com.nails_room.model.VentaDTO;
 
 public interface VentasDAO {
@@ -14,5 +15,7 @@ public interface VentasDAO {
 	public void editar(VentaDTO ventasDTO);
 	public void eliminar(VentaDTO ventasDTO);
 	public List<EstacionTrabajoDTO> obtenerEstacionesTrabajo();
-
+	public VentaDTO obtenerVentaPorId (int ventaId);
+	public void actualizarEstado(int estado,int ventaId);
+	public List<EstadoVentaDTO> obtenerEstadosVenta();
 }
