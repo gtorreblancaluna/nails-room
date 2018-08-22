@@ -1,6 +1,8 @@
 // variables globales
 var u_cont=0;
 var cont_update=0;
+// variable para almacenar el id del usuario cuando selecciona editar
+var g_clienteIdEditar;
 
 $( document ).ready(function() {
 	$('.tableShowResultQuery').DataTable();
@@ -35,8 +37,26 @@ $( document ).ready(function() {
 	});
 	
 	$( '.btnUpdate' ).click(function() {
-		var ventaId = $('.btnUpdate').attr('data-value');
+		var ventaId = $(this).attr('data-value');
 		obtenerVentaPorId(ventaId);
+	});
+	
+	$( '.btnEditarClienteUpdate' ).click(function() {
+		var $formUpdate = $('#updateForm');
+		// recuperamos el id globlal del cliente
+		$('#updateForm').find('#clienteId').val(g_clienteIdEditar);
+		$formUpdate.find('#name,#apPaterno,#apMaterno,#email,#tel1,#tel2,#direccion').prop( "disabled", false );
+	});
+	
+	$( '.btnEditarNota' ).click(function() {
+		var $formUpdate = $('#updateForm');
+		// recuperamos el id globlal del cliente
+		$('#updateForm').find('#clienteId').val(g_clienteIdEditar);
+		$formUpdate.find('#descripcion,#usuarioId,#estacionTrabajoId,.btnBuscarArticulo').prop( "disabled", false );
+		
+		// habilitar los inputs de la tabla
+		$(".tablaUpdateVentaArticulos tbody tr input.editarSi").prop('disabled', false);
+		
 	});
 	
 	// buscar clientes via AJAX
@@ -83,6 +103,7 @@ $( document ).ready(function() {
 		var cantidad = $tr.find('.cantidad').val();
 		var precio = $tr.find('.precio').val();
 		$tr.find('.subtotal').val(cantidad*precio);
+		totalAPagar("1");
 		
 	});	
 	
@@ -92,7 +113,25 @@ $( document ).ready(function() {
 		var cantidad = $tr.find('.cantidad').val();
 		var precio = $tr.find('.precio').val();
 		$tr.find('.subtotal').val(cantidad*precio);
+		totalAPagar("1");
 		
+	});	
+	// funcion para calcular el subtotal
+	$(".tablaUpdateVentaArticulos tbody").on('keyup','.cantidad', function(){
+		var $tr = $(this).closest('tr');
+		var cantidad = $tr.find('.cantidad').val();
+		var precio = $tr.find('.precio').val();
+		$tr.find('.subtotal').val(cantidad*precio);
+		totalAPagar("2");
+		
+	});	
+	// funcion para calcular el subtotal
+	$(".tablaUpdateVentaArticulos tbody").on('change','.cantidad', function(){
+		var $tr = $(this).closest('tr');
+		var cantidad = $tr.find('.cantidad').val();
+		var precio = $tr.find('.precio').val();
+		$tr.find('.subtotal').val(cantidad*precio);
+		totalAPagar("2");
 	});	
 	
 	// funcion para calcular el subtotal
@@ -101,7 +140,15 @@ $( document ).ready(function() {
 		var cantidad = $tr.find('.cantidad').val();
 		var precio = $tr.find('.precio').val();
 		$tr.find('.subtotal').val(cantidad*precio);
-		
+		totalAPagar("1");
+	});	
+	// funcion para calcular el subtotal
+	$(".tablaUpdateVentaArticulos tbody").on('keyup','.precio', function(){
+		var $tr = $(this).closest('tr');
+		var cantidad = $tr.find('.cantidad').val();
+		var precio = $tr.find('.precio').val();
+		$tr.find('.subtotal').val(cantidad*precio);
+		totalAPagar("2");
 	});	
 	
 	// funcion para calcular el subtotal
@@ -114,11 +161,15 @@ $( document ).ready(function() {
 	});	
 		
 	// buscar articulos
-	$( '.btnBuscarArticulo' ).click(function() {		
+	$( '.btnBuscarArticulo' ).click(function() {	
+		var val = $(this).attr('data-value');
+		var $ventana = $('#modalSearchItem');
+		$ventana.find('#valor').val(val);
 		$('#modalSearchItem').modal('show');
 //		$('#filtroDescripcionArticulo').focus();
 		setTimeout(function() { $('input[name="filtroDescripcionArticulo"]').focus() }, 200);
 	});
+	
 	
 	
 		
@@ -192,6 +243,7 @@ function llenarVenta(venta){
 	$formUpdate.find('#descripcion,#usuarioId,#estacionTrabajoId,.btnBuscarArticulo').prop( "disabled", true );
 	
 	// colocamos los datos del cliente
+	g_clienteIdEditar = venta.cliente.clienteId;
 	$formUpdate.find('#clienteId').val(venta.cliente.clienteId);
 	$formUpdate.find('#name').val(venta.cliente.nombre);
 	$formUpdate.find('#apPaterno').val(venta.cliente.ap_paterno);
@@ -207,22 +259,24 @@ function llenarVenta(venta){
 	$formUpdate.find('#estacionTrabajoId').val(venta.estacionTrabajo.estacionTrabajoId);
 	
 	llenarTablaUpdate(venta.detalleVenta);
+	totalAPagar(2);
+	conteoFilasArticulos(2);
 	
 	$('#modalUpdate').modal('show');
 }
 
 function llenarTablaUpdate(dv){
 	var $form = $('#updateForm');
-	$form.find('.tablaVentaArticulos tbody tr td').remove();	
+	$form.find('.tablaUpdateVentaArticulos tbody tr td').remove();	
 	
 	
 	$.each(dv, function(index, value) {
 		$form.find(".tablaUpdateVentaArticulos tbody").append("<tr>"	
 				+"<td><span class='consecutivo'></span></td>"
 				+"<td><input type='hidden' class='form-control articuloId' name='detalleVenta["+cont_update+"].articulo.articuloId' value="+value.articulo.articuloId+">"+ value.articulo.articuloId +"</td>"
-				+"<td><input type='number' class='form-control cantidad' name='detalleVenta["+cont_update+"].cantidad' value="+value.cantidad+" disabled></td>"
+				+"<td><input type='number' class='form-control cantidad editarSi' name='detalleVenta["+cont_update+"].cantidad' value="+value.cantidad+" disabled></td>"
 				+"<td><input type='text' class='form-control descripcion' name='detalleVenta["+cont_update+"].articulo.descripcion' value='"+value.articulo.descripcion+"' disabled></td>"
-				+"<td><input type='number' class='form-control precio' name='detalleVenta["+cont_update+"].precioArticulo' value="+value.precioArticulo+" disabled></td>"
+				+"<td><input type='number' class='form-control precio editarSi' name='detalleVenta["+cont_update+"].precioArticulo' value="+value.precioArticulo+" disabled></td>"
 				+"<td><input type='number' class='form-control subtotal' value="+(value.cantidad * value.precioArticulo)+" disabled></td>"
 				+"<td><input type='button' class='form-control btnDeleteUpdate' value='Eliminar'></td>"	
 		+"</tr>");
@@ -264,13 +318,13 @@ function filtroArticulos(valor){
 function llenarTablaClientes(clientes,form){
 	var func = '';
 	if(form == 'add'){
-		var $form = ('#addForm');
+		var $form = $('#addForm');
 		func = 'elegirCliente';
 	}else{
-		var $form = ('#updateForm');
+		var $form = $('#updateForm');
 		func = 'elegirClienteUpdate';
 	}
-	
+		
 	$form.find('.tablaClientes tbody tr td').remove();
 	var $tablaClientes = $('.tablaClientes');
 	var cont = 0;
@@ -297,37 +351,53 @@ function llenarTablaArticulos(articulos){
 	$('.tablaArticulos tbody tr td').remove();
 	var $tablaArticulos = $('.tablaArticulos');
 	var cont = 0;
-	
+	var $ventana = $('#modalSearchItem');
+	var valor = $ventana.find('#valor').val();
 	$.each(articulos, function(index, value) {
 		$(".tablaArticulos tbody").append("<tr>"
 				+"<td>"+ ++cont +"</td>"
 				+"<td>"+ value.articuloId +"</td>"
-				+"<td><a href='javascript:void(0);' onclick='elegirArticulo("+JSON.stringify(value)+");'>"+ value.descripcion +"</a></td>"
+				+"<td><a href='javascript:void(0);' onclick='elegirArticulo("+JSON.stringify(value)+","+valor+");'>"+ value.descripcion +"</a></td>"
 		+"</tr>");
 	
 	});	// end for each
 	conteoFilasArticulos(1);
 }
 
-function elegirArticulo(articulo){
+function elegirArticulo(articulo,valor){
 	
-	if(!verificarArticuloTabla(articulo.articuloId)){
+	if(!verificarArticuloTabla(articulo.articuloId,valor)){
 		$('#modalSearchItem').modal('hide');	
 		var descripcion = articulo.descripcion;
 		var precio = parseFloat(articulo.precioVenta);
 		// vamos a agregar a la tabla una fila con el articulo seleccionado
-		$(".tablaVentaArticulos tbody").append("<tr>"	
-				+"<td><span class='consecutivo'></span></td>"
-				+"<td><input type='hidden' class='form-control articuloId' name='detalleVenta["+u_cont+"].articulo.articuloId' value="+articulo.articuloId+">"+ articulo.articuloId +"</td>"
-				+"<td><input type='number' class='form-control cantidad' name='detalleVenta["+u_cont+"].cantidad' value="+(1)+"></td>"
-				+"<td><input type='text' class='form-control descripcion' name='detalleVenta["+u_cont+"].articulo.descripcion' value='"+descripcion+"' disabled></td>"
-				+"<td><input type='number' class='form-control precio' name='detalleVenta["+u_cont+"].precioArticulo' value="+(precio*1)+"></td>"
-				+"<td><input type='number' class='form-control subtotal' value="+(precio*1)+" disabled></td>"
-				+"<td><input type='button' class='form-control btnDelete' value='Eliminar'></td>"
-		+"</tr>");
-		++u_cont;
-		totalAPagar();
-		conteoFilasArticulos(1);
+		if(valor == '1'){
+			$(".tablaVentaArticulos tbody").append("<tr>"	
+					+"<td><span class='consecutivo'></span></td>"
+					+"<td><input type='hidden' class='form-control articuloId' name='detalleVenta["+u_cont+"].articulo.articuloId' value="+articulo.articuloId+">"+ articulo.articuloId +"</td>"
+					+"<td><input type='number' class='form-control cantidad' name='detalleVenta["+u_cont+"].cantidad' value="+(1)+"></td>"
+					+"<td><input type='text' class='form-control descripcion' name='detalleVenta["+u_cont+"].articulo.descripcion' value='"+descripcion+"' disabled></td>"
+					+"<td><input type='number' class='form-control precio' name='detalleVenta["+u_cont+"].precioArticulo' value="+(precio*1)+"></td>"
+					+"<td><input type='number' class='form-control subtotal' value="+(precio*1)+" disabled></td>"
+					+"<td><input type='button' class='form-control btnDelete' value='Eliminar'></td>"
+			+"</tr>");
+			++u_cont;
+			totalAPagar(valor);
+			conteoFilasArticulos(valor);
+		}else{
+			$(".tablaUpdateVentaArticulos tbody").append("<tr>"	
+					+"<td><span class='consecutivo'></span></td>"
+					+"<td><input type='hidden' class='form-control articuloId' name='detalleVenta["+u_cont+"].articulo.articuloId' value="+articulo.articuloId+">"+ articulo.articuloId +"</td>"
+					+"<td><input type='number' class='form-control cantidad' name='detalleVenta["+u_cont+"].cantidad' value="+(1)+"></td>"
+					+"<td><input type='text' class='form-control descripcion' name='detalleVenta["+u_cont+"].articulo.descripcion' value='"+descripcion+"' disabled></td>"
+					+"<td><input type='number' class='form-control precio' name='detalleVenta["+u_cont+"].precioArticulo' value="+(precio*1)+"></td>"
+					+"<td><input type='number' class='form-control subtotal' value="+(precio*1)+" disabled></td>"
+					+"<td><input type='button' class='form-control btnDelete' value='Eliminar'></td>"
+			+"</tr>");
+			++u_cont;
+			totalAPagar(valor);
+			conteoFilasArticulos(valor);
+		}
 	}else{
 		alert("El articulo [ "+articulo.descripcion+" ] ya se encuentra en la lista ")
 	}
@@ -342,9 +412,11 @@ function elegirCliente(cliente){
 
 function elegirClienteUpdate(cliente){
 	var $form = $('#updateForm');
-	$form.find('#clienteId').val(cliente.clienteId);
+	// lo ponemos en negativo para identificar en el servidor que se eligio un cliente de la tabla
+	$form.find('#clienteId').val((cliente.clienteId)*-1);
 	$form.find('#spanNombreCliente').text(cliente.nombre+" "+cliente.ap_paterno);
 	$('.navUpdate li:eq(1) a').tab('show');
+	$form.find('#name,#apPaterno,#apMaterno,#email,#tel1,#tel2,#direccion').prop( "disabled", true );
 }
 
 function validarFormAdd(){
@@ -414,22 +486,33 @@ function validarFormAdd(){
 }
 
 // calcula el total a pagar de la nota
-function totalAPagar(){
+function totalAPagar(valor){
 	var total=0;
+	if(valor == '1'){
 	  $(".tablaVentaArticulos tbody tr").each(function () {
         stotal = $(this).find("td").eq(5).find(".subtotal").val();
         if(stotal != undefined && stotal != "")
       	  total += parseFloat(stotal);
 	  })
-  
 	  $('#totalPagar').html(new Intl.NumberFormat('es-MX').format(total));
+	  
+	}else{
+		$(".tablaUpdateVentaArticulos tbody tr").each(function () {
+	        stotal = $(this).find("td").eq(5).find(".subtotal").val();
+	        if(stotal != undefined && stotal != "")
+	      	  total += parseFloat(stotal);
+		  })
+		  $('#totalPagarUpdate').html(new Intl.NumberFormat('es-MX').format(total));
+	}
+  
+	  
 }
 
 // contar las filas de la tabla de articulos
 function conteoFilasArticulos(valor){
 	var total=0;
 	
-	if(valor == 1){
+	if(valor == '1'){
 	  $(".tablaVentaArticulos tbody tr").each(function () {
         $(this).find("td").eq(0).find(".consecutivo").text(++total);
 	  })
@@ -445,15 +528,25 @@ function conteoFilasArticulos(valor){
 }
 
 // verificar elemento en la tabla, si existe ya no dejara agregar
-function verificarArticuloTabla(id){
-	var existe = false;
+function verificarArticuloTabla(id,valor){
+		var existe = false;
 	var articuloId = '';
 	
-	  $(".tablaVentaArticulos tbody tr").each(function () {
+	if(valor == '1'){
+	 // viene de formulario agregar
+	   $(".tablaVentaArticulos tbody tr").each(function () {
 		articuloId = $(this).find("td").eq(1).find(".articuloId").val();
         if(id == articuloId)
         	existe = true;
 	  })
+	}else{
+		// viene del formulario actualizar
+		 $(".tablaUpdateVentaArticulos tbody tr").each(function () {
+				articuloId = $(this).find("td").eq(1).find(".articuloId").val();
+		        if(id == articuloId)
+		        	existe = true;
+			  })
+	}
   
 	  return existe;
 }

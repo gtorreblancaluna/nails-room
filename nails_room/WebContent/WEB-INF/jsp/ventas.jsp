@@ -10,6 +10,8 @@
 .modal-content {width: 90%;}
 .tablaVentaArticulos .form-control {height: 22px; font-size:11px;}
 .tablaVentaArticulos {font-size:11px;}
+.tablaUpdateVentaArticulos .form-control {height: 22px; font-size:11px;}
+.tablaUpdateVentaArticulos {font-size:11px;}
 </style>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Nails Room :: Ventas</title>
@@ -265,7 +267,7 @@
 					</div>
 					<div class="col-xs-3">
 						<label>Seleccionar articulo:</label>	
-						<input type="button" class="btn btn-dark login-button btnBuscarArticulo form-control"  value="Buscar articulo" />
+						<input type="button" class="btn btn-dark login-button btnBuscarArticulo form-control" data-value="1"  value="Buscar articulo" />
 					</div>					
 				</div>			
 				<div class="form-group row">
@@ -354,8 +356,11 @@
 					</div>
 					</div>
 					<div class="form-group row">			
-						<div class="col-xs-12">
-							<input type="button" class="btn btn-dark login-button btnContinuarVentaUpdate"  value="Continuar" />					
+						<div class="col-xs-6">
+							<input type="button" class="btn btn-dark  btnContinuarVentaUpdate"  value="Continuar" />					
+						</div>
+						<div class="col-xs-6">
+							<input type="button" class="btn btn-dark  btnEditarClienteUpdate"  value="Editar cliente" />					
 						</div>
 					</div>
 					
@@ -387,14 +392,17 @@
 			<!-- inicia datos de la venta -->
 			<div id="tabVentasUp" class="tab-pane fade ">
 			<div class="form-group row">
-				<div class="col-xs-4">
+				<div class="col-xs-3">
 					<label>Cliente: <span id="spanNombreCliente"></span></label>
 				</div>
-				<div class="col-xs-4">
-					<label>Total a pagar: <span id="totalPagar"></span></label>
+				<div class="col-xs-3">
+					<label>Total a pagar: <span id="totalPagarUpdate"></span></label>
 				</div>
-				<div class="col-xs-4">
+				<div class="col-xs-3">
 					<label>Total de articulos: <span id="totalArticulosUpdate"></span></label>
+				</div>
+				<div class="col-xs-3">
+					<input type="button" class="btn btn-dark  btnEditarNota"  value="Editar" />
 				</div>
 			</div>
 				<div class="form-group row">
@@ -422,7 +430,7 @@
 					</div>
 					<div class="col-xs-3">
 						<label>Seleccionar articulo:</label>	
-						<input type="button" class="btn btn-dark login-button btnBuscarArticulo form-control"  value="Buscar articulo" />
+						<input type="button" class="btn btn-dark login-button btnBuscarArticulo form-control" data-value="2" value="Buscar articulo" />
 					</div>					
 				</div>			
 				<div class="form-group row">
@@ -469,6 +477,7 @@
 		<div class="form-group row">
 			<div class="col-xs-12">
 				<label>Filtrar por descripci&oacute;n: </label>
+				<input type="hidden" id="valor" >
 				<input type="text" id="filtroDescripcionArticulo" name="filtroDescripcionArticulo" class="filtroDescripcionArticulo form-control">
 				<table class="table tablaArticulos">
 					<thead>
