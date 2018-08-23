@@ -87,4 +87,24 @@ public class SqlMapVentas extends SqlSessionDaoSupport implements VentasDAO {
 		return getSqlSession().selectList("obtenerEstadosVenta");
 	}
 
+	@Override
+	public void actualizar(VentaDTO venta) {		
+		
+		getSqlSession().delete("eliminarDetalleVenta",venta.getVentaId());		
+		
+		// agregamos el detalle de la venta
+		for(DetalleVentaDTO detalle : venta.getDetalleVenta()) {
+			// insertamos el detalle de la venta
+			Map<String,Object> map = new HashMap<>();
+			map.put("detalle", detalle);
+			map.put("ventaId", venta.getVentaId());
+			// como la primera vez, ponemos como orden de entrada 1
+			map.put("ordenEntrada", 1);
+			getSqlSession().insert("agregarDetalleVenta",map);
+		}
+		
+		getSqlSession().update("actualizarVenta",venta);
+		
+	}
+
 }

@@ -196,5 +196,27 @@
 	<select id="obtenerEstadosVenta" resultMap="resultEstadoVenta">
 		SELECT * FROM c_estado_venta
 	</select>
+	<delete id="eliminarDetalleVenta" parameterType="java.lang.Integer">
+		DELETE FROM k_detalle_venta WHERE cl_venta = #{ventaId}
+	</delete>
+	
+	<update id="actualizarVenta" parameterType="ventaDTO">
+		UPDATE c_venta
+		<set>
+	      <if test="cliente != null and cliente.clienteId != null and cliente.clienteId != '' ">
+	      	cl_cliente = #{cliente.clienteId},
+	      </if>
+	      <if test="usuario != null and usuario.usuarioId != null and usuario.usuarioId != '' ">
+	      	cl_usuario = #{usuario.usuarioId},
+	      </if>
+	      <if test="estacionTrabajo != null and estacionTrabajo.estacionTrabajoId != null and estacionTrabajo.estacionTrabajoId != '' ">
+	      	cl_estacion_trabajo = #{estacionTrabajo.estacionTrabajoId},
+	      </if>
+	      <if test="descripcion != null and descripcion != '' ">
+	      	descripcion = #{descripcion}
+	      </if>
+	    </set>
+	    WHERE cl_venta = #{ventaId}
+	</update>
 
 </mapper>

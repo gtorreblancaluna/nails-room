@@ -15,7 +15,7 @@ $( document ).ready(function() {
 	// validacion para agregar venta
 	$('form[name="addForm"]').submit(function() {
 		
-		if(validarFormAdd()){
+		if(validarForm(1)){
 			var $form = $('#addForm');
 			var clienteId = $form.find('#clienteId').val();
 			if(clienteId == '')
@@ -24,6 +24,24 @@ $( document ).ready(function() {
 		}else{
 			return false;
 		}
+		
+	});
+	
+	// validacion del formulario editar
+	$('form[name="updateForm"]').submit(function() {	
+		var valid = false;
+		if(validarForm(2)){
+			valid = confirm("Confirma para guardar la venta ");
+		}else{
+			valid = false;
+		}
+		
+		if(valid){
+			var $formUpdate = $('#updateForm');
+			$formUpdate.find('#name,#apPaterno,#apMaterno,#email,#tel1,#tel2,#direccion').prop( "disabled", false );
+		}
+		
+		return valid;
 		
 	});
 	
@@ -45,15 +63,24 @@ $( document ).ready(function() {
 		var $formUpdate = $('#updateForm');
 		// recuperamos el id globlal del cliente
 		$('#updateForm').find('#clienteId').val(g_clienteIdEditar);
+		$('#updateForm').find('#editarCliente').val("1");
+		$formUpdate.find('#name,#apPaterno,#apMaterno,#email,#tel1,#tel2,#direccion').prop( "disabled", false );
+	});
+	
+	$( '.btnAgregarCliente' ).click(function() {
+		var $formUpdate = $('#updateForm');
+		// recuperamos el id globlal del cliente
+		$('#updateForm').find('#clienteId').val(0);
+		$formUpdate.find('#name,#apPaterno,#apMaterno,#email,#tel1,#tel2,#direccion').val( "" );
 		$formUpdate.find('#name,#apPaterno,#apMaterno,#email,#tel1,#tel2,#direccion').prop( "disabled", false );
 	});
 	
 	$( '.btnEditarNota' ).click(function() {
 		var $formUpdate = $('#updateForm');
 		// recuperamos el id globlal del cliente
-		$('#updateForm').find('#clienteId').val(g_clienteIdEditar);
+//		$('#updateForm').find('#clienteId').val(g_clienteIdEditar);
 		$formUpdate.find('#descripcion,#usuarioId,#estacionTrabajoId,.btnBuscarArticulo').prop( "disabled", false );
-		
+		$formUpdate.find('input[name="actualizar"]').prop( "disabled", false );
 		// habilitar los inputs de la tabla
 		$(".tablaUpdateVentaArticulos tbody tr input.editarSi").prop('disabled', false);
 		
@@ -419,11 +446,14 @@ function elegirClienteUpdate(cliente){
 	$form.find('#name,#apPaterno,#apMaterno,#email,#tel1,#tel2,#direccion').prop( "disabled", true );
 }
 
-function validarFormAdd(){
+function validarForm(val){
 	var msg = '', valid = true;
 	var msgVenta = '';
 	var msgTablaArticulos = '';
-	var $form = $('#addForm');
+	if (val == 1)
+		var $form = $('#addForm');
+	else
+		var $form = $('#updateForm');
 	var cont = 0;
 	
 	// datos cliente
@@ -464,15 +494,28 @@ function validarFormAdd(){
 	
 	// validando la tabla de articulos
 	var totalArticulos = 0;
-	 $(".tablaVentaArticulos tbody tr").each(function () {
-		 ++totalArticulos;
-		 var $tr = $(this).closest('tr');
-		 var cantidad = parseFloat($tr.find('.cantidad').val());
-		 var precio = parseFloat($tr.find('.precio').val());
-		 var descripcion = $tr.find('.descripcion').val();		 
-		 if(cantidad <=0 || cantidad >= 999)
-			 msgTablaArticulos += ++cont + ". La cantidad ingresada para [ "+descripcion+" ] es invalida \n" ;
-	})
+	if(val == 1){
+		 $(".tablaVentaArticulos tbody tr").each(function () {
+			 ++totalArticulos;
+			 var $tr = $(this).closest('tr');
+			 var cantidad = parseFloat($tr.find('.cantidad').val());
+			 var precio = parseFloat($tr.find('.precio').val());
+			 var descripcion = $tr.find('.descripcion').val();		 
+			 if(cantidad <=0 || cantidad >= 999)
+				 msgTablaArticulos += ++cont + ". La cantidad ingresada para [ "+descripcion+" ] es invalida \n" ;
+		})
+	}else{
+		$(".tablaUpdateVentaArticulos tbody tr").each(function () {
+			 ++totalArticulos;
+			 var $tr = $(this).closest('tr');
+			 var cantidad = parseFloat($tr.find('.cantidad').val());
+			 var precio = parseFloat($tr.find('.precio').val());
+			 var descripcion = $tr.find('.descripcion').val();		 
+			 if(cantidad <=0 || cantidad >= 999)
+				 msgTablaArticulos += ++cont + ". La cantidad ingresada para [ "+descripcion+" ] es invalida \n" ;
+		})
+		
+	}
 	
 	if(totalArticulos == 0)
 		msgTablaArticulos += ++cont + ". Ingresa por lo menos un articulo o servicio para agregar la nota \n" ;
@@ -549,4 +592,8 @@ function verificarArticuloTabla(id,valor){
 	}
   
 	  return existe;
+}
+
+function editarNota(id){
+	obtenerVentaPorId(id);
 }

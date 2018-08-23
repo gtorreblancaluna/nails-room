@@ -119,14 +119,14 @@
 				<th>Isla</th>
 				<th>Estado</th>
 				<th>Efectivo/TC</th>
-				<th></th>
+<!-- 				<th></th> -->
 <!-- 				<th></th>	 -->
 			</tr>
 		</thead>
 		<tbody>
 			<c:forEach items="${listaVentas}" var="venta">		
 		 		<tr>
-		 			<td>${venta.ventaId}</td>
+		 			<td><a href="#" onclick='editarNota("${venta.ventaId}");'>${venta.ventaId}</a></td>
 		 			<td>${venta.descripcion}</td>
 		 			<td>${venta.fechaRegistro}</td>
 		 			<td>${venta.cliente.nombre} ${venta.cliente.ap_paterno}</td>
@@ -135,13 +135,7 @@
 		 			<td>${venta.estacionTrabajo.descripcion}</td>
 		 			<td>${venta.estadoVenta.descripcion}</td>	
 		 			<td>${venta.pagoEfectivo eq '1' ? 'Efectivo' : 'TC'}</td>
-					<td><button type="button" class="btn btn-dark btnUpdate" id="btnUpdate" data-value="${venta.ventaId}">Editar</button></td>
-<!-- 		 			<td>		 			 -->
-<%-- 			 			<form:form modelAttribute="venta" action="ventas.do" method="post" name="finalizarForm" id="finalizarForm"> --%>
-<%-- 							<input type="hidden" name="ventaId" id="ventaId" value="${venta.ventaId}">			 	 --%>
-<!-- 			 			 	<input type="submit" class="btn btn btn-dark" name="finalizar" value="Eliminar" />	 -->
-<%-- 			 			 </form:form> --%>
-<!-- 		 			</td> -->
+<%-- 					<td><button type="button" class="btn btn-dark btnUpdate" id="btnUpdate" data-value="${venta.ventaId}">Editar</button></td> --%>
 		 		</tr>	 	
 	 		</c:forEach>
 	 	</tbody>
@@ -325,7 +319,6 @@
 			<div id="tabClientesUp" class="tab-pane fade in active">
 				<div class="form-group row">
 					<input type="hidden" id="clienteId" name="cliente.clienteId">
-					
 					<div class="col-xs-3">
 						<label>Nombre: </label>
 						<input type="text" id="name" name="cliente.nombre" placeholder="Nombre" class="form-control">
@@ -362,6 +355,9 @@
 						<div class="col-xs-6">
 							<input type="button" class="btn btn-dark  btnEditarClienteUpdate"  value="Editar cliente" />					
 						</div>
+<!-- 						<div class="col-xs-4"> -->
+<!-- 							<input type="button" class="btn btn-dark  btnAgregarCliente"  value="Agregar cliente" />					 -->
+<!-- 						</div> -->
 					</div>
 					
 					<div class="form-group row ">
@@ -411,7 +407,7 @@
 						<input type="text" id="descripcion" name="descripcion" class="form-control">
 					</div>			
 					<div class="col-xs-3">
-						<label>Atiende: </label>
+						<label>Atendi&oacute;: </label>
 						<select name="usuario.usuarioId" class="form-control" id="usuarioId">
 							<option value="0">- Seleccione -</option>
 							<c:forEach items="${listaUsuarios}" var="usuario">
@@ -452,7 +448,7 @@
 				</div>
 				<div class="form-group row">
 					<div class="col-xs-12">
-						<input type="submit" class="btn btn-dark" name="actualizar" value="Actualizar" style="width: 100%;"/>					
+						<input type="submit" class="btn btn-dark" name="actualizar" value="Actualizar" style="width: 100%;" disabled/>					
 					</div>
 				</div>
 				

@@ -20,5 +20,6 @@ public interface VentasServicio {
 	public VentaDTO obtenerVentaPorId(int ventaId);
 	public void actualizarEstado(int estado,int ventaId);
 	public List<EstadoVentaDTO> obtenerEstadosVenta();
+	public void actualizar(VentaDTO venta);
 	
 }

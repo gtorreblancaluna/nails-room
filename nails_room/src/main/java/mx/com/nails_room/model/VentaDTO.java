@@ -16,7 +16,7 @@ public class VentaDTO {
 	private String pagoTarjeta;
 	private Timestamp fechaRegistro;
 	private EstadoVentaDTO estadoVenta;	
-	private List<DetalleVentaDTO> detalleVenta;
+	private List<DetalleVentaDTO> detalleVenta;	
 	
 	public List<DetalleVentaDTO> getDetalleVenta() {
 		return detalleVenta;

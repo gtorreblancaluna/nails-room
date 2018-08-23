@@ -53,6 +53,17 @@ public class VentasController {
 		
 		ventasServicio.agregar(venta);
 		model.addAttribute("messageView","Se agrego con exito, "+venta.getDetalleVenta().size()+ " articulos");
+		model.addAttribute("venta", new VentaDTO());
+		this.obtenerValoresModel(model);
+		return "ventas";
+	}
+	
+	@PostMapping(value = "/ventas.do", params = "actualizar")
+	public String actualizar(@ModelAttribute VentaDTO venta,HttpServletRequest request, Model model) {	
+		
+		ventasServicio.actualizar(venta);
+		model.addAttribute("messageView","Se edito con exito, "+venta.getDetalleVenta().size()+ " articulos");
+		model.addAttribute("venta", new VentaDTO());
 		this.obtenerValoresModel(model);
 		return "ventas";
 	}

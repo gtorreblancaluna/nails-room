@@ -105,4 +105,21 @@ public class VentasServicioImpl implements VentasServicio {
 		return ventasDao.obtenerEstadosVenta();
 	}
 
+	@Override
+	public void actualizar(VentaDTO venta) {
+//		if(venta.getCliente() == null || venta.getCliente().getClienteId() == 0 ) {
+//			// Se va a agregar el cliente primero
+//			clienteDao.agregar(venta.getCliente());
+//		}		
+		if(venta.getCliente().getClienteId()<0) {
+			// es un id negativo , significa que eligio un cliente de la lista
+			venta.getCliente().setClienteId((venta.getCliente().getClienteId()*-1));
+		}else{
+			// actualizamos el cliente
+			clienteDao.editar(venta.getCliente());
+		}		
+		ventasDao.actualizar(venta);
+		
+	}
+
 }
