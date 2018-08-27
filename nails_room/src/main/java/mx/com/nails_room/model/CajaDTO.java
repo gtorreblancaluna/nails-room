@@ -1,6 +1,7 @@
 package mx.com.nails_room.model;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 public class CajaDTO {
 
@@ -10,6 +11,21 @@ public class CajaDTO {
 	private Timestamp fechaCierre;
 	private String activo;
 	private String descripcion;
+	private DetalleCajaDTO detalleCajaDTO;
+	private List<DetalleCajaDTO> detalleCaja;
+	
+	public DetalleCajaDTO getDetalleCajaDTO() {
+		return detalleCajaDTO;
+	}
+	public void setDetalleCajaDTO(DetalleCajaDTO detalleCajaDTO) {
+		this.detalleCajaDTO = detalleCajaDTO;
+	}
+	public List<DetalleCajaDTO> getDetalleCaja() {
+		return detalleCaja;
+	}
+	public void setDetalleCaja(List<DetalleCajaDTO> detalleCaja) {
+		this.detalleCaja = detalleCaja;
+	}
 	public int getCajaId() {
 		return cajaId;
 	}

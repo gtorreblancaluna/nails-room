@@ -59,7 +59,7 @@ public class VentasController {
 	}
 	
 	@PostMapping(value = "/ventas.do", params = "actualizar")
-	public String actualizar(@ModelAttribute VentaDTO venta,HttpServletRequest request, Model model) {	
+	public String actualizar(@ModelAttribute VentaDTO venta, HttpServletRequest request, Model model) {	
 		
 		ventasServicio.actualizar(venta);
 		model.addAttribute("messageView","Se edito con exito, "+venta.getDetalleVenta().size()+ " articulos");
@@ -67,8 +67,19 @@ public class VentasController {
 		this.obtenerValoresModel(model);
 		return "ventas";
 	}
+	// actualizar y finalizar
+	@PostMapping(value = "/ventas.do", params = "actualizarFinalizar")
+	public String actualiactualizarFinalizarzar(@ModelAttribute VentaDTO venta, HttpServletRequest request, Model model) {	
+		
+		ventasServicio.actualizar(venta);
+		ventasServicio.finalizar(venta);
+		model.addAttribute("messageView","Se edito y finalizo con exito, "+venta.getDetalleVenta().size()+ " articulos");
+		model.addAttribute("venta", new VentaDTO());
+		this.obtenerValoresModel(model);
+		return "ventas";
+	}
 	
-	// finalizar venta
+	// guardar y finalizar venta
 	@PostMapping(value = "/ventas.do", params = "finalizar")
 	public String finalizar(@ModelAttribute VentaDTO venta,HttpServletRequest request, Model model) {	
 		
@@ -83,6 +94,21 @@ public class VentasController {
 		this.obtenerValoresModel(model);
 		return "ventas";
 	}
+	
+	// finalizar venta
+		@PostMapping(value = "/ventas.do", params = "finalizarUp")
+		public String finalizarUp(@ModelAttribute VentaDTO venta,HttpServletRequest request, Model model) {	
+			
+			ventasServicio.finalizar(venta);
+			
+			FiltroVentas filtroVentas = new FiltroVentas();
+			LocalDate hoy = LocalDate.now();
+			filtroVentas.setFechaInicioFiltro(hoy.toString());
+			model.addAttribute("listaVentas", ventasServicio.obtenerPorFiltro(filtroVentas));
+			model.addAttribute("messageView","Exito al finalizar la venta ");
+			this.obtenerValoresModel(model);
+			return "ventas";
+		}
 	
 	public Model obtenerValoresModel(Model model) {
 	

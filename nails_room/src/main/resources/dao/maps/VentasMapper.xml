@@ -77,6 +77,9 @@
 		INNER JOIN c_estacion_trabajo estacion ON (venta.cl_estacion_trabajo = estacion.cl_estacion_trabajo)
 		INNER JOIN c_estado_venta estado ON (venta.cl_estado_venta = estado.cl_estado_venta)
 		<where>
+			<if test="cajaId != null and cajaId != 0 ">
+				AND venta.cl_caja = #{cajaId}
+			</if>
 			<if test="descripcionFiltro != null and descripcionFiltro != '' ">
 				AND venta.ds_descripcion LIKE CONCAT('%',#{descripcionFiltro},'%')
 			</if>
@@ -213,10 +216,13 @@
 	      	cl_estacion_trabajo = #{estacionTrabajo.estacionTrabajoId},
 	      </if>
 	      <if test="descripcion != null and descripcion != '' ">
-	      	descripcion = #{descripcion}
+	      	ds_descripcion = #{descripcion}
 	      </if>
 	    </set>
 	    WHERE cl_venta = #{ventaId}
 	</update>
+	<select id="obtenerTotalVenta" parameterType="java.lang.Integer" resultType="java.lang.Float">
+		SELECT SUM(cantidad*precio_articulo) FROM k_detalle_venta WHERE cl_venta = #{ventaId}
+	</select>
 
 </mapper>

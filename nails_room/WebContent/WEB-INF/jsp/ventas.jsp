@@ -309,7 +309,7 @@
       </div>
       <div class="modal-body">     
 		<form:form modelAttribute="venta" action="ventas.do" method="post" name="updateForm" id="updateForm">
-		
+		<input type="hidden" id="ventaId" name="ventaId">
 		<ul class="nav nav-tabs navUpdate">
 		  <li class="active"><a data-toggle="tab" href="#tabClientesUp">Clientes</a></li>
 		  <li><a data-toggle="tab" href="#tabVentasUp">Nota</a></li>
@@ -447,8 +447,16 @@
 					</table>
 				</div>
 				<div class="form-group row">
-					<div class="col-xs-12">
+					<div class="col-xs-6">
 						<input type="submit" class="btn btn-dark" name="actualizar" value="Actualizar" style="width: 100%;" disabled/>					
+					</div>
+					<div class="col-xs-6">
+						<input type="submit" class="btn btn-dark" name="actualizarFinalizar" value="Actualizar y finalizar" style="width: 100%;" disabled/>					
+					</div>
+				</div>
+				<div class="form-group row">
+					<div class="col-xs-12">
+						<input type="submit" class="btn btn-dark" name="finalizarUp" value="Finalizar" style="width: 100%;" disabled/>					
 					</div>
 				</div>
 				

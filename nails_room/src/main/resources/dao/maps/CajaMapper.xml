@@ -1,0 +1,80 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mx.com.nails_room.dao.CajaDAO">
+
+	<resultMap id="cajaResultMap" type="cajaDTO">
+		<result property="cajaId" column="cl_caja" />
+		<!-- datos usuario -->
+		<result property="usuario.usuarioId" column="cl_usuario" />
+		<result property="usuario.nombre" column="nombre" />
+		<result property="usuario.ap_paterno" column="ap_paterno" />
+		<result property="usuario.ap_materno" column="ap_materno" />		
+		<result property="fechaApertura" column="fecha_apertura" />
+		<result property="fechaCierre" column="fecha_cierre" />
+		<result property="activo" column="fg_activo" />
+		<result property="descripcion" column="ds_descripcion" />		
+	</resultMap>
+	
+	<resultMap id="detalleCajaResultMap" type="detalleCajaDTO">
+		<result property="cajaId" column="cl_caja" />
+		<!-- datos usuario -->
+		<result property="detalleCajaId" column="cl_detalle_caja" />
+		<result property="cajaId" column="cl_caja" />
+		<result property="esIngreso" column="es_ingreso" />
+		<result property="monto" column="monto" />		
+		<result property="descripcion" column="ds_descripcion" />
+		
+	</resultMap>
+	
+	<select id="obtenerCajaAbierta" resultMap="cajaResultMap">
+		SELECT caja.*, usuario.nombre,usuario.ap_paterno,usuario.ap_materno
+		FROM c_caja caja
+		INNER JOIN c_usuario usuario ON (caja.cl_usuario = usuario.cl_usuario)
+		WHERE caja.fecha_cierre IS NULL
+		AND caja.fg_activo = '1'
+		ORDER BY caja.cl_caja DESC
+		LIMIT 1
+	</select>
+	<insert id="agregarCaja" parameterType="cajaDTO">
+		<selectKey resultType="java.lang.Integer" keyProperty="cajaId" order="AFTER">
+			SELECT LAST_INSERT_ID() as id
+		</selectKey>
+		INSERT INTO c_caja (cl_usuario) VALUES (#{usuario.usuarioId})		
+	</insert>
+	<insert id="agregarDetalleCaja" parameterType="java.util.Map">
+		INSERT INTO k_detalle_caja
+		(
+			cl_caja,
+			es_ingreso,
+			monto,
+			ds_descripcion
+		)
+		VALUES
+		(
+			#{cajaId},
+			#{detalle.esIngreso},
+			#{detalle.monto},
+			#{detalle.descripcion}
+		)		
+	</insert>
+	<select id="obtenerDetalleCaja" parameterType="java.lang.Integer" resultMap="detalleCajaResultMap">
+		SELECT * FROM k_detalle_caja WHERE cl_caja = #{cajaId}
+	</select>
+	
+	<insert id="ingresarDetalleCaja" parameterType="detalleCajaDTO">
+		INSERT INTO k_detalle_caja
+		(
+			cl_caja,
+			es_ingreso,
+			monto,
+			ds_descripcion
+		)
+		VALUES
+		(
+			#{cajaId},
+			#{esIngreso},
+			#{monto},
+			#{descripcion}
+		)		
+	</insert>
+
+</mapper>

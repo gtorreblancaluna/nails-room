@@ -107,4 +107,9 @@ public class SqlMapVentas extends SqlSessionDaoSupport implements VentasDAO {
 		
 	}
 
+	@Override
+	public float obtenerTotalVenta(int ventaId) {
+		return getSqlSession().selectOne("obtenerTotalVenta",ventaId);
+	}
+
 }

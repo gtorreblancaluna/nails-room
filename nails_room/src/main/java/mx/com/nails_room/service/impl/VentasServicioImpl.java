@@ -40,8 +40,6 @@ public class VentasServicioImpl implements VentasServicio {
 		venta.setEstadoVenta(new EstadoVentaDTO());
 		venta.getEstadoVenta().setEstadoVentaId(VENTA_PREVENTA);
 		ventasDao.agregar(venta);
-		
-
 	}
 
 	@Override
@@ -120,6 +118,12 @@ public class VentasServicioImpl implements VentasServicio {
 		}		
 		ventasDao.actualizar(venta);
 		
+	}
+
+	@Override
+	public float obtenerTotalVenta(int ventaId) {
+		// TODO Auto-generated method stub
+		return ventasDao.obtenerTotalVenta(ventaId);
 	}
 
 }

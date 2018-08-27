@@ -8,7 +8,14 @@ public class FiltroVentas {
 	private String nombreClienteFiltro;
 	private String idUsuarioFiltro;
 	private String estadoVentaFiltro;
+	private int cajaId;	
 	
+	public int getCajaId() {
+		return cajaId;
+	}
+	public void setCajaId(int cajaId) {
+		this.cajaId = cajaId;
+	}
 	public String getEstadoVentaFiltro() {
 		return estadoVentaFiltro;
 	}
