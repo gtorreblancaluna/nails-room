@@ -12,10 +12,15 @@
 <style type="text/css">
 .tableShowResultQuery{padding:0px;font-size:10px;}
 .tableShowResultQuery tbody tr td {padding:0px;vertical-align: inherit;}
+.datosGenerales label {font-size:16px;/* text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black; */}
+.container{background-color: #fff;color:#000;}
+.datosGenerales{border-style: solid;border-radius: 3px;padding: 5px;}
+.containerDetalleCaja{padding: 5px;}
+.containerDetalleCaja table tr td{padding: 5px;font-size:11px;}
 </style>
 </head>
 <body>
- <div class="container" style="background-color: #9c9898b5;">
+ <div class="container" style="">
 
 		<c:if test="${messageView != null}">
 		<div class="alert alert-success">
@@ -44,27 +49,51 @@
 		</div>
 		
 		<div class="form-group row">					
-			<div class="col-xs-6">
+			<div class="col-xs-4">
 				<button type="button" class="btn btn-dark" data-toggle="modal" data-target="#modalFiltro">Buscar por filtro</button>
 			</div>
 			<c:if test="${not empty caja}">			
-				<div class="col-xs-6">
+				<div class="col-xs-4">
 					<button type="button" class="btn btn-dark btnRegistrarMovimiento" data-toggle="modal" data-target="#modalRegistrarMovimiento">Registrar Ingreso/Egreso</button>
+				</div>
+				<div class="col-xs-4">
+					<form:form modelAttribute="caja" action="caja.do" method="post" name="cerrarCaja" id="cerrarCaja">
+						<input type="hidden" name="cajaId" id="cajaId" value="${caja.cajaId}">
+						<input type="submit" class="btn btn-dark btnCerrarCaja " name="cerrarCaja" value="Cerrar caja" />
+					</form:form>
 				</div>
 			</c:if>
 		</div>
 		<c:if test="${not empty caja}">
-			<div class="form-group row">	
-				<div class="col-xs-6">
-					<label>Fecha apertura: ${caja.fechaApertura}</label>
+			<div class="datosGenerales">	
+				<div class="form-group row">	
+					<div class="col-xs-6">
+						<label>Fecha apertura: <fmt:formatDate value="${caja.fechaApertura}" pattern="EEEE dd 'de' MMMM 'del' yyyy" /></label>
+					</div>
+					<div class="col-xs-6">
+						<label>Total caja: <fmt:formatNumber value="${totalCaja}" type="currency" currencySymbol="$"/></label>
+					</div>
 				</div>
-				<div class="col-xs-6">
-					<label>Total ventas: ${totalVentas}</label>
+				
+				<div class="form-group row">
+					<div class="col-xs-3">
+						<label>N&uacute;mero de ventas: ${numeroVentas}</label>
+					</div>
+					<div class="col-xs-3">
+						<label>Total ventas: <fmt:formatNumber value="${totalVentas}" type="currency" currencySymbol="$"/></label>
+					</div>
+					<div class="col-xs-3">
+						<label>Ingresos: <fmt:formatNumber value="${ingresos}" type="currency" currencySymbol="$"/></label>
+					</div>
+					<div class="col-xs-3">
+						<label>Egresos: <fmt:formatNumber value="${egresos}" type="currency" currencySymbol="$"/></label>
+					</div>
 				</div>
 			</div>
-			<div class="containerDetalleCaja containerShowResultQuery container-result">
-				<div class="infoVentas" style="float:left;width: 50%;">
-					<table class="table ">
+			<div class="containerDetalleCaja ">
+			<div class="form-group row">			
+				<div class="infoVentas col-xs-6" style="">
+					<table class="table table-bordered table-sm">
 					<thead>
 						<tr>
 							<th>Id</th>
@@ -82,19 +111,19 @@
 					<tr>
 		 			<td>${venta.ventaId}</td>
 		 			<td>${venta.descripcion}</td>
-		 			<td>${venta.fechaRegistro}</td>
+		 			<td><fmt:formatDate value="${venta.fechaRegistro}" pattern="dd-MM-yyyy" /></td>
 		 			<td>${venta.cliente.nombre} ${venta.cliente.ap_paterno}</td>
 		 			<td>${venta.usuario.nombre} ${venta.usuario.ap_paterno}</td>		 			
 		 			<td>${venta.estacionTrabajo.descripcion}</td>
 		 			<td>${venta.estadoVenta.descripcion}</td>	
-		 			<td>${venta.totalVenta}</td>
+		 			<td style="text-align:right;"><fmt:formatNumber value="${venta.totalVenta}" type="currency" currencySymbol="$"/></td>
 		 			</tr>	 
 					</c:forEach>
 					</tbody>
 					</table>
 				</div>
-				<div class="infoDetalleCaja" style="float:left; width: 40%;margin-left: 7%;">
-					<table class="table ">
+				<div class="infoDetalleCaja col-xs-6" style="">
+					<table class="table table-bordered table-sm">
 						<thead>
 							<tr>								
 								<th>Descripci&oacute;n</th>
@@ -107,12 +136,13 @@
 						<tr>			 			
 			 			<td>${detalle.descripcion}</td>
 			 			<td>${detalle.esIngreso eq '1' ? '(+) Ingreso' : '(-) Egreso'}</td>
-			 			<td>${detalle.monto}</td>			 			
+			 			<td style="text-align:right;"><fmt:formatNumber value="${detalle.monto}" type="currency" currencySymbol="$"/></td>			 			
 			 			</tr>	 
 						</c:forEach>
 						</tbody>
 						</table>
-				</div>			
+				</div>	
+				</div>		
 			</div>
 		</c:if>
 	
@@ -310,8 +340,10 @@ $( document ).ready(function() {
 		$form.find('#cajaId').val('${caja.cajaId}');
 // 		$('#modalRegistrarMovimiento').modal('show');
 	});
-
 	
+	$('form[name="cerrarCaja"]').submit(function() {
+		return confirm("Confirma para cerrar caja ");
+	});
 	
 });	// end document ready
 </script>

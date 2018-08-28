@@ -81,6 +81,7 @@ CREATE TABLE c_usuario (
   fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   fg_admin ENUM('1','0') NOT NULL DEFAULT '0',
   fg_activo ENUM('1','0') NOT NULL DEFAULT '1',
+  comision DECIMAL(9,2),
   PRIMARY KEY(cl_usuario),  
   CONSTRAINT fk_cl_puesto FOREIGN KEY fk_cl_puesto (cl_puesto) 
 	REFERENCES c_puesto(cl_puesto)

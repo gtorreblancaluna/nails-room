@@ -32,4 +32,10 @@ public class CajaServicioImpl implements CajaServicio {
 		return false;
 	}
 
+	@Override
+	public boolean cerrarCaja(CajaDTO caja) {
+		cajaDao.cerrarCaja(caja);
+		return false;
+	}
+
 }

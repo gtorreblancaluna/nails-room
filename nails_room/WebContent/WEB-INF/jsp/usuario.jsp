@@ -103,6 +103,7 @@
 				<th>Ap Materno</th>
 				<th>Email</th>
 				<th>Puesto</th>	
+				<th>Comisi&oacute;n</th>	
 				<th></th>
 				<th></th>
 				<th></th>			
@@ -118,6 +119,7 @@
 		 			<td>${usuario.email}</td>
 <%-- 		 			<td><c:out default="None" escapeXml="true" value="${user.fgAdmin eq '1' ? 'Admin' : '-' }" /></td> --%>
 					<td>${usuario.puestoDTO.descripcion}</td>
+					<td>${usuario.comision}</td>
 					<td><button type="button" class="btn btn-dark btnUpdateUser" id="btnUpdateUser" data-toggle="modal" data-target="#modalUpdateUser">Editar</button></td>
 		 			<td><button type="button" class="btn btn-dark btnUpdatePassw" id="btnUpdatePassw" data-toggle="modal" data-target="#modalActualizarContrasenia">Contrase&ntilde;a</button></td>
 		 			<td>		 			
@@ -156,7 +158,7 @@
 				</div>
 				<div class="form-group">
 					<label>Email: </label>
-					<input type="text" id="email" name="email" placeholder="Email" class="form-control">
+					<input type="email" id="email" name="email" placeholder="Email" class="form-control">
 				</div>
 				<div class="form-group">
 					<label>Password: </label>
@@ -170,7 +172,12 @@
 							<option value="${puesto.puestoId}">${puesto.descripcion}</option>
 						</c:forEach>	
 					</select>
-				</div>								
+				</div>	
+				<div class="form-group">
+					<label>Comisi&oacute;n por venta: </label>
+					<input type="range" id="comisionAdd" name="comision" placeholder="" min="1" max="100" value="0" class="form-control" style="cursor:pointer;">
+					<span id="mostrarPorcentajeAdd"></span>
+				</div>
 								
 				<div class="form-group">
 					<input type="submit" class="btn btn-dark login-button" name="agregar" value="Enviar" />					
@@ -207,7 +214,7 @@
 				</div>
 				<div class="form-group">
 					<label>Email: </label>
-					<input type="text" id="email" name="email" placeholder="Email" class="form-control">
+					<input type="email" id="email" name="email" placeholder="Email" class="form-control">
 				</div>
 				<div class="form-group">	
 					<label>Puesto:</label>
@@ -217,6 +224,11 @@
 							<option value="${puesto.puestoId}">${puesto.descripcion}</option>
 						</c:forEach>	
 					</select>
+				</div>
+				<div class="form-group">
+					<label>Comisi&oacute;n por venta: </label>
+					<input type="range" id="comisionUpdate" name="comision" placeholder="" min="1" max="100" class="form-control" style="cursor:pointer;">
+					<span id="mostrarPorcentajeUpdate"></span>
 				</div>
 			
 					<div class="form-group">
@@ -284,6 +296,7 @@ $( document ).ready(function() {
 		var email = $form.find('#email').val();
 		var password = $form.find('#password').val();
 		var puestoId = $form.find('#jobId').val();
+		var comision = $form.find('#comisionAdd').val();
 		
 		if(nombre == '')
 			msg += ++cont+'. El nombre es requerido \n';
@@ -295,6 +308,8 @@ $( document ).ready(function() {
 			msg += ++cont+'. La contraseña es requerida \n';
 		if(puestoId == '0')
 			msg += ++cont+'. El puesto es requerido \n';
+		if(comision == '')
+			msg += ++cont+'. Comisi\u00F3n es requerida \n';
 		
 		if(msg != ''){
 			alert (msg);
@@ -303,6 +318,13 @@ $( document ).ready(function() {
 		return valid;	   
 	});
 	
+	$( '#comisionAdd' ).change(function() {
+		$('#mostrarPorcentajeAdd').text($(this).val()+" %");
+	});
+	
+	$( '#comisionUpdate' ).change(function() {
+		$('#mostrarPorcentajeUpdate').text($(this).val()+" %");
+	});
 	
 	$( '.btnUpdatePassw' ).click(function() {
 		var $updatePassword = $("#updatePassword");
@@ -339,8 +361,10 @@ $( document ).ready(function() {
 		        	$updateForm.find('#email').val(item.innerHTML);
 		        if(i===5)
 		        	$updateForm.find('#jobId').val(getJobSelect(item.innerHTML));
-// 		        if(i===6)
-// 		        	$updateForm.find('#officeId').val(getOfficeSelect(item.innerHTML));
+		        if(i===6){
+		        	$updateForm.find('#comisionUpdate').val(item.innerHTML);
+		        	$updateForm.find('#mostrarPorcentajeUpdate').text(item.innerHTML+" %");
+		        }
 		        
 // 		        alert(values);
 		    });

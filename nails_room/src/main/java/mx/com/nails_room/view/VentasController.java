@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import mx.com.nails_room.forms.FiltroVentas;
+import mx.com.nails_room.model.CajaDTO;
 import mx.com.nails_room.model.VentaDTO;
+import mx.com.nails_room.service.CajaServicio;
 import mx.com.nails_room.service.CuentaUsuarioServicio;
 import mx.com.nails_room.service.VentasServicio;
 import static mx.com.nails_room.commons.ApplicationConstants.VENTA_PREVENTA;
@@ -25,9 +27,14 @@ public class VentasController {
 	private CuentaUsuarioServicio cuentaUsuarioServicio;
 	@Autowired
 	private VentasServicio ventasServicio;
+	@Autowired
+	private CajaServicio cajaServicio;
 	
 	@GetMapping(value = "/ventas.do")
-	public String mostrarInicio(HttpServletRequest request, Model model) {		
+	public String mostrarInicio(HttpServletRequest request, Model model) {
+		CajaDTO caja = cajaServicio.obtenerCajaAbierta();
+		if(caja == null)
+			model.addAttribute("messageError", "Caja esta cerrada, debes abrir caja para poder generar ventas ");
 		model.addAttribute("venta", new VentaDTO());
 		FiltroVentas filtroVentas = new FiltroVentas();
 		LocalDate hoy = LocalDate.now();
@@ -48,9 +55,16 @@ public class VentasController {
 		return "ventas";
 	}	
 	
+	// guardar venta
 	@PostMapping(value = "/ventas.do", params = "agregar")
 	public String agregar(@ModelAttribute VentaDTO venta,HttpServletRequest request, Model model) {	
-		
+		CajaDTO caja = cajaServicio.obtenerCajaAbierta();
+		if(caja == null) {
+			model.addAttribute("messageError","Caja cerrada, no se pueden ingresar ventas cuando la caja esta cerrada");
+			return "ventas";
+		}
+		venta.setCaja(new CajaDTO());
+		venta.getCaja().setCajaId(caja.getCajaId());
 		ventasServicio.agregar(venta);
 		model.addAttribute("messageView","Se agrego con exito, "+venta.getDetalleVenta().size()+ " articulos");
 		model.addAttribute("venta", new VentaDTO());
@@ -82,6 +96,13 @@ public class VentasController {
 	// guardar y finalizar venta
 	@PostMapping(value = "/ventas.do", params = "finalizar")
 	public String finalizar(@ModelAttribute VentaDTO venta,HttpServletRequest request, Model model) {	
+		CajaDTO caja = cajaServicio.obtenerCajaAbierta();
+		if(caja == null) {
+			model.addAttribute("messageError","Caja cerrada, no se pueden ingresar ventas cuando la caja esta cerrada");
+			return "ventas";
+		}
+		venta.setCaja(new CajaDTO());
+		venta.getCaja().setCajaId(caja.getCajaId());
 		
 		ventasServicio.agregar(venta);
 		ventasServicio.finalizar(venta);

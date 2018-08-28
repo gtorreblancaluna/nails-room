@@ -12,7 +12,9 @@
 		<result property="esAdmin" column="fg_admin" />
 		<result property="activo" column="fg_activo" />		
 		<result property="puestoDTO.puestoId" column="cl_puesto" />
-		<result property="puestoDTO.descripcion" column="descripcion_puesto" />		
+		<result property="puestoDTO.descripcion" column="descripcion_puesto" />	
+		<result property="comision" column="comision" />	
+			
 	</resultMap>
 	
 	<resultMap id="resultMapPuesto" type="puestoDTO">
@@ -38,9 +40,9 @@
 
 	<insert id="insertarUsuario" parameterType="usuarioDTO">
 		INSERT INTO c_usuario
-		(cl_puesto,nombre,ap_paterno,ap_materno,email,password)
+		(cl_puesto,nombre,ap_paterno,ap_materno,email,password,comision)
 		VALUES		
-		(#{puestoDTO.puestoId},#{nombre},#{ap_paterno},#{ap_materno},#{email},#{contrasenia})
+		(#{puestoDTO.puestoId},#{nombre},#{ap_paterno},#{ap_materno},#{email},#{contrasenia},#{comision})
 	</insert>
 	<update id="editarUsuario" parameterType="usuarioDTO">
 		UPDATE c_usuario SET		
@@ -61,7 +63,10 @@
 		</if>
 		<if test="contrasenia != null and contrasenia != '' ">
 			password = #{contrasenia}	
-		</if>			
+		</if>	
+		<if test="comision != null and comision != '' ">
+			comision = #{comision}	
+		</if>		
 		WHERE cl_usuario = #{usuarioId}
 	</update>
 	<delete id="deleteUser" parameterType="usuarioDTO">

@@ -25,8 +25,8 @@ public class SqlMapVentas extends SqlSessionDaoSupport implements VentasDAO {
 
 	@Override
 	public void agregar(VentaDTO venta) {
-		venta.setCaja(new CajaDTO());
-		venta.getCaja().setCajaId(1);
+//		venta.setCaja(new CajaDTO());
+//		venta.getCaja().setCajaId(1);
 		getSqlSession().insert("agregarVenta",venta);
 		for(DetalleVentaDTO detalle : venta.getDetalleVenta()) {
 			// insertamos el detalle de la venta

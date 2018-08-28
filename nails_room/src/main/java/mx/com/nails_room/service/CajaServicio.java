@@ -7,5 +7,5 @@ public interface CajaServicio {
 	public CajaDTO obtenerCajaAbierta();
 	public boolean abrirCaja(CajaDTO caja);
 	public boolean ingresarDetalleCaja(DetalleCajaDTO detalleCaja);
-
+	public boolean cerrarCaja(CajaDTO caja);
 }

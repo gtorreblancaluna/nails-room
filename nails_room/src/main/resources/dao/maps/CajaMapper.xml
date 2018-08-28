@@ -57,7 +57,7 @@
 		)		
 	</insert>
 	<select id="obtenerDetalleCaja" parameterType="java.lang.Integer" resultMap="detalleCajaResultMap">
-		SELECT * FROM k_detalle_caja WHERE cl_caja = #{cajaId}
+		SELECT * FROM k_detalle_caja WHERE cl_caja = #{cajaId} ORDER BY es_ingreso
 	</select>
 	
 	<insert id="ingresarDetalleCaja" parameterType="detalleCajaDTO">
@@ -76,5 +76,12 @@
 			#{descripcion}
 		)		
 	</insert>
+	
+	<update id="cerrarCaja" parameterType="cajaDTO">
+		UPDATE c_caja SET
+		fg_activo = #{activo},
+		fecha_cierre = #{fechaCierre}
+		WHERE cl_caja = #{cajaId}		
+	</update>
 
 </mapper>

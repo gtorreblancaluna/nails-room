@@ -1,5 +1,6 @@
 package mx.com.nails_room.dao.impl;
 
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,6 +38,14 @@ public class SqlMapCaja extends SqlSessionDaoSupport implements CajaDAO {
 	public boolean ingresarDetalleCaja(DetalleCajaDTO detalleCaja) {		
 		getSqlSession().insert("ingresarDetalleCaja",detalleCaja);
 		return true;
+	}
+
+	@Override
+	public boolean cerrarCaja(CajaDTO caja) {
+		caja.setActivo("0");
+		caja.setFechaCierre(new Timestamp(System.currentTimeMillis()));
+		getSqlSession().update("cerrarCaja",caja);
+		return false;
 	}
 
 }
