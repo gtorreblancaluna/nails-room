@@ -16,9 +16,25 @@ public class VentaDTO {
 	private String pagoTarjeta;
 	private Timestamp fechaRegistro;
 	private EstadoVentaDTO estadoVenta;	
-	private List<DetalleVentaDTO> detalleVenta;	
-	private float totalVenta;	
+	private List<DetalleVentaDTO> detalleVenta;
+	private String comisionPagada;
+	// suma total de la venta
+	private float totalVenta;
+	// total de comision por la venta
+	private float totalComision;	
 	
+	public String getComisionPagada() {
+		return comisionPagada;
+	}
+	public void setComisionPagada(String comisionPagada) {
+		this.comisionPagada = comisionPagada;
+	}
+	public float getTotalComision() {
+		return totalComision;
+	}
+	public void setTotalComision(float totalComision) {
+		this.totalComision = totalComision;
+	}
 	public float getTotalVenta() {
 		return totalVenta;
 	}

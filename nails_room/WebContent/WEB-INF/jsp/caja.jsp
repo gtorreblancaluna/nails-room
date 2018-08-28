@@ -17,6 +17,7 @@
 .datosGenerales{border-style: solid;border-radius: 3px;padding: 5px;}
 .containerDetalleCaja{padding: 5px;}
 .containerDetalleCaja table tr td{padding: 5px;font-size:11px;}
+.modal-content-comisiones{width:75%;font-size:11px;}
 </style>
 </head>
 <body>
@@ -49,14 +50,17 @@
 		</div>
 		
 		<div class="form-group row">					
-			<div class="col-xs-4">
+			<div class="col-xs-3">
+				<button type="button" class="btn btn-dark" data-toggle="modal" onclick="obtenerComisionesHoy();">Comisiones de hoy</button>
+			</div>
+			<div class="col-xs-3">
 				<button type="button" class="btn btn-dark" data-toggle="modal" data-target="#modalFiltro">Buscar por filtro</button>
 			</div>
 			<c:if test="${not empty caja}">			
-				<div class="col-xs-4">
+				<div class="col-xs-3">
 					<button type="button" class="btn btn-dark btnRegistrarMovimiento" data-toggle="modal" data-target="#modalRegistrarMovimiento">Registrar Ingreso/Egreso</button>
 				</div>
-				<div class="col-xs-4">
+				<div class="col-xs-3">
 					<form:form modelAttribute="caja" action="caja.do" method="post" name="cerrarCaja" id="cerrarCaja">
 						<input type="hidden" name="cajaId" id="cajaId" value="${caja.cajaId}">
 						<input type="submit" class="btn btn-dark btnCerrarCaja " name="cerrarCaja" value="Cerrar caja" />
@@ -144,51 +148,8 @@
 				</div>	
 				</div>		
 			</div>
-		</c:if>
-	
-	
-		<!-- Mostramos los usuarios -->
-		<c:if test="${not empty listaClientes}">
-		<div class="containerShowResultQuery container-result">
-		<table class="table tableShowResultQuery">
-		<thead>
-			<tr>
-				<th>Id</th>
-				<th>Nombre</th>
-				<th>Ap Paterno</th>
-				<th>Ap Materno</th>
-				<th>Email</th>				
-				<th>Tel1</th>
-				<th>Tel2</th>
-				<th>Direcci&oacute;n</th>
-				<th></th>
-				<th></th>		
-			</tr>
-		</thead>
-		<tbody>
-			<c:forEach items="${listaClientes}" var="cliente">		
-		 		<tr>
-		 			<td>${cliente.clienteId}</td>
-		 			<td>${cliente.nombre}</td>
-		 			<td>${cliente.ap_paterno}</td>
-		 			<td>${cliente.ap_materno}</td>
-		 			<td>${cliente.email}</td>
-		 			<td>${cliente.telefono1}</td>
-		 			<td>${cliente.telefono2}</td>
-		 			<td>${cliente.direccion}</td>		 			
-					<td><button type="button" class="btn btn-dark btnUpdateUser" id="btnUpdateUser" data-toggle="modal" data-target="#modalUpdateUser">Editar</button></td>
-		 			<td>		 			
-			 			<form:form action="clientes.do" method="post" name="deleteForm" id="deleteForm">
-							<input type="hidden" name="clienteId" id="deleteCustomerId" value="${cliente.clienteId}">			 	
-			 			 	<input type="submit" class="btn btn btn-dark" name="eliminar" value="Eliminar" />	
-			 			 </form:form>
-		 			</td>
-		 		</tr>	 	
-	 		</c:forEach>
-	 	</tbody>
-	 		</table>
-	 		</div>
-		</c:if>
+		</c:if>	
+		
 		
 		<c:if test="${empty caja}">
 			<div class="form-group row">					
@@ -300,6 +261,52 @@
     </div>
     </div>
     
+     <div id="modalComisiones" class="modal fade" role="dialog" >
+ <div class="modal-content modal-content-comisiones" style="">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Comisiones</h4>
+      </div>
+      <div class="modal-body"> 
+      <div id="formComisiones">   
+      	<div class="form-group row">		
+			<div class="col-xs-6">  			
+				<table class="table tablaComisiones table-bordered table-sm">
+					<thead>
+						<tr>
+							<th>Id venta</th>
+							<th>Nombre usuario</th>
+							<th>Comisi&oacute;n</th>
+							<th>Descripci&oacute;n venta</th>
+							<th>Total venta</th>
+							<th>Total comisi&oacute;n</th>
+							<th>Comisi&oacute;n pagada</th>		
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+			</div>
+			<div class="col-xs-6">  			
+				<table class="table tablaComisionesAgrupadas table-bordered table-sm">
+					<thead>
+						<tr>							
+							<th>Nombre usuario</th>
+							<th>Comisi&oacute;n</th>							
+							<th>Total ventas</th>
+							<th>Total comisiones</th>									
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		</div>		
+      </div>      
+    </div>
+    </div>
+    
     
     </div>
     
@@ -346,6 +353,70 @@ $( document ).ready(function() {
 	});
 	
 });	// end document ready
+
+
+
+function obtenerComisionesHoy(){
+	var data = {}
+// 	if(valor != ''){
+		$.ajax({
+			type : "POST",
+			contentType : "application/json",
+			url : "obtenerComisionesHoy.do",
+			data : "hoy",
+			dataType : 'json',
+			timeout : 100000,
+			success : function(data) {
+				// exito, llenamos la tabla de clientes
+				console.log(data)
+				llenarTablaComisiones(data.ventas,data.ventasComisiones);
+			},
+			error : function(e) {
+				console.log("ERROR: ", e);	
+				alert("ERROR: "+e)
+			},
+			done : function(e) {
+				console.log("DONE");
+			}
+		});
+// 	}else{
+// 		alert("No se recibio el parametro, porfavor recarga la pagina e intentalo de nuevo :( ")
+// 	}
+}
+
+
+function llenarTablaComisiones(ventas,ventasComisiones){
+	var $form = $('#formComisiones');
+	$form.find('.tablaComisiones tbody tr').remove();
+	$form.find('.tablaComisionesAgrupadas tbody tr').remove();
+	
+	var contador = 0;
+	$.each(ventas, function(index, venta) {
+		$form.find(".tablaComisiones tbody").append(
+		"<tr>"	
+// 				+"<td>"+ ++contador +"</td>"
+				+"<td>"+ venta.ventaId +"</td>"
+				+"<td>"+ (venta.usuario.nombre +' '+ venta.usuario.ap_paterno) +"</td>"
+				+"<td style='text-align:center;'>"+ (venta.usuario.comision +' %') +"</td>"
+				+"<td>"+ venta.descripcion +"</td>"
+				+"<td style='text-align:right;'>"+ venta.totalVenta +"</td>"
+				+"<td style='text-align:right;'>"+ venta.totalComision +"</td>"
+				+"<td>"+ (venta.comisionPagada == '1' ? 'Pagada' : 'No pagada') +"</td>"
+		+"</tr>");		
+	});	// end for each
+	
+	$.each(ventasComisiones, function(index, venta) {
+		$form.find(".tablaComisionesAgrupadas tbody").append(
+		"<tr>"
+				+"<td>"+ (venta.usuario.nombre +' '+ venta.usuario.ap_paterno) +"</td>"
+				+"<td style='text-align:center;'>"+ (venta.usuario.comision +' %') +"</td>"
+				+"<td style='text-align:right;'>"+ venta.totalVenta +"</td>"
+				+"<td style='text-align:right;'>"+ venta.totalComision +"</td>"				
+		+"</tr>");		
+	});	// end for each	
+	$('#modalComisiones').modal('show');
+}
+
 </script>
 
 </body>

@@ -112,4 +112,10 @@ public class SqlMapVentas extends SqlSessionDaoSupport implements VentasDAO {
 		return getSqlSession().selectOne("obtenerTotalVenta",ventaId);
 	}
 
+	@Override
+	public List<VentaDTO> obtenerVentasAgrupadasPorUsuario(FiltroVentas filtroVentas) {
+		// TODO Auto-generated method stub
+		return getSqlSession().selectList("obtenerVentasAgrupadasPorUsuario",filtroVentas);
+	}
+
 }

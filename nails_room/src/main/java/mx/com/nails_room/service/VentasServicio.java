@@ -22,5 +22,6 @@ public interface VentasServicio {
 	public List<EstadoVentaDTO> obtenerEstadosVenta();
 	public void actualizar(VentaDTO venta);
 	public float obtenerTotalVenta(int ventaId);
+	public List<VentaDTO> obtenerVentasAgrupadasPorUsuario(FiltroVentas filtroVentas);
 	
 }

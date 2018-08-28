@@ -9,7 +9,7 @@ public class UsuarioDTO extends DatosGeneralesPersonaDTO{
 	private String contrasenia;
 	private Timestamp fechaAlta;
 	private String esAdmin;	
-	private int comision;
+	private float comision;
 	
 	public int getUsuarioId() {
 		return usuarioId;
@@ -41,12 +41,13 @@ public class UsuarioDTO extends DatosGeneralesPersonaDTO{
 	public void setEsAdmin(String esAdmin) {
 		this.esAdmin = esAdmin;
 	}
-	public int getComision() {
+	public float getComision() {
 		return comision;
 	}
-	public void setComision(int comision) {
+	public void setComision(float comision) {
 		this.comision = comision;
 	}
+	
 	
 
 }

@@ -133,6 +133,7 @@ cl_estado_venta INTEGER UNSIGNED NOT NULL,
 ds_descripcion VARCHAR(255),
 es_pago_efectivo ENUM('1','0') NOT NULL DEFAULT '1',
 es_pago_tarjeta ENUM('1','0') NOT NULL DEFAULT '0',
+comision_pagada ENUM('1','0') NOT NULL DEFAULT '0',
 PRIMARY KEY (cl_venta),
 CONSTRAINT fk_venta_cl_cliente FOREIGN KEY fk_venta_cl_cliente (cl_cliente)
 	REFERENCES c_cliente (cl_cliente)

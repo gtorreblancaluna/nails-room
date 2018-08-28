@@ -126,4 +126,10 @@ public class VentasServicioImpl implements VentasServicio {
 		return ventasDao.obtenerTotalVenta(ventaId);
 	}
 
+	@Override
+	public List<VentaDTO> obtenerVentasAgrupadasPorUsuario(FiltroVentas filtroVentas) {
+		// TODO Auto-generated method stub
+		return ventasDao.obtenerVentasAgrupadasPorUsuario(filtroVentas);
+	}
+
 }

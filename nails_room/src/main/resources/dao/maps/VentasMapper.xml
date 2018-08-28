@@ -7,6 +7,7 @@
 		<result property="descripcion" column="ds_descripcion" />
 		<result property="pagoEfectivo" column="es_pago_efectivo" />
 		<result property="pagoTarjeta" column="es_pago_tarjeta" />	
+		<result property="comisionPagada" column="comision_pagada" />
 		<!-- Datos del cliente -->
 		<result property="cliente.clienteId" column="cl_cliente" />
 		<result property="cliente.nombre" column="nombre_cliente" />
@@ -20,6 +21,7 @@
 		<result property="usuario.nombre" column="nombre_usuario" />
 		<result property="usuario.ap_paterno" column="ap_paterno_usuario" />
 		<result property="usuario.ap_materno" column="ap_materno_usuario" />
+		<result property="usuario.comision" column="comision_usuario" />
 				
 		<!-- Datos caja -->
 		<result property="caja.cajaId" column="cl_caja" />
@@ -31,6 +33,23 @@
 		<!-- Datos estado venta -->
 		<result property="estadoVenta.estadoVentaId" column="cl_estado_venta" />		
 		<result property="estadoVenta.descripcion" column="descripcion_estado" />			
+	</resultMap>
+	
+	<resultMap id="ventaAgrupadaResultMap" type="ventaDTO">
+		<result property="ventaId" column="cl_venta" />
+		<result property="fechaRegistro" column="fecha_registro" />			
+		<result property="descripcion" column="ds_descripcion" />
+		<result property="pagoEfectivo" column="es_pago_efectivo" />
+		<result property="pagoTarjeta" column="es_pago_tarjeta" />	
+		<result property="comisionPagada" column="comision_pagada" />
+		<result property="totalVenta" column="total_venta" />	
+		<result property="totalComision" column="total_comisiones" />	
+		<!-- Datos del usuario -->
+		<result property="usuario.usuarioId" column="cl_usuario" />
+		<result property="usuario.nombre" column="nombre_usuario" />
+		<result property="usuario.ap_paterno" column="ap_paterno_usuario" />
+		<result property="usuario.ap_materno" column="ap_materno_usuario" />
+		<result property="usuario.comision" column="comision_usuario" />					
 	</resultMap>
 	
 	<resultMap id="ventaDetalleResultMap" type="detalleVentaDTO">
@@ -66,6 +85,7 @@
 		usuario.ap_paterno AS ap_paterno_usuario,
 		usuario.ap_materno AS ap_materno_usuario,
 		usuario.email AS email_usuario,
+		usuario.comision AS comision_usuario,
 		caja.ds_descripcion AS descripcion_caja,
 		caja.fecha_apertura AS fecha_apertura_caja,
 		estacion.ds_descripcion AS descripcion_estacion,
@@ -102,8 +122,27 @@
 					AND venta.fecha_registro >= CONCAT(#{fechaInicioFiltro},' 000000')
 				]]>
 			</if>
-		</where>		
+		</where>			
 		ORDER BY venta.cl_venta DESC
+	</select>
+	
+	<select id="obtenerVentasAgrupadasPorUsuario" parameterType="filtroVentas" resultMap="ventaAgrupadaResultMap">
+		SELECT venta.cl_usuario, 
+		SUM(detalle.cantidad*detalle.precio_articulo) AS total_venta,
+		SUM((detalle.cantidad*detalle.precio_articulo)*(usuario.comision/100)) AS total_comisiones,
+		usuario.nombre AS nombre_usuario,
+		usuario.ap_paterno AS ap_paterno_usuario,
+		usuario.ap_materno AS ap_materno_usuario,
+		usuario.comision AS comision_usuario
+		FROM c_venta venta
+		INNER JOIN k_detalle_venta detalle ON (venta.cl_venta = detalle.cl_venta)
+		INNER JOIN c_usuario usuario ON (venta.cl_usuario = usuario.cl_usuario)
+		<if	test="fechaInicioFiltro != null and fechaFinFiltro != null and fechaInicioFiltro != '' and fechaFinFiltro != '' ">
+				<![CDATA[ 
+					AND venta.fecha_registro >= CONCAT(#{fechaInicioFiltro},' 000000') AND venta.fecha_registro <= CONCAT(#{fechaFinFiltro},' 235959')
+				]]>
+		</if>
+		GROUP BY venta.cl_usuario
 	</select>
 	
 	<select id="obtenerVentaPorId" parameterType="java.lang.Integer" resultMap="ventaResultMap">
