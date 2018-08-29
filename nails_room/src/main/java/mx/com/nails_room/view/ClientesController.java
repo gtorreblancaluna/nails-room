@@ -32,14 +32,15 @@ public class ClientesController {
 		model.addAttribute("messageView","Se obtuvieron "+listaClientes.size()+ " resultados");
 		model.addAttribute("listaClientes",listaClientes);		
 		model.addAttribute("puestos",clienteServicio.obtenerPuestos());
-		return "cliente";
+		return "cliente";		
 	}	
 	@PostMapping(value = "/clientes.do", params = "agregar")
 	public String agregar(@ModelAttribute ClienteDTO clienteDTO,HttpServletRequest request, Model model) {
 		
 		clienteServicio.agregar(clienteDTO);
 		model.addAttribute("messageView","Se agrego exitosamente el cliente: "+clienteDTO.getNombre()+" "+clienteDTO.getAp_paterno());
-		return "clienteExito";
+//		return "clienteExito";
+		return "redirect:/exito.do";
 	}	
 	@PostMapping(value = "/clientes.do", params = "editar")
 	public String editar(@ModelAttribute ClienteDTO clienteDTO,HttpServletRequest request, Model model) {		

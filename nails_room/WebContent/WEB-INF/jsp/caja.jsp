@@ -289,6 +289,7 @@
 					<tbody>
 					</tbody>
 				</table>
+				<a href="javascript:void(0);" onclick="pagarTodo();">Pagar todas</a>
 			</div>
 			<div class="col-xs-4">  			
 				<table class="table tablaComisionesAgrupadas table-bordered table-sm">
@@ -318,7 +319,9 @@
 
 <script type="text/javascript" src="js/data-tables.js"></script>
 <script type="text/javascript">
+var g_result='';
 $( document ).ready(function() {
+	
 	$('.tableShowResultQuery').DataTable();
 	//confirmar eliminar	
 	$('form[name="formRegistrarMovimiento"]').submit(function() {
@@ -357,7 +360,23 @@ $( document ).ready(function() {
 	
 });	// end document ready
 
+function recorrerPago(){
+	$(".tablaComisiones tbody tr").each(function () {
+		 var $tr = $(this).closest('tr');
+		 var ventaId = parseFloat($tr.find('.ventaId').text());
+		 pagarTodasComisiones(ventaId);		
+	})
+	
+}
 
+function pagarTodo(){
+	 var msg = '';
+// 	 g_result = '';
+	recorrerPago();	
+	obtenerComisiones();
+	alert(g_result);
+	g_result = '';
+}
 
 function obtenerComisiones(){
 	var data = {}
@@ -401,7 +420,7 @@ function llenarTablaComisiones(ventas,ventasComisiones){
 		$form.find(".tablaComisiones tbody").append(
 		"<tr>"	
 // 				+"<td>"+ ++contador +"</td>"
-				+"<td style='text-align:center;'>"+ venta.ventaId +"</td>"
+				+"<td style='text-align:center;'><span class='ventaId'>"+ venta.ventaId +"</span></td>"
 				+"<td>"+ (venta.usuario.nombre +' '+ venta.usuario.ap_paterno).substring(0, 25) +"</td>"
 				+"<td style='text-align:center;'>"+ (venta.usuario.comision +' %') +"</td>"
 				+"<td>"+ venta.descripcion.substring(0, 25) +"</td>"
@@ -432,6 +451,36 @@ function formatCurrency(total) {
     }
     return (neg ? "-$" : '$') + parseFloat(total, 10).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString();
 }
+
+function pagarTodasComisiones(ventaId){
+// 	alert(ventaId+'| ${caja.cajaId}');	
+	var data = {}
+	var msg = '';
+// 	g_result = '';
+	var parametros = ventaId+"-"+"${caja.cajaId}"	
+		$.ajax({
+			type : "POST",
+			contentType : "application/json",
+			url : "pagarComisionPodIdVenta.do",
+			data : parametros,
+			dataType : 'json',
+			timeout : 100000,
+			success : function(data) {				
+				console.log(data);
+				g_result += data.mensaje + "\n";
+			},
+			error : function(e) {
+				console.log("ERROR: ", e);	
+				alert("ERROR: "+e)				
+			},
+			done : function(e) {
+				console.log("DONE");
+			}
+		});
+
+}
+
+
 
 function pagarComision(ventaId){
 // 	alert(ventaId+'| ${caja.cajaId}');	
