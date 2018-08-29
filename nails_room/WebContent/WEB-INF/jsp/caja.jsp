@@ -16,8 +16,10 @@
 .container{background-color: #fff;color:#000;}
 .datosGenerales{border-style: solid;border-radius: 3px;padding: 5px;}
 .containerDetalleCaja{padding: 5px;}
-.containerDetalleCaja table tr td{padding: 5px;font-size:11px;}
+.containerDetalleCaja table tr td{padding: 1px 0px 1px 1px;font-size:11px;}
 .modal-content-comisiones{width:75%;font-size:11px;}
+.tablaComisiones tbody tr td{padding: 1px 0px 1px 1px;font-size:10px;}
+.tablaComisionesAgrupadas tbody tr td{padding: 1px 0px 1px 1px;font-size:10px;}
 </style>
 </head>
 <body>
@@ -75,7 +77,7 @@
 						<label>Fecha apertura: <fmt:formatDate value="${caja.fechaApertura}" pattern="EEEE dd 'de' MMMM 'del' yyyy" /></label>
 					</div>
 					<div class="col-xs-6">
-						<label>Total caja: <fmt:formatNumber value="${totalCaja}" type="currency" currencySymbol="$"/></label>
+						<label>Total en caja: <fmt:formatNumber value="${totalCaja}" type="currency" currencySymbol="$"/></label>
 					</div>
 				</div>
 				
@@ -84,7 +86,7 @@
 						<label>N&uacute;mero de ventas: ${numeroVentas}</label>
 					</div>
 					<div class="col-xs-3">
-						<label>Total ventas: <fmt:formatNumber value="${totalVentas}" type="currency" currencySymbol="$"/></label>
+						<label>Total en ventas: <fmt:formatNumber value="${totalVentas}" type="currency" currencySymbol="$"/></label>
 					</div>
 					<div class="col-xs-3">
 						<label>Ingresos: <fmt:formatNumber value="${ingresos}" type="currency" currencySymbol="$"/></label>
@@ -96,7 +98,7 @@
 			</div>
 			<div class="containerDetalleCaja ">
 			<div class="form-group row">			
-				<div class="infoVentas col-xs-6" style="">
+				<div class="infoVentas col-xs-8" style="">
 					<table class="table table-bordered table-sm">
 					<thead>
 						<tr>
@@ -114,7 +116,7 @@
 					<c:forEach items="${ventas}" var="venta">
 					<tr>
 		 			<td>${venta.ventaId}</td>
-		 			<td>${venta.descripcion}</td>
+		 			<td>${fn:substring(venta.descripcion, 0, 21)}</td>
 		 			<td><fmt:formatDate value="${venta.fechaRegistro}" pattern="dd-MM-yyyy" /></td>
 		 			<td>${venta.cliente.nombre} ${venta.cliente.ap_paterno}</td>
 		 			<td>${venta.usuario.nombre} ${venta.usuario.ap_paterno}</td>		 			
@@ -126,7 +128,7 @@
 					</tbody>
 					</table>
 				</div>
-				<div class="infoDetalleCaja col-xs-6" style="">
+				<div class="infoDetalleCaja col-xs-4" style="">
 					<table class="table table-bordered table-sm">
 						<thead>
 							<tr>								
@@ -138,7 +140,7 @@
 						<tbody>
 						<c:forEach items="${caja.detalleCaja}" var="detalle">
 						<tr>			 			
-			 			<td>${detalle.descripcion}</td>
+			 			<td>${fn:substring(detalle.descripcion, 0, 25)}</td>
 			 			<td>${detalle.esIngreso eq '1' ? '(+) Ingreso' : '(-) Egreso'}</td>
 			 			<td style="text-align:right;"><fmt:formatNumber value="${detalle.monto}" type="currency" currencySymbol="$"/></td>			 			
 			 			</tr>	 
@@ -270,7 +272,7 @@
       <div class="modal-body"> 
       <div id="formComisiones">   
       	<div class="form-group row">		
-			<div class="col-xs-6">  			
+			<div class="col-xs-8">  			
 				<table class="table tablaComisiones table-bordered table-sm">
 					<thead>
 						<tr>
@@ -287,14 +289,14 @@
 					</tbody>
 				</table>
 			</div>
-			<div class="col-xs-6">  			
+			<div class="col-xs-4">  			
 				<table class="table tablaComisionesAgrupadas table-bordered table-sm">
 					<thead>
 						<tr>							
 							<th>Nombre usuario</th>
 							<th>Comisi&oacute;n</th>							
-							<th>Total ventas</th>
-							<th>Total comisiones</th>									
+							<th>Total en ventas</th>
+							<th>Total en comisiones</th>									
 						</tr>
 					</thead>
 					<tbody>
@@ -395,26 +397,69 @@ function llenarTablaComisiones(ventas,ventasComisiones){
 		$form.find(".tablaComisiones tbody").append(
 		"<tr>"	
 // 				+"<td>"+ ++contador +"</td>"
-				+"<td>"+ venta.ventaId +"</td>"
-				+"<td>"+ (venta.usuario.nombre +' '+ venta.usuario.ap_paterno) +"</td>"
+				+"<td style='text-align:center;'>"+ venta.ventaId +"</td>"
+				+"<td>"+ (venta.usuario.nombre +' '+ venta.usuario.ap_paterno).substring(0, 25) +"</td>"
 				+"<td style='text-align:center;'>"+ (venta.usuario.comision +' %') +"</td>"
-				+"<td>"+ venta.descripcion +"</td>"
-				+"<td style='text-align:right;'>"+ venta.totalVenta +"</td>"
-				+"<td style='text-align:right;'>"+ venta.totalComision +"</td>"
-				+"<td>"+ (venta.comisionPagada == '1' ? 'Pagada' : 'No pagada') +"</td>"
+				+"<td>"+ venta.descripcion.substring(0, 25) +"</td>"
+				+"<td style='text-align:right;'>"+ formatCurrency(venta.totalVenta) +"</td>"
+				+"<td style='text-align:right;'>"+ formatCurrency(venta.totalComision) +"</td>"
+// 				+"<td style='text-align:center;'>"+ (venta.comisionPagada == '1' ? 'Pagada' : 'No pagada') +"</td>"
+				+"<td style='text-align:center;'><a href='javascript:void(0);' onclick='pagarComision("+venta.ventaId+");'>"+ (venta.comisionPagada == '1' ? 'Pagada' : 'No pagada') +"</a></td>"
 		+"</tr>");		
 	});	// end for each
 	
 	$.each(ventasComisiones, function(index, venta) {
 		$form.find(".tablaComisionesAgrupadas tbody").append(
 		"<tr>"
-				+"<td>"+ (venta.usuario.nombre +' '+ venta.usuario.ap_paterno) +"</td>"
+				+"<td>"+ (venta.usuario.nombre +' '+ venta.usuario.ap_paterno).substring(0, 25) +"</td>"
 				+"<td style='text-align:center;'>"+ (venta.usuario.comision +' %') +"</td>"
-				+"<td style='text-align:right;'>"+ venta.totalVenta +"</td>"
-				+"<td style='text-align:right;'>"+ venta.totalComision +"</td>"				
+				+"<td style='text-align:right;'>"+ formatCurrency(venta.totalVenta) +"</td>"
+				+"<td style='text-align:right;'>"+ formatCurrency(venta.totalComision) +"</td>"				
 		+"</tr>");		
 	});	// end for each	
 	$('#modalComisiones').modal('show');
+}
+
+function formatCurrency(total) {
+    var neg = false;
+    if(total < 0) {
+        neg = true;
+        total = Math.abs(total);
+    }
+    return (neg ? "-$" : '$') + parseFloat(total, 10).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString();
+}
+
+function pagarComision(ventaId){
+// 	alert(ventaId+'| ${caja.cajaId}');	
+	var data = {}
+	var parametros = ventaId+"-"+"${caja.cajaId}"
+	if(ventaId != ''){
+		$.ajax({
+			type : "POST",
+			contentType : "application/json",
+			url : "pagarComisionPodIdVenta.do",
+			data : parametros,
+			dataType : 'json',
+			timeout : 100000,
+			success : function(data) {
+				// exito, llenamos la tabla de clientes
+				console.log(data);
+				alert(data.mensaje);
+				if( (data.mensaje).indexOf("ERROR") == -1)
+					obtenerComisionesHoy();
+				
+			},
+			error : function(e) {
+				console.log("ERROR: ", e);	
+				alert("ERROR: "+e)
+			},
+			done : function(e) {
+				console.log("DONE");
+			}
+		});
+	}else{
+		alert("No se recibio el parametro, porfavor recarga la pagina e intentalo de nuevo :( ")
+	}
 }
 
 </script>

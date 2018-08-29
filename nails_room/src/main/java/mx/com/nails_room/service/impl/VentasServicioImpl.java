@@ -132,4 +132,10 @@ public class VentasServicioImpl implements VentasServicio {
 		return ventasDao.obtenerVentasAgrupadasPorUsuario(filtroVentas);
 	}
 
+	@Override
+	public void actualizarVenta(VentaDTO venta) {
+		ventasDao.actualizarVenta(venta);
+		
+	}
+
 }

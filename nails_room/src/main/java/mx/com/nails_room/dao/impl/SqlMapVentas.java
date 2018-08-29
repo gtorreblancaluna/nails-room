@@ -118,4 +118,10 @@ public class SqlMapVentas extends SqlSessionDaoSupport implements VentasDAO {
 		return getSqlSession().selectList("obtenerVentasAgrupadasPorUsuario",filtroVentas);
 	}
 
+	@Override
+	public void actualizarVenta(VentaDTO venta) {
+		getSqlSession().update("actualizarVenta",venta);
+		
+	}
+
 }

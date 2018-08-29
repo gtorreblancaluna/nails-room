@@ -16,7 +16,9 @@ import mx.com.nails_room.forms.FiltroArticulo;
 import mx.com.nails_room.forms.FiltroVentas;
 import mx.com.nails_room.model.ArticuloDTO;
 import mx.com.nails_room.model.ClienteDTO;
+import mx.com.nails_room.model.DetalleCajaDTO;
 import mx.com.nails_room.model.VentaDTO;
+import mx.com.nails_room.service.CajaServicio;
 import mx.com.nails_room.service.ClienteServicio;
 import mx.com.nails_room.service.InventarioServicio;
 import mx.com.nails_room.service.VentasServicio;
@@ -30,6 +32,8 @@ public class VentasFacade {
 	private InventarioServicio inventarioServicio;
 	@Autowired
 	private VentasServicio ventasServicio;
+	@Autowired
+	private CajaServicio cajaServicio;
 	
 	@RequestMapping(value = "/mostrarClientesPorFiltro.do")
 	@ResponseBody
@@ -126,6 +130,53 @@ public class VentasFacade {
 		}
 		myMap.put("ventas", ventas);
 		myMap.put("ventasComisiones", ventasComisiones);
+		 try {
+	            json = mapper.writeValueAsString(myMap);
+	        } catch (JsonProcessingException e) {
+	            // TODO Auto-generated catch block
+	            e.printStackTrace();
+	        } catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}	
+		 
+		return json;
+	}
+	
+	@RequestMapping(value = "/pagarComisionPodIdVenta.do")
+	@ResponseBody
+	public String pagarComisionPodIdVenta(@RequestBody String parametros) {
+		Map<String,Object> myMap = new HashMap<>();
+		
+		ObjectMapper mapper = new ObjectMapper();
+		String json = "";
+		String[] param = parametros.split("-");
+		VentaDTO venta = ventasServicio.obtenerVentaPorId(new Integer(param[0]));	
+		if(venta == null || venta.getComisionPagada().equals("1")) {
+			myMap.put("mensaje", "ERROR. Esta comision ya se pago");
+			 try {
+		            json = mapper.writeValueAsString(myMap);
+		        } catch (JsonProcessingException e) {
+		            // TODO Auto-generated catch block
+		            e.printStackTrace();
+		        } catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}			 
+			return json;
+		}
+		venta.setComisionPagada("1");
+		ventasServicio.actualizarVenta(venta);
+		venta.setTotalVenta(ventasServicio.obtenerTotalVenta(venta.getVentaId()));
+		float usuarioComision = (venta.getUsuario().getComision() / 100);
+		venta.setTotalComision( venta.getTotalVenta() * usuarioComision  );
+		DetalleCajaDTO detalle = new DetalleCajaDTO();
+		detalle.setCajaId(new Integer(param[1]));
+		detalle.setEsIngreso("0");
+		detalle.setMonto(venta.getTotalComision());
+		detalle.setDescripcion("Pago comision a "+venta.getUsuario().getNombre()+" "+venta.getUsuario().getAp_materno());
+		cajaServicio.ingresarDetalleCaja(detalle);
+		myMap.put("mensaje", "Se registro con exito");
 		 try {
 	            json = mapper.writeValueAsString(myMap);
 	        } catch (JsonProcessingException e) {

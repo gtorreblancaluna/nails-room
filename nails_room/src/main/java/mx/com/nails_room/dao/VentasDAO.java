@@ -21,4 +21,5 @@ public interface VentasDAO {
 	public void actualizar(VentaDTO venta);
 	public float obtenerTotalVenta(int ventaId);
 	public List<VentaDTO> obtenerVentasAgrupadasPorUsuario(FiltroVentas filtroVentas);
+	public void actualizarVenta(VentaDTO venta);
 }

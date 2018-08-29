@@ -158,6 +158,7 @@
 		usuario.ap_paterno AS ap_paterno_usuario,
 		usuario.ap_materno AS ap_materno_usuario,
 		usuario.email AS email_usuario,
+		usuario.comision AS comision_usuario,
 		caja.ds_descripcion AS descripcion_caja,
 		caja.fecha_apertura AS fecha_apertura_caja,
 		estacion.ds_descripcion AS descripcion_estacion,
@@ -255,7 +256,10 @@
 	      	cl_estacion_trabajo = #{estacionTrabajo.estacionTrabajoId},
 	      </if>
 	      <if test="descripcion != null and descripcion != '' ">
-	      	ds_descripcion = #{descripcion}
+	      	ds_descripcion = #{descripcion},
+	      </if>
+	      <if test="comisionPagada != null and comisionPagada != '' ">
+	      	comision_pagada = #{comisionPagada}
 	      </if>
 	    </set>
 	    WHERE cl_venta = #{ventaId}
