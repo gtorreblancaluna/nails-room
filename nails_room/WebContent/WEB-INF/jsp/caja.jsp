@@ -330,7 +330,7 @@ $( document ).ready(function() {
 	   
 	   if(monto == '')
 		   msg += ++cont + '. Ingresa una cantidad a registrar\n';	   
-	   if(monto < 0 || monto > 1000000)
+	   if( (monto < 0) || (monto > 1000000))
 		   msg += ++cont + '. Ingresa una cantidad valida\n';
 	   if(ingreso == '')
 		   msg += ++cont + '. Selecciona tipo de movimiento\n';	

@@ -85,7 +85,7 @@
 		<!-- Mostramos los usuarios -->
 		<c:if test="${not empty listaClientes}">
 		<div class="containerShowResultQuery container-result">
-		<table class="table tableShowResultQuery">
+		<table class="table tableShowResultQuery table-bordered table-sm">
 		<thead>
 			<tr>
 				<th>Id</th>
@@ -110,12 +110,14 @@
 		 			<td>${cliente.email}</td>
 		 			<td>${cliente.telefono1}</td>
 		 			<td>${cliente.telefono2}</td>
-		 			<td>${cliente.direccion}</td>		 			
-					<td><button type="button" class="btn btn-dark btnUpdateUser" id="btnUpdateUser" data-toggle="modal" data-target="#modalUpdateUser">Editar</button></td>
+		 			<td>${fn:substring(cliente.direccion, 0, 25)}</td>		 			
+<!-- 					<td><button type="button" class="btn btn-dark btnUpdateUser" id="btnUpdateUser" data-toggle="modal" data-target="#modalUpdateUser">Editar</button></td> -->
+		 			<td><a href="javascript:void(0);" data-toggle="modal" class="btnUpdateUser" id="btnUpdateUser" data-target="#modalUpdateUser">Editar</a></td>
 		 			<td>		 			
 			 			<form:form action="clientes.do" method="post" name="deleteForm" id="deleteForm">
 							<input type="hidden" name="clienteId" id="deleteCustomerId" value="${cliente.clienteId}">			 	
-			 			 	<input type="submit" class="btn btn btn-dark" name="eliminar" value="Eliminar" />	
+			 			 	<input type="hidden" class="btn btn btn-dark" name="eliminar" value="Eliminar" />
+			 			 	<a href="javascript:void(0);" onclick="$(this).closest('form').submit()">Eliminar</a>	
 			 			 </form:form>
 		 			</td>
 		 		</tr>	 	

@@ -10,7 +10,14 @@ public class UsuarioDTO extends DatosGeneralesPersonaDTO{
 	private Timestamp fechaAlta;
 	private String esAdmin;	
 	private float comision;
+	private String activo;
 	
+	public String getActivo() {
+		return activo;
+	}
+	public void setActivo(String activo) {
+		this.activo = activo;
+	}
 	public int getUsuarioId() {
 		return usuarioId;
 	}

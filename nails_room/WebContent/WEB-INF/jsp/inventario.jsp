@@ -82,15 +82,15 @@
 		<!-- Mostramos los usuarios -->
 		<c:if test="${not empty listaArticulos}">
 		<div class="containerShowResultQuery container-result">
-		<table class="table tableShowResultQuery">
+		<table class="table tableShowResultQuery table-bordered table-sm">
 		<thead>
 			<tr>
 				<th>Id</th>
 				<th>Fecha alta</th>
-				<th>Descripci&oacute;n</th>
-				<th>Unidad medida</th>
+				<th>Descripci&oacute;n</th>				
 				<th>Precio venta</th>				
 				<th>Cantidad existente</th>
+				<th>Unidad medida</th>
 				<th>Producto/Servicio</th>
 				<th></th>
 				<th></th>		
@@ -99,18 +99,20 @@
 		<tbody>
 			<c:forEach items="${listaArticulos}" var="articulo">		
 		 		<tr>
-		 			<td>${articulo.articuloId}</td>
-		 			<td>${articulo.fechaAlta}</td>
-		 			<td>${articulo.descripcion}</td>
-		 			<td>${articulo.unidadMedida}</td>
-		 			<td>${articulo.precioVenta}</td>
-		 			<td>${articulo.cantidadExistente}</td>
-		 			<td>${articulo.esProducto eq '1' ? 'Producto' : 'Servicio'}</td> 			
-					<td><button type="button" class="btn btn-dark btnUpdate" id="" data-toggle="" data-target="" data-value="${articulo.esProducto}">Editar</button></td>
+		 			<td style="text-align:center;">${articulo.articuloId}</td>
+		 			<td style="text-align:center;"><fmt:formatDate value="${articulo.fechaAlta}" pattern="dd-MM-yyyy" /></td>
+		 			<td>${fn:substring(articulo.descripcion, 0, 35)}</td>		 			
+		 			<td style="text-align:right;"><fmt:formatNumber value="${articulo.precioVenta}" type="currency" currencySymbol="$"/></td>
+		 			<td style="text-align:center;">${articulo.cantidadExistente}</td>
+		 			<td style="text-align:center;">${articulo.unidadMedida}</td>
+		 			<td style="text-align:center;">${articulo.esProducto eq '1' ? 'Producto' : 'Servicio'}</td> 			
+<%-- 					<td><button type="button" class="btn btn-dark btnUpdate" id="" data-toggle="" data-target="" data-value="${articulo.esProducto}">Editar</button></td> --%>
+		 			<td><a href="javascript:void(0);" data-toggle="modal" class="btnUpdate" data-value="${articulo.esProducto}">Editar</a></td>
 		 			<td>		 			
 			 			<form:form action="inventario.do" method="post" name="deleteForm" id="deleteForm">
 							<input type="hidden" name="articuloId" id="deleteCustomerId" value="${articulo.articuloId}">			 	
-			 			 	<input type="submit" class="btn btn btn-dark" name="eliminar" value="Eliminar" />	
+			 			 	<input type="hidden" class="btn btn btn-dark" name="eliminar" value="Eliminar" />	
+			 			 	<a href="javascript:void(0);" onclick="$(this).closest('form').submit()">Eliminar</a>
 			 			 </form:form>
 		 			</td>
 		 		</tr>	 	
@@ -311,11 +313,11 @@ $( '.btnUpdate' ).click(function() {
         if(i===2)
         	$updateForm.find('#descripcion').val(item.innerHTML);
         if(i===3)
-        	$updateForm.find('#unidadMedida').val(item.innerHTML);
+        	$updateForm.find('#precioVenta').val(item.innerHTML.replace(/[^0-9.]/g, ''));
         if(i===4)
-        	$updateForm.find('#precioVenta').val(item.innerHTML);
+        	$updateForm.find('#cantidadExistente').val(item.innerHTML);
         if(i===5)
-        	$updateForm.find('#cantidadExistente').val(item.innerHTML);		       
+        	$updateForm.find('#unidadMedida').val(item.innerHTML);		       
        
     });
     

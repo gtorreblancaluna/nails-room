@@ -7,6 +7,6 @@ body{background-image: url(../images/back_vintage.jpg);}
 .container-result { background-color: #000000ad; color: #fff;padding:15px;border-radius: 3px;box-shadow: -4px 4px 7px 0px #000;}
 .bgcol{background-color: #9595953d;}
 .info-modal-header{background-color: #eae7e7;border-radius: 5px;}
-.containerShowResultQuery{height: auto;overflow: auto;margin-top: 10px;margin-bottom: 10px;}
-.containerShowResultQuery table tr td{background-color: #000;}
+.containerShowResultQuery{background-color: #fff;color:#000;padding:0px;height: auto;overflow: auto;margin-top: 10px;margin-bottom: 10px;}
+.containerShowResultQuery table tr td{padding:0px 1px 0px 1px !important;background-color: #fff;color:#000;}
 .container-header{color:white; text-align:center;margin: 3%;}

@@ -94,7 +94,7 @@
 		<!-- Mostramos los usuarios -->
 		<c:if test="${not empty listaUsuarios}">
 		<div class="containerShowResultQuery container-result">
-		<table class="table tableShowResultQuery">
+		<table class="table tableShowResultQuery table-bordered table-sm">
 		<thead>
 			<tr>
 				<th>id</th>
@@ -119,13 +119,17 @@
 		 			<td>${usuario.email}</td>
 <%-- 		 			<td><c:out default="None" escapeXml="true" value="${user.fgAdmin eq '1' ? 'Admin' : '-' }" /></td> --%>
 					<td>${usuario.puestoDTO.descripcion}</td>
-					<td>${usuario.comision}</td>
-					<td><button type="button" class="btn btn-dark btnUpdateUser" id="btnUpdateUser" data-toggle="modal" data-target="#modalUpdateUser">Editar</button></td>
-		 			<td><button type="button" class="btn btn-dark btnUpdatePassw" id="btnUpdatePassw" data-toggle="modal" data-target="#modalActualizarContrasenia">Contrase&ntilde;a</button></td>
+					<td style="text-align:center;">${usuario.comision}</td>
+<!-- 					<td><button type="button" class="btn btn-dark btnUpdateUser" id="btnUpdateUser" data-toggle="modal" data-target="#modalUpdateUser">Editar</button></td> -->
+<!-- 		 			<td><button type="button" class="btn btn-dark btnUpdatePassw" id="btnUpdatePassw" data-toggle="modal" data-target="#modalActualizarContrasenia">Contrase&ntilde;a</button></td> -->
+		 			<td><a href="javascript:void(0);" class="btnUpdateUser" id="btnUpdateUser" data-toggle="modal" data-target="#modalUpdateUser">Editar</a></td>
+		 			<td><a href="javascript:void(0);" data-toggle="modal" data-target="#modalActualizarContrasenia">Contrase&ntilde;a</a></td>
+		 					 			
 		 			<td>		 			
-			 			<form:form action="usuarios.do" method="post" name="deleteUserForm" id="deleteUserForm">
+			 			<form:form modelAttribute="usuarioDTO" action="usuarios.do" method="post" name="deleteUserForm" id="deleteUserForm">
 							<input type="hidden" name="usuarioId" id="deleteUserId" value="${usuario.usuarioId}">			 	
-			 			 	<input type="submit" class="btn btn btn-dark" name="deleteUser" value="Eliminar" />	
+			 			 	<input type="hidden" class="btn btn btn-dark" name="eliminar" value="Eliminar" />
+			 			 	<a href="javascript:void(0);" onclick="$(this).closest('form').submit()">Eliminar</a>	
 			 			 </form:form>
 		 			</td>
 		 		</tr>	 	
@@ -175,7 +179,7 @@
 				</div>	
 				<div class="form-group">
 					<label>Comisi&oacute;n por venta: </label>
-					<input type="range" id="comisionAdd" name="comision" placeholder="" min="1" max="100" value="0" class="form-control" style="cursor:pointer;">
+					<input type="range" id="comisionAdd" name="comision" min="0" max="100" value="0" class="form-control" style="cursor:pointer;">
 					<span id="mostrarPorcentajeAdd"></span>
 				</div>
 								
@@ -227,7 +231,7 @@
 				</div>
 				<div class="form-group">
 					<label>Comisi&oacute;n por venta: </label>
-					<input type="range" id="comisionUpdate" name="comision" placeholder="" min="1" max="100" class="form-control" style="cursor:pointer;">
+					<input type="range" id="comisionUpdate" name="comision" min="0" max="100" class="form-control" style="cursor:pointer;">
 					<span id="mostrarPorcentajeUpdate"></span>
 				</div>
 			
@@ -288,6 +292,7 @@ $( document ).ready(function() {
 	// validacion para agregar usuario
 	$('form[name="addUserForm"]').submit(function() {
 		var msg = '', valid = true;
+		var msgComision = '';
 		var $form = $('#addUserForm');
 		var cont = 0;
 		// variables del formulario
@@ -310,11 +315,15 @@ $( document ).ready(function() {
 			msg += ++cont+'. El puesto es requerido \n';
 		if(comision == '')
 			msg += ++cont+'. Comisi\u00F3n es requerida \n';
+		if(comision == '0')
+			msgComision += 'Comisi\u00F3n es de cero, ¿Deas continuar? '
 		
 		if(msg != ''){
 			alert (msg);
 			valid = false;
-		}		
+		}
+		if(msgComision != '')
+			valid = confirm(msgComision);
 		return valid;	   
 	});
 	

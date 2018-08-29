@@ -51,7 +51,15 @@ public class UsuariosController {
 		cuentaUsuarioServicio.editar(usuarioDTO);
 		model.addAttribute("messageView","Se edito exitosamente el usuario: "+usuarioDTO.getNombre()+" "+usuarioDTO.getAp_paterno());
 		return "usuarioExito";
-	}	
+	}
+	
+	@PostMapping(value = "/usuarios.do", params = "eliminar")
+	public String eliminar(@ModelAttribute UsuarioDTO usuarioDTO,HttpServletRequest request, Model model) {		
+		usuarioDTO.setActivo("0");
+		cuentaUsuarioServicio.editar(usuarioDTO);
+		model.addAttribute("messageView","Se elimino con exito ");
+		return "usuarioExito";
+	}
 	@PostMapping(value = "/usuarios.do", params = "cambiarContrasenia")
 	public String cambiarContrasenia(@ModelAttribute UsuarioDTO usuarioDTO,HttpServletRequest request, Model model) {		
 		HttpSession httpSession = request.getSession();

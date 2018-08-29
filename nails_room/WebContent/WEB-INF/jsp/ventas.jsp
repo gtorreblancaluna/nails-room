@@ -107,7 +107,7 @@
 		<!-- Mostramos las ventas del filtro consultado -->
 		<c:if test="${not empty listaVentas}">
 		<div class="containerShowResultQuery container-result">
-		<table class="table tableShowResultQuery">
+		<table class="table tableShowResultQuery table-bordered table-sm">
 		<thead>
 			<tr>
 				<th>Id</th>
@@ -127,7 +127,7 @@
 			<c:forEach items="${listaVentas}" var="venta">		
 		 		<tr>
 		 			<td><a href="#" onclick='editarNota("${venta.ventaId}");'>${venta.ventaId}</a></td>
-		 			<td>${venta.descripcion}</td>
+		 			<td>${fn:substring(venta.descripcion, 0, 25)}</td>
 		 			<td>${venta.fechaRegistro}</td>
 		 			<td>${venta.cliente.nombre} ${venta.cliente.ap_paterno}</td>
 		 			<td>${venta.usuario.nombre} ${venta.usuario.ap_paterno}</td>

@@ -45,28 +45,33 @@
 		(#{puestoDTO.puestoId},#{nombre},#{ap_paterno},#{ap_materno},#{email},#{contrasenia},#{comision})
 	</insert>
 	<update id="editarUsuario" parameterType="usuarioDTO">
-		UPDATE c_usuario SET		
-		<if test="puestoDTO != null and puestoDTO.puestoId != null and puestoDTO.puestoId != '' ">
-			cl_puesto = #{puestoDTO.puestoId},
-		</if>
-		<if test="nombre != null and nombre != '' ">
-			nombre = #{nombre},
-		</if>
-		<if test="ap_paterno != null and ap_paterno != '' ">
-			ap_paterno = #{ap_paterno},
-		</if>
-		<if test="ap_materno != null and ap_materno != '' ">
-			ap_materno = #{ap_materno},
-		</if>
-		<if test="email != null and email != '' ">
-			email =	#{email},
-		</if>
-		<if test="contrasenia != null and contrasenia != '' ">
-			password = #{contrasenia}	
-		</if>	
-		<if test="comision != null and comision != '' ">
-			comision = #{comision}	
-		</if>		
+		UPDATE c_usuario 
+		<set>		
+			<if test="puestoDTO != null and puestoDTO.puestoId != null and puestoDTO.puestoId != '' ">
+				cl_puesto = #{puestoDTO.puestoId},
+			</if>
+			<if test="nombre != null and nombre != '' ">
+				nombre = #{nombre},
+			</if>
+			<if test="ap_paterno != null and ap_paterno != '' ">
+				ap_paterno = #{ap_paterno},
+			</if>
+			<if test="ap_materno != null and ap_materno != '' ">
+				ap_materno = #{ap_materno},
+			</if>
+			<if test="email != null and email != '' ">
+				email =	#{email},
+			</if>
+			<if test="contrasenia != null and contrasenia != '' ">
+				password = #{contrasenia},	
+			</if>	
+			<if test="comision != null and comision != '' ">
+				comision = #{comision},	
+			</if>	
+			<if test="activo != null and activo != '' ">
+				fg_activo = #{activo}	
+			</if>
+		</set>		
 		WHERE cl_usuario = #{usuarioId}
 	</update>
 	<delete id="deleteUser" parameterType="usuarioDTO">
