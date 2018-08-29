@@ -17,7 +17,7 @@
 .datosGenerales{border-style: solid;border-radius: 3px;padding: 5px;}
 .containerDetalleCaja{padding: 5px;}
 .containerDetalleCaja table tr td{padding: 1px 0px 1px 1px;font-size:11px;}
-.modal-content-comisiones{width:75%;font-size:11px;}
+.modal-content-comisiones{width:85%;font-size:11px;}
 .tablaComisiones tbody tr td{padding: 1px 0px 1px 1px;font-size:10px;}
 .tablaComisionesAgrupadas tbody tr td{padding: 1px 0px 1px 1px;font-size:10px;}
 </style>
@@ -53,7 +53,8 @@
 		
 		<div class="form-group row">					
 			<div class="col-xs-3">
-				<button type="button" class="btn btn-dark" data-toggle="modal" onclick="obtenerComisionesHoy();">Comisiones de hoy</button>
+				<button type="button" class="btn btn-dark" data-toggle="modal" onclick="obtenerComisiones();">Comisiones</button>
+				<input type="date" id="fechaComisiones" name="fechaComisiones" class="form-control">
 			</div>
 			<div class="col-xs-3">
 				<button type="button" class="btn btn-dark" data-toggle="modal" data-target="#modalFiltro">Buscar por filtro</button>
@@ -352,20 +353,23 @@ $( document ).ready(function() {
 	
 	$('form[name="cerrarCaja"]').submit(function() {
 		return confirm("Confirma para cerrar caja ");
-	});
+	});	
 	
 });	// end document ready
 
 
 
-function obtenerComisionesHoy(){
+function obtenerComisiones(){
 	var data = {}
+	var fecha = $('#fechaComisiones').val();
+	if(fecha == '')
+		fecha = "hoy";
 // 	if(valor != ''){
 		$.ajax({
 			type : "POST",
 			contentType : "application/json",
-			url : "obtenerComisionesHoy.do",
-			data : "hoy",
+			url : "obtenerComisiones.do",
+			data : fecha,
 			dataType : 'json',
 			timeout : 100000,
 			success : function(data) {
@@ -446,7 +450,7 @@ function pagarComision(ventaId){
 				console.log(data);
 				alert(data.mensaje);
 				if( (data.mensaje).indexOf("ERROR") == -1)
-					obtenerComisionesHoy();
+					obtenerComisiones();
 				
 			},
 			error : function(e) {
@@ -461,6 +465,8 @@ function pagarComision(ventaId){
 		alert("No se recibio el parametro, porfavor recarga la pagina e intentalo de nuevo :( ")
 	}
 }
+
+
 
 </script>
 

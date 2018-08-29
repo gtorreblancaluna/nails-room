@@ -107,17 +107,23 @@ public class VentasFacade {
 		return json;
 	}
 	
-	@RequestMapping(value = "/obtenerComisionesHoy.do")
+	@RequestMapping(value = "/obtenerComisiones.do")
 	@ResponseBody
-	public String obtenerComisionesHoy(@RequestBody String ventaId) {
+	public String obtenerComisionesHoy(@RequestBody String fecha) {
 		Map<String,Object> myMap = new HashMap<>();
 		
 		ObjectMapper mapper = new ObjectMapper();
 		String json = "";
 		FiltroVentas filtroVentas = new FiltroVentas();
-		LocalDate hoy = LocalDate.now();
-		filtroVentas.setFechaInicioFiltro(hoy.toString());
-		filtroVentas.setFechaFinFiltro(hoy.toString());
+		if(fecha.equals("hoy")) {	
+			// viene vacio, no indico fecha
+			LocalDate hoy = LocalDate.now();
+			filtroVentas.setFechaInicioFiltro(hoy.toString());
+			filtroVentas.setFechaFinFiltro(hoy.toString());
+		}else {
+			filtroVentas.setFechaInicioFiltro(fecha);
+			filtroVentas.setFechaFinFiltro(fecha);
+		}
 		
 		List<VentaDTO> ventas =  ventasServicio.obtenerPorFiltro(filtroVentas);
 		List<VentaDTO> ventasComisiones =  ventasServicio.obtenerVentasAgrupadasPorUsuario(filtroVentas);
