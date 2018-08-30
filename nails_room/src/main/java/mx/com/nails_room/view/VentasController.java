@@ -11,6 +11,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import mx.com.nails_room.forms.FiltroVentas;
 import mx.com.nails_room.model.CajaDTO;
 import mx.com.nails_room.model.VentaDTO;
@@ -57,49 +60,50 @@ public class VentasController {
 	
 	// guardar venta
 	@PostMapping(value = "/ventas.do", params = "agregar")
-	public String agregar(@ModelAttribute VentaDTO venta,HttpServletRequest request, Model model) {	
+	public ModelAndView agregar(@ModelAttribute VentaDTO venta,HttpServletRequest request, Model model,RedirectAttributes redir) {	
 		CajaDTO caja = cajaServicio.obtenerCajaAbierta();
+		ModelAndView modelAndView = new ModelAndView();
 		if(caja == null) {
 			model.addAttribute("messageError","Caja cerrada, no se pueden ingresar ventas cuando la caja esta cerrada");
-			return "ventas";
+			modelAndView.setViewName("ventas");
+			return modelAndView;
 		}
 		venta.setCaja(new CajaDTO());
 		venta.getCaja().setCajaId(caja.getCajaId());
 		ventasServicio.agregar(venta);
-		model.addAttribute("messageView","Se agrego con exito, "+venta.getDetalleVenta().size()+ " articulos");
-		model.addAttribute("venta", new VentaDTO());
-		this.obtenerValoresModel(model);
-		return "ventas";
+		redir.addFlashAttribute("messageView","Se agrego con exito, "+venta.getDetalleVenta().size()+ " articulos");
+		modelAndView.setViewName("redirect:/exito.do");
+		return modelAndView;
 	}
 	
 	@PostMapping(value = "/ventas.do", params = "actualizar")
-	public String actualizar(@ModelAttribute VentaDTO venta, HttpServletRequest request, Model model) {	
-		
+	public ModelAndView actualizar(@ModelAttribute VentaDTO venta, HttpServletRequest request,RedirectAttributes redir) {	
+		ModelAndView modelAndView = new ModelAndView();
 		ventasServicio.actualizar(venta);
-		model.addAttribute("messageView","Se edito con exito, "+venta.getDetalleVenta().size()+ " articulos");
-		model.addAttribute("venta", new VentaDTO());
-		this.obtenerValoresModel(model);
-		return "ventas";
+		redir.addFlashAttribute("messageView","Se edito con exito, "+venta.getDetalleVenta().size()+ " articulos");
+		modelAndView.setViewName("redirect:/exito.do");
+		return modelAndView;
 	}
 	// actualizar y finalizar
 	@PostMapping(value = "/ventas.do", params = "actualizarFinalizar")
-	public String actualiactualizarFinalizarzar(@ModelAttribute VentaDTO venta, HttpServletRequest request, Model model) {	
-		
+	public ModelAndView actualiactualizarFinalizarzar(@ModelAttribute VentaDTO venta, HttpServletRequest request, RedirectAttributes redir) {	
+		ModelAndView modelAndView = new ModelAndView();
 		ventasServicio.actualizar(venta);
-		ventasServicio.finalizar(venta);
-		model.addAttribute("messageView","Se edito y finalizo con exito, "+venta.getDetalleVenta().size()+ " articulos");
-		model.addAttribute("venta", new VentaDTO());
-		this.obtenerValoresModel(model);
-		return "ventas";
+		ventasServicio.finalizar(venta);		
+		redir.addFlashAttribute("messageView","Se edito y finalizo con exito, "+venta.getDetalleVenta().size()+ " articulos");
+		modelAndView.setViewName("redirect:/exito.do");
+		return modelAndView;
 	}
 	
 	// guardar y finalizar venta
 	@PostMapping(value = "/ventas.do", params = "finalizar")
-	public String finalizar(@ModelAttribute VentaDTO venta,HttpServletRequest request, Model model) {	
+	public ModelAndView finalizar(@ModelAttribute VentaDTO venta,HttpServletRequest request, RedirectAttributes redir) {	
 		CajaDTO caja = cajaServicio.obtenerCajaAbierta();
+		ModelAndView modelAndView = new ModelAndView();
 		if(caja == null) {
-			model.addAttribute("messageError","Caja cerrada, no se pueden ingresar ventas cuando la caja esta cerrada");
-			return "ventas";
+			redir.addFlashAttribute("messageError","Caja cerrada, no se pueden ingresar ventas cuando la caja esta cerrada");
+			modelAndView.setViewName("ventas");
+			return modelAndView;
 		}
 		venta.setCaja(new CajaDTO());
 		venta.getCaja().setCajaId(caja.getCajaId());
@@ -110,25 +114,23 @@ public class VentasController {
 		FiltroVentas filtroVentas = new FiltroVentas();
 		LocalDate hoy = LocalDate.now();
 		filtroVentas.setFechaInicioFiltro(hoy.toString());
-		model.addAttribute("listaVentas", ventasServicio.obtenerPorFiltro(filtroVentas));
-		model.addAttribute("messageView","Exito al finalizar la venta ");
-		this.obtenerValoresModel(model);
-		return "ventas";
+		redir.addFlashAttribute("messageView","Exito al finalizar la venta ");
+		modelAndView.setViewName("redirect:/exito.do");
+		return modelAndView;
 	}
 	
-	// finalizar venta
+	// finalizar venta desde actualizar
 		@PostMapping(value = "/ventas.do", params = "finalizarUp")
-		public String finalizarUp(@ModelAttribute VentaDTO venta,HttpServletRequest request, Model model) {	
-			
-			ventasServicio.finalizar(venta);
-			
-			FiltroVentas filtroVentas = new FiltroVentas();
-			LocalDate hoy = LocalDate.now();
-			filtroVentas.setFechaInicioFiltro(hoy.toString());
-			model.addAttribute("listaVentas", ventasServicio.obtenerPorFiltro(filtroVentas));
-			model.addAttribute("messageView","Exito al finalizar la venta ");
-			this.obtenerValoresModel(model);
-			return "ventas";
+		public ModelAndView finalizarUp(@ModelAttribute VentaDTO venta,HttpServletRequest request,  RedirectAttributes redir) {	
+			ModelAndView modelAndView = new ModelAndView();
+			ventasServicio.finalizar(venta);			
+//			FiltroVentas filtroVentas = new FiltroVentas();
+//			LocalDate hoy = LocalDate.now();
+//			filtroVentas.setFechaInicioFiltro(hoy.toString());
+//			model.addAttribute("listaVentas", ventasServicio.obtenerPorFiltro(filtroVentas));
+			redir.addFlashAttribute("messageView","Exito al finalizar la venta ");
+			modelAndView.setViewName("redirect:/exito.do");
+			return modelAndView;
 		}
 	
 	public Model obtenerValoresModel(Model model) {

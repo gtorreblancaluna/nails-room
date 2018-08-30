@@ -632,3 +632,7 @@ function verificarArticuloTabla(id,valor){
 function editarNota(id){
 	obtenerVentaPorId(id);
 }
+
+function imprimir(ventaId){
+	window.open("generar_nota.do?ventaId="+ventaId+"", "Nota venta", "width=500,height=300");
+}

@@ -119,6 +119,7 @@
 				<th>Isla</th>
 				<th>Estado</th>
 				<th>Efectivo/TC</th>
+				<th></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -133,6 +134,7 @@
 		 			<td>${venta.estacionTrabajo.descripcion}</td>
 		 			<td>${venta.estadoVenta.descripcion}</td>	
 		 			<td>${venta.pagoEfectivo eq '1' ? 'Efectivo' : 'TC'}</td>
+		 			<td><a href="javascript:void(0);" onclick='imprimir("${venta.ventaId}");'>Imprimir</a></td>
 		 		</tr>	 	
 	 		</c:forEach>
 	 	</tbody>
@@ -147,7 +149,7 @@
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title">Agregar Venta</h4>
       </div>
-      <div class="modal-body">     
+      <div class="modal-body" style="height: 500px; overflow: auto;">     
 		<form:form modelAttribute="venta" action="ventas.do" method="post" name="addForm" id="addForm">
 		
 		<ul class="nav nav-tabs">

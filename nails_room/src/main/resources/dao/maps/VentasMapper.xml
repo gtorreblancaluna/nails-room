@@ -56,7 +56,9 @@
 		<result property="detalleVentaId" column="cl_detalle_venta" />
 		<result property="ventaId" column="cl_venta" />	
 		<result property="articulo.articuloId" column="cl_articulo" />
-		<result property="articulo.descripcion" column="descripcion_articulo" />		
+		<result property="articulo.descripcion" column="descripcion_articulo" />
+		<result property="articulo.esProducto" column="es_producto_articulo" />	
+		<result property="articulo.unidadMedida" column="unidad_medida" />			
 		<result property="cantidad" column="cantidad" />	
 		<result property="precioArticulo" column="precio_articulo" />
 		<result property="ordenEntrada" column="orden_entrada" />		
@@ -174,7 +176,10 @@
 	</select>
 	
 	<select id="obtenerDetalleVentaPorId" parameterType="java.lang.Integer" resultMap="ventaDetalleResultMap">
-		SELECT detalle.*, articulo.descripcion AS descripcion_articulo
+		SELECT detalle.*, 
+		articulo.descripcion AS descripcion_articulo,
+		articulo.es_producto AS es_producto_articulo,
+		articulo.unidad_medida
 		FROM k_detalle_venta detalle
 		INNER JOIN c_articulo articulo ON (detalle.cl_articulo = articulo.cl_articulo)
 		WHERE cl_venta = #{ventaId}

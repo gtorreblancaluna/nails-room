@@ -9,17 +9,10 @@
 
 	</settings>
 	<typeAliases>
-
-
-
-		<!-- Declaracion de los bean de tipos de datos de entrada y del manejador. -->
-		
-		
+		<!-- Declaracion de los bean de tipos de datos de entrada y del manejador. -->		
 		<typeAlias alias="cajaDTO"   type="mx.com.nails_room.model.CajaDTO" />	
-		<typeAlias alias="detalleCajaDTO"   type="mx.com.nails_room.model.DetalleCajaDTO" />	
-		
-		<typeAlias alias="estadoVentaDTO"   type="mx.com.nails_room.model.EstadoVentaDTO" />
-		
+		<typeAlias alias="detalleCajaDTO"   type="mx.com.nails_room.model.DetalleCajaDTO" />		
+		<typeAlias alias="estadoVentaDTO"   type="mx.com.nails_room.model.EstadoVentaDTO" />		
 		<typeAlias alias="estacionTrabajoDTO"   type="mx.com.nails_room.model.EstacionTrabajoDTO" />
 		<typeAlias alias="ventaDTO"   type="mx.com.nails_room.model.VentaDTO" />	
 		<typeAlias alias="detalleVentaDTO"   type="mx.com.nails_room.model.DetalleVentaDTO" />	
@@ -28,13 +21,9 @@
 		<typeAlias alias="usuarioDTO"   type="mx.com.nails_room.model.UsuarioDTO" />	
 		<typeAlias alias="clienteDTO"   type="mx.com.nails_room.model.ClienteDTO" />	
 		<typeAlias alias="datosGeneralesPersonaDTO"   type="mx.com.nails_room.model.DatosGeneralesPersonaDTO" />		
-		
 		<typeAlias alias="filtroUsuario"   type="mx.com.nails_room.forms.FiltroUsuario" />		
 		<typeAlias alias="filtroArticulo"   type="mx.com.nails_room.forms.FiltroArticulo" />	
-		<typeAlias alias="filtroVentas"   type="mx.com.nails_room.forms.FiltroVentas" />	
-		
-		
-		
+		<typeAlias alias="filtroVentas"   type="mx.com.nails_room.forms.FiltroVentas" />		
 
 	</typeAliases>
 	

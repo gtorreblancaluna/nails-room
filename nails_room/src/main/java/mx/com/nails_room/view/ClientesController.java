@@ -9,6 +9,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import mx.com.nails_room.forms.FiltroUsuario;
 import mx.com.nails_room.model.ClienteDTO;
 import mx.com.nails_room.service.ClienteServicio;
@@ -35,25 +38,29 @@ public class ClientesController {
 		return "cliente";		
 	}	
 	@PostMapping(value = "/clientes.do", params = "agregar")
-	public String agregar(@ModelAttribute ClienteDTO clienteDTO,HttpServletRequest request, Model model) {
-		
+	public ModelAndView agregar(@ModelAttribute ClienteDTO clienteDTO,HttpServletRequest request,RedirectAttributes redir) {
+		ModelAndView modelAndView = new ModelAndView();
 		clienteServicio.agregar(clienteDTO);
-		model.addAttribute("messageView","Se agrego exitosamente el cliente: "+clienteDTO.getNombre()+" "+clienteDTO.getAp_paterno());
-//		return "clienteExito";
-		return "redirect:/exito.do";
+		redir.addFlashAttribute("messageView","Se agrego exitosamente el cliente: "+clienteDTO.getNombre()+" "+clienteDTO.getAp_paterno());
+		modelAndView.setViewName("redirect:/exito.do");
+		return modelAndView;
 	}	
 	@PostMapping(value = "/clientes.do", params = "editar")
-	public String editar(@ModelAttribute ClienteDTO clienteDTO,HttpServletRequest request, Model model) {		
+	public ModelAndView editar(@ModelAttribute ClienteDTO clienteDTO,HttpServletRequest request, RedirectAttributes redir) {		
 		clienteServicio.editar(clienteDTO);
-		model.addAttribute("messageView","Se edito exitosamente el cliente: "+clienteDTO.getNombre()+" "+clienteDTO.getAp_paterno());
-		return "clienteExito";
+		ModelAndView modelAndView = new ModelAndView();
+		redir.addFlashAttribute("messageView","Se edito exitosamente el cliente: "+clienteDTO.getNombre()+" "+clienteDTO.getAp_paterno());
+		modelAndView.setViewName("redirect:/exito.do");
+		return modelAndView;
 	}
 	
 	@PostMapping(value = "/clientes.do", params = "eliminar")
-	public String eliminar(@ModelAttribute ClienteDTO clienteDTO,HttpServletRequest request, Model model) {		
+	public ModelAndView eliminar(@ModelAttribute ClienteDTO clienteDTO,HttpServletRequest request, Model model,RedirectAttributes redir) {	
+		ModelAndView modelAndView = new ModelAndView();
 		clienteServicio.eliminar(clienteDTO);
-		model.addAttribute("messageView","Se elimino con exito al cliente ");
-		return "clienteExito";
+		redir.addFlashAttribute("messageView","Se elimino con exito al cliente ");
+		modelAndView.setViewName("redirect:/exito.do");
+		return modelAndView;
 	}
 
 }
