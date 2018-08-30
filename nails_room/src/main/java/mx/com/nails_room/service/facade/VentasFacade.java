@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import mx.com.nails_room.forms.FiltroArticulo;
 import mx.com.nails_room.forms.FiltroVentas;
 import mx.com.nails_room.model.ArticuloDTO;
+import mx.com.nails_room.model.CajaDTO;
 import mx.com.nails_room.model.ClienteDTO;
 import mx.com.nails_room.model.DetalleCajaDTO;
 import mx.com.nails_room.model.VentaDTO;
@@ -151,15 +152,14 @@ public class VentasFacade {
 	
 	@RequestMapping(value = "/pagarComisionPodIdVenta.do")
 	@ResponseBody
-	public String pagarComisionPodIdVenta(@RequestBody String parametros) {
-		Map<String,Object> myMap = new HashMap<>();
-		
+	public String pagarComisionPodIdVenta(@RequestBody String ventaId) {
+		Map<String,Object> myMap = new HashMap<>();		
 		ObjectMapper mapper = new ObjectMapper();
 		String json = "";
-		String[] param = parametros.split("-");
-		VentaDTO venta = ventasServicio.obtenerVentaPorId(new Integer(param[0]));	
+//		String[] param = parametros.split("-");
+		VentaDTO venta = ventasServicio.obtenerVentaPorId(new Integer(ventaId));	
 		if(venta == null || venta.getComisionPagada().equals("1")) {
-			myMap.put("mensaje", "ERROR. Esta comision ya se pago");
+			myMap.put("mensaje", "ERROR. Esta comisi\u00F3n ya se pag\u00F3 -.- ");
 			 try {
 		            json = mapper.writeValueAsString(myMap);
 		        } catch (JsonProcessingException e) {
@@ -177,12 +177,78 @@ public class VentasFacade {
 		float usuarioComision = (venta.getUsuario().getComision() / 100);
 		venta.setTotalComision( venta.getTotalVenta() * usuarioComision  );
 		DetalleCajaDTO detalle = new DetalleCajaDTO();
-		detalle.setCajaId(new Integer(param[1]));
+		detalle.setCajaId(venta.getCaja().getCajaId());
 		detalle.setEsIngreso("0");
 		detalle.setMonto(venta.getTotalComision());
 		detalle.setDescripcion("Pago comision a "+venta.getUsuario().getNombre()+" "+venta.getUsuario().getAp_materno());
 		cajaServicio.ingresarDetalleCaja(detalle);
-		myMap.put("mensaje", "Se registro con exito");
+		myMap.put("mensaje", "Se registr\u00F3 con \u00E9xito :) ");
+		 try {
+	            json = mapper.writeValueAsString(myMap);
+	        } catch (JsonProcessingException e) {
+	            // TODO Auto-generated catch block
+	            e.printStackTrace();
+	        } catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}	
+		 
+		return json;
+	}
+	
+	@RequestMapping(value = "/pagarComisiones.do")
+	@ResponseBody
+	public String pagarComisiones(@RequestBody String parametros) {
+		// declaracion de objetos a utilizar
+		Map<String,Object> myMap = new HashMap<>();
+		StringBuilder builder = new StringBuilder();
+		ObjectMapper mapper = new ObjectMapper();
+		String json = "";
+		VentaDTO venta = null;		
+		// obtenemos la caja abierta
+//		CajaDTO caja = cajaServicio.obtenerCajaAbierta();
+//		if(caja == null) {			
+//			myMap.put("mensaje", "ERROR. No se encontr\u00F3 caja abierta");			
+//			 try {
+//		            json = mapper.writeValueAsString(myMap);
+//		        } catch (JsonProcessingException e) {
+//		            // TODO Auto-generated catch block
+//		            e.printStackTrace();
+//		        } catch (IOException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}			 
+//			return json;
+//		}
+		String[] param = parametros.split("-");
+		for(String ventaId : param){ // recorremos las comisiones a pagar	
+			try {			
+				venta = ventasServicio.obtenerVentaPorId(new Integer(ventaId));			
+			}catch (NumberFormatException e) {
+				builder.append("ERROR GRAVE. No s\u00E9 recibi\u00F3 parametro correcto para venta id: "+ventaId+"\n");
+			}
+			
+			if(venta != null && venta.getComisionPagada().equals("1")) {
+				builder.append(("ERROR. La comisi\u00F3n ya se pag\u00F3 para: "+venta.getUsuario().getNombre()+", venta id: "+venta.getVentaId()+"\n"));
+			}else if(venta != null){
+				venta.setComisionPagada("1");
+				ventasServicio.actualizarVenta(venta);
+				venta.setTotalVenta(ventasServicio.obtenerTotalVenta(venta.getVentaId()));
+				float usuarioComision = (venta.getUsuario().getComision() / 100);
+				venta.setTotalComision( venta.getTotalVenta() * usuarioComision  );
+				DetalleCajaDTO detalle = new DetalleCajaDTO();
+				detalle.setCajaId(venta.getCaja().getCajaId());
+				detalle.setEsIngreso("0");
+				detalle.setMonto(venta.getTotalComision());
+				detalle.setDescripcion("Pago comision a "+venta.getUsuario().getNombre()+" "+venta.getUsuario().getAp_materno()+", venta id: "+ventaId);
+				cajaServicio.ingresarDetalleCaja(detalle);
+				builder.append("\u00C9XITO. se pag\u00F3 la comisi\u00F3n para: "+venta.getUsuario().getNombre()+", venta id: "+ventaId+"\n");
+			}else {
+				builder.append("ERROR GRAVE. No se encontr\u00F3 la venta id: "+ventaId+" :(\n");
+			}
+		} // fin for each	
+		
+		myMap.put("mensaje", builder+"");
 		 try {
 	            json = mapper.writeValueAsString(myMap);
 	        } catch (JsonProcessingException e) {

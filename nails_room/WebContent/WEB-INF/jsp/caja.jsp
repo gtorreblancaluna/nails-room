@@ -52,14 +52,15 @@
 		</div>
 		
 		<div class="form-group row">					
-			<div class="col-xs-3">
-				<button type="button" class="btn btn-dark" data-toggle="modal" onclick="obtenerComisiones();">Comisiones</button>
-				<input type="date" id="fechaComisiones" name="fechaComisiones" class="form-control">
-			</div>
+			
 			<div class="col-xs-3">
 				<button type="button" class="btn btn-dark" data-toggle="modal" data-target="#modalFiltro">Buscar por filtro</button>
 			</div>
-			<c:if test="${not empty caja}">			
+			<c:if test="${not empty caja}">	
+				<div class="col-xs-3">
+					<button type="button" class="btn btn-dark" data-toggle="modal" onclick="obtenerComisiones();">Comisiones</button>
+					<input type="date" id="fechaComisiones" name="fechaComisiones" class="form-control">
+				</div>		
 				<div class="col-xs-3">
 					<button type="button" class="btn btn-dark btnRegistrarMovimiento" data-toggle="modal" data-target="#modalRegistrarMovimiento">Registrar Ingreso/Egreso</button>
 				</div>
@@ -319,7 +320,7 @@
 
 <script type="text/javascript" src="js/data-tables.js"></script>
 <script type="text/javascript">
-var g_result='';
+
 $( document ).ready(function() {
 	
 	$('.tableShowResultQuery').DataTable();
@@ -360,22 +361,19 @@ $( document ).ready(function() {
 	
 });	// end document ready
 
-function recorrerPago(){
-	$(".tablaComisiones tbody tr").each(function () {
+function pagarTodo(){
+	 var array = '';
+	 $(".tablaComisiones tbody tr").each(function () {
 		 var $tr = $(this).closest('tr');
 		 var ventaId = parseFloat($tr.find('.ventaId').text());
-		 pagarTodasComisiones(ventaId);		
+// 		 pagarTodasComisiones(ventaId);		
+		 array += ventaId + "-";
 	})
-	
-}
+	if(confirm("Confirma para continuar")){
+		pagarTodasComisiones(array);
+		
+	}
 
-function pagarTodo(){
-	 var msg = '';
-// 	 g_result = '';
-	recorrerPago();	
-	obtenerComisiones();
-	alert(g_result);
-	g_result = '';
 }
 
 function obtenerComisiones(){
@@ -452,22 +450,20 @@ function formatCurrency(total) {
     return (neg ? "-$" : '$') + parseFloat(total, 10).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString();
 }
 
-function pagarTodasComisiones(ventaId){
-// 	alert(ventaId+'| ${caja.cajaId}');	
-	var data = {}
-	var msg = '';
-// 	g_result = '';
-	var parametros = ventaId+"-"+"${caja.cajaId}"	
+function pagarTodasComisiones(array){
+
+	var data = {}		
 		$.ajax({
 			type : "POST",
 			contentType : "application/json",
-			url : "pagarComisionPodIdVenta.do",
-			data : parametros,
+			url : "pagarComisiones.do",
+			data : array,
 			dataType : 'json',
 			timeout : 100000,
 			success : function(data) {				
 				console.log(data);
-				g_result += data.mensaje + "\n";
+				obtenerComisiones();
+				alert(data.mensaje);
 			},
 			error : function(e) {
 				console.log("ERROR: ", e);	
@@ -485,13 +481,13 @@ function pagarTodasComisiones(ventaId){
 function pagarComision(ventaId){
 // 	alert(ventaId+'| ${caja.cajaId}');	
 	var data = {}
-	var parametros = ventaId+"-"+"${caja.cajaId}"
+// 	var parametros = ventaId;
 	if(ventaId != ''){
 		$.ajax({
 			type : "POST",
 			contentType : "application/json",
 			url : "pagarComisionPodIdVenta.do",
-			data : parametros,
+			data : ventaId+"",
 			dataType : 'json',
 			timeout : 100000,
 			success : function(data) {

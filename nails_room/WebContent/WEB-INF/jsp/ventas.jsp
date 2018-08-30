@@ -119,23 +119,20 @@
 				<th>Isla</th>
 				<th>Estado</th>
 				<th>Efectivo/TC</th>
-<!-- 				<th></th> -->
-<!-- 				<th></th>	 -->
 			</tr>
 		</thead>
 		<tbody>
 			<c:forEach items="${listaVentas}" var="venta">		
 		 		<tr>
-		 			<td><a href="#" onclick='editarNota("${venta.ventaId}");'>${venta.ventaId}</a></td>
+		 			<td style="text-align:center;"><a href="javascript:void(0);" onclick='editarNota("${venta.ventaId}");'>${venta.ventaId}</a></td>
 		 			<td>${fn:substring(venta.descripcion, 0, 25)}</td>
-		 			<td>${venta.fechaRegistro}</td>
+		 			<td style="text-align:center;"><fmt:formatDate value="${venta.fechaRegistro}" pattern="dd-MM-yyyy" /></td>
 		 			<td>${venta.cliente.nombre} ${venta.cliente.ap_paterno}</td>
 		 			<td>${venta.usuario.nombre} ${venta.usuario.ap_paterno}</td>
-		 			<td>${venta.caja.fechaApertura}</td>
+		 			<td style="text-align:center;"><fmt:formatDate value="${venta.caja.fechaApertura}" pattern="dd-MM-yyyy" /></td>
 		 			<td>${venta.estacionTrabajo.descripcion}</td>
 		 			<td>${venta.estadoVenta.descripcion}</td>	
 		 			<td>${venta.pagoEfectivo eq '1' ? 'Efectivo' : 'TC'}</td>
-<%-- 					<td><button type="button" class="btn btn-dark btnUpdate" id="btnUpdate" data-value="${venta.ventaId}">Editar</button></td> --%>
 		 		</tr>	 	
 	 		</c:forEach>
 	 	</tbody>

@@ -5,7 +5,10 @@ var cont_update=0;
 var g_clienteIdEditar;
 
 $( document ).ready(function() {
-	$('.tableShowResultQuery').DataTable();
+	$('.tableShowResultQuery').DataTable( {
+//		  "orderClasses": false
+			order: [[ 0, "desc" ]] //column indexes is zero based
+	} );
 	
 	//confirmar eliminar	
 	$('form[name="deleteForm"]').submit(function() {
