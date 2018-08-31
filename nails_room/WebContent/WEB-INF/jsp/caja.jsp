@@ -102,6 +102,7 @@
 			<div class="form-group row">			
 				<div class="infoVentas col-xs-8" style="">
 					<table class="table table-bordered table-sm">
+					<caption>Ventas</caption>
 					<thead>
 						<tr>
 							<th>Id</th>
@@ -109,7 +110,7 @@
 							<th>Fecha</th>
 							<th>Cliente</th>
 							<th>Atendi&oacute;</th>
-							<th>Isla</th>
+							<th>Estaci&oacute;n</th>
 							<th>Estado</th>
 							<th>Total</th>									
 						</tr>
@@ -117,9 +118,9 @@
 					<tbody>
 					<c:forEach items="${ventas}" var="venta">
 					<tr>
-		 			<td>${venta.ventaId}</td>
+		 			<td style="text-align:center;">${venta.ventaId}</td>
 		 			<td>${fn:substring(venta.descripcion, 0, 21)}</td>
-		 			<td><fmt:formatDate value="${venta.fechaRegistro}" pattern="dd-MM-yyyy" /></td>
+		 			<td style="text-align:center;"><fmt:formatDate value="${venta.fechaRegistro}" pattern="dd-MM-yyyy" /></td>
 		 			<td>${venta.cliente.nombre} ${venta.cliente.ap_paterno}</td>
 		 			<td>${venta.usuario.nombre} ${venta.usuario.ap_paterno}</td>		 			
 		 			<td>${venta.estacionTrabajo.descripcion}</td>
@@ -132,10 +133,11 @@
 				</div>
 				<div class="infoDetalleCaja col-xs-4" style="">
 					<table class="table table-bordered table-sm">
+					<caption>Movimientos en caja</caption>
 						<thead>
 							<tr>								
 								<th>Descripci&oacute;n</th>
-								<th>Ingreso/Egreso</th>
+								<th>Movimiento</th>
 								<th>Monto</th>																	
 							</tr>
 						</thead>

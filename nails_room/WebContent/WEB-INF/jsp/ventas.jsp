@@ -233,6 +233,7 @@
 				</div>
 				<div class="col-xs-4">
 					<label>Total de articulos: <span id="totalArticulos"></span></label>
+					<label><input type="checkbox" name="imprimirNota" class="" checked> Deseo imprimir la nota al finalizar el proceso</label>
 				</div>
 			</div>
 				<div class="form-group row">

@@ -8,11 +8,6 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Nails Room :: exito cliente </title>
-<style>		   
-    
-
-</style>
-
 </head>
 <body>
  <div class="container" style="">
@@ -31,14 +26,26 @@
 		<div class="alert alert-danger">
   			<strong>Error! </strong> ${messageError}
 		</div>
-		</c:if>
-		
-		
+		</c:if>		
 	</div>
 	
-    
-    
+	<script type="text/javascript">
 
+$( document ).ready(function() {		
+	if('${ventaId}' != '')
+	{
+		var ventaId = '${ventaId}';
+		imprimir(ventaId);
+	}
+	
+}); // end document ready
 
+function imprimir(ventaId){
+	window.open("generar_nota.do?ventaId="+ventaId+"", "Nota venta", "width=500,height=300");
+}
+
+</script>
 </body>
+
+
 </html>
