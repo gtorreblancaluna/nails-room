@@ -10,6 +10,6 @@ public class ExitoController {
 
 	@GetMapping(value = "/exito.do")
 	public String mostrarInicio(HttpServletRequest request, Model model) {
-		return "clienteExito";
+		return "exito";
 	}
 }

@@ -22,7 +22,15 @@ public class VentaDTO {
 	private float totalVenta;
 	// total de comision por la venta
 	private float totalComision;	
+	// bandera para indicar si desea imprimir nota despues de guardar la venta
+	private boolean imprimirNota;
 	
+	public boolean isImprimirNota() {
+		return imprimirNota;
+	}
+	public void setImprimirNota(boolean imprimirNota) {
+		this.imprimirNota = imprimirNota;
+	}
 	public String getComisionPagada() {
 		return comisionPagada;
 	}

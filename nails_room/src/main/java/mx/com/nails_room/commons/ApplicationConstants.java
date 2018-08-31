@@ -25,7 +25,9 @@ public interface ApplicationConstants {
 	/** estado para el puesto PROVEEDOR = 4 */
 	public static final Integer PUESTO_APLICADOR = 4;
 
-	// Mascara fecha grande
+	/** Mascara fecha grande */
 	public static final String MASK_DATE_FORMAT = "EEEEEEEE dd 'de' MMMMMMMMMMMMMM, yyyy";
+	/** ruta para tomar las imagenes en PDF */
+	public static final String RUTA_IMAGENES_PDF = "C:/herramientas/eclipseoxygen-nails-room/webapps/nails_room/images/";
 	
 }

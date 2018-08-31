@@ -89,7 +89,7 @@ public class VentasController {
 	public ModelAndView actualiactualizarFinalizarzar(@ModelAttribute VentaDTO venta, HttpServletRequest request, RedirectAttributes redir) {	
 		ModelAndView modelAndView = new ModelAndView();
 		ventasServicio.actualizar(venta);
-		ventasServicio.finalizar(venta);		
+		ventasServicio.finalizar(venta);	
 		redir.addFlashAttribute("messageView","Se edito y finalizo con exito, "+venta.getDetalleVenta().size()+ " articulos");
 		modelAndView.setViewName("redirect:/exito.do");
 		return modelAndView;
@@ -111,9 +111,12 @@ public class VentasController {
 		ventasServicio.agregar(venta);
 		ventasServicio.finalizar(venta);
 		
-		FiltroVentas filtroVentas = new FiltroVentas();
-		LocalDate hoy = LocalDate.now();
-		filtroVentas.setFechaInicioFiltro(hoy.toString());
+		if(venta.isImprimirNota())
+			redir.addFlashAttribute("ventaId",venta.getVentaId());
+		
+//		FiltroVentas filtroVentas = new FiltroVentas();
+//		LocalDate hoy = LocalDate.now();
+//		filtroVentas.setFechaInicioFiltro(hoy.toString());
 		redir.addFlashAttribute("messageView","Exito al finalizar la venta ");
 		modelAndView.setViewName("redirect:/exito.do");
 		return modelAndView;
@@ -122,8 +125,10 @@ public class VentasController {
 	// finalizar venta desde actualizar
 		@PostMapping(value = "/ventas.do", params = "finalizarUp")
 		public ModelAndView finalizarUp(@ModelAttribute VentaDTO venta,HttpServletRequest request,  RedirectAttributes redir) {	
-			ModelAndView modelAndView = new ModelAndView();
-			ventasServicio.finalizar(venta);			
+			ModelAndView modelAndView = new ModelAndView();						
+			ventasServicio.finalizar(venta);
+			if(venta.isImprimirNota())
+				redir.addFlashAttribute("ventaId",venta.getVentaId());
 //			FiltroVentas filtroVentas = new FiltroVentas();
 //			LocalDate hoy = LocalDate.now();
 //			filtroVentas.setFechaInicioFiltro(hoy.toString());
