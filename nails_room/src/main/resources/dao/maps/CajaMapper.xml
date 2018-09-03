@@ -83,5 +83,12 @@
 		fecha_cierre = #{fechaCierre}
 		WHERE cl_caja = #{cajaId}		
 	</update>
+	<select id="obtenerCajaPorFechas" resultMap="cajaResultMap" parameterType="java.util.Map">
+		SELECT * FROM c_caja
+		WHERE
+		<![CDATA[ 
+			fecha_apertura >= CONCAT(#{fechaInicial},' 000000') AND fecha_apertura <= CONCAT(#{fechaFinal},' 235959')
+		]]>
+	</select>
 
 </mapper>

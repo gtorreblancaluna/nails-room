@@ -2,6 +2,7 @@ package mx.com.nails_room.dao.impl;
 
 import java.sql.Timestamp;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.mybatis.spring.support.SqlSessionDaoSupport;
@@ -46,6 +47,15 @@ public class SqlMapCaja extends SqlSessionDaoSupport implements CajaDAO {
 		caja.setFechaCierre(new Timestamp(System.currentTimeMillis()));
 		getSqlSession().update("cerrarCaja",caja);
 		return false;
+	}
+
+	@Override
+	public List<CajaDTO> obtenerCajaPorFechas(String feInicial, String feFinal) {
+		// TODO Auto-generated method stub
+		Map<String,Object> map = new HashMap<>();
+		map.put("fechaInicial", feInicial);
+		map.put("fechaFinal", feFinal);
+		return getSqlSession().selectList("obtenerCajaPorFechas",map);
 	}
 
 }

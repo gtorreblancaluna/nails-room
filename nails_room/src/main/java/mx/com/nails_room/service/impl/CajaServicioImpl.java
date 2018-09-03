@@ -1,5 +1,7 @@
 package mx.com.nails_room.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +38,12 @@ public class CajaServicioImpl implements CajaServicio {
 	public boolean cerrarCaja(CajaDTO caja) {
 		cajaDao.cerrarCaja(caja);
 		return false;
+	}
+
+	@Override
+	public List<CajaDTO> obtenerCajaPorFechas(String feInicial, String feFinal) {
+		// TODO Auto-generated method stub
+		return cajaDao.obtenerCajaPorFechas(feInicial, feFinal);
 	}
 
 }

@@ -261,5 +261,28 @@ public class VentasFacade {
 		 
 		return json;
 	}
+	
+	@RequestMapping(value = "/obtenerCajasPorFecha.do")
+	@ResponseBody
+	public String obtenerCajasPorFecha(@RequestBody String fechas) {
+		Map<String,Object> myMap = new HashMap<>();
+		ObjectMapper mapper = new ObjectMapper();
+		String json = "";
+		
+		List<CajaDTO> cajas = cajaServicio.obtenerCajaPorFechas(fechas, fechas);	
+		myMap.put("cajas", cajas);
+		
+		 try {
+	            json = mapper.writeValueAsString(myMap);
+	        } catch (JsonProcessingException e) {
+	            // TODO Auto-generated catch block
+	            e.printStackTrace();
+	        } catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}	
+		 
+		return json;
+	}
 
 }

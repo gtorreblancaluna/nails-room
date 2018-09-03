@@ -107,12 +107,13 @@
 		 			<td style="text-align:center;">${articulo.unidadMedida}</td>
 		 			<td style="text-align:center;">${articulo.esProducto eq '1' ? 'Producto' : 'Servicio'}</td> 			
 <%-- 					<td><button type="button" class="btn btn-dark btnUpdate" id="" data-toggle="" data-target="" data-value="${articulo.esProducto}">Editar</button></td> --%>
-		 			<td><a href="javascript:void(0);" data-toggle="modal" class="btnUpdate" data-value="${articulo.esProducto}">Editar</a></td>
+		 			<td><a href="javascript:void(0);" class="btnUpdate" data-value="${articulo.esProducto}">Editar</a></td>
 		 			<td>		 			
-			 			<form:form action="inventario.do" method="post" name="deleteForm" id="deleteForm">
-							<input type="hidden" name="articuloId" id="deleteCustomerId" value="${articulo.articuloId}">			 	
+			 			<form:form modelAttribute="articulo" action="inventario.do" method="post" name="deleteForm" id="deleteForm">
+							<input type="hidden" name="articuloId" id="articuloId" value="${articulo.articuloId}">			 	
 			 			 	<input type="hidden" class="btn btn btn-dark" name="eliminar" value="Eliminar" />	
-			 			 	<a href="javascript:void(0);" onclick="$(this).closest('form').submit()">Eliminar</a>
+			 			 	<a href="javascript:void(0);"  onclick="$(this).closest('form').submit()">Eliminar</a>
+<%-- 			 			 	<a href="javascript:void(0);" class="btnEliminar" data-value='${articulo.articuloId}'>Eliminar</a> --%>
 			 			 </form:form>
 		 			</td>
 		 		</tr>	 	
@@ -261,6 +262,14 @@ $( document ).ready(function() {
 	//confirmar eliminar	
 	$('form[name="deleteForm"]').submit(function() {
 	   return confirm("confirma para continuar");	   
+	});
+	
+	$( '.btnEliminar' ).click(function() {
+		var articuloId = $(this).attr('data-value');
+		var $form = $('#deleteForm');
+		$form.find('#articuloId').val(articuloId);
+		if(confirm("Confirma para eliminar "))
+			$('form[name="deleteForm"]').submit();
 	});
 	
 	// validacion para agregar cliente
