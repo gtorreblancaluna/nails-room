@@ -102,5 +102,14 @@ public class CajaController {
 		model.addAttribute("caja",caja);
 		return model;
 	}
+	
+	@PostMapping(value = "/caja.do", params = "eliminarMovimiento")
+	public String eliminarMovimiento(@ModelAttribute DetalleCajaDTO detalleCaja, HttpServletRequest request, Model model) {	
+		
+		cajaServicio.eliminarMovimiento(detalleCaja.getDetalleCajaId());			
+		this.obtenerDatos(model);
+		model.addAttribute("messageView","Se elimino con exito ");		
+		return "caja";
+	}
 
 }

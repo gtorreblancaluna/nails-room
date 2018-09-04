@@ -46,4 +46,9 @@ public class CajaServicioImpl implements CajaServicio {
 		return cajaDao.obtenerCajaPorFechas(feInicial, feFinal);
 	}
 
+	@Override
+	public void eliminarMovimiento(int id) {
+		cajaDao.eliminarMovimiento(id);		
+	}
+
 }

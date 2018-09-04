@@ -58,4 +58,9 @@ public class SqlMapCaja extends SqlSessionDaoSupport implements CajaDAO {
 		return getSqlSession().selectList("obtenerCajaPorFechas",map);
 	}
 
+	@Override
+	public void eliminarMovimiento(int id) {
+		getSqlSession().delete("eliminarMovimiento",id);		
+	}
+
 }

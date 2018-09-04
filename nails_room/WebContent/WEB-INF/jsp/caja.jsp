@@ -138,15 +138,23 @@
 							<tr>								
 								<th>Descripci&oacute;n</th>
 								<th>Movimiento</th>
-								<th>Monto</th>																	
+								<th>Monto</th>	
+								<th></th>																
 							</tr>
 						</thead>
 						<tbody>
 						<c:forEach items="${caja.detalleCaja}" var="detalle">
 						<tr>			 			
-			 			<td>${fn:substring(detalle.descripcion, 0, 25)}</td>
-			 			<td>${detalle.esIngreso eq '1' ? '(+) Ingreso' : '(-) Egreso'}</td>
-			 			<td style="text-align:right;"><fmt:formatNumber value="${detalle.monto}" type="currency" currencySymbol="$"/></td>			 			
+				 			<td>${fn:substring(detalle.descripcion, 0, 25)}</td>
+				 			<td>${detalle.esIngreso eq '1' ? '(+) Ingreso' : '(-) Egreso'}</td>
+				 			<td style="text-align:right;"><fmt:formatNumber value="${detalle.monto}" type="currency" currencySymbol="$"/>			 			
+			 				<td>
+				 				<form:form modelAttribute="detalleCaja" action="caja.do" method="post" name="deleteForm" id="deleteForm">
+									<input type="hidden" name="detalleCajaId" id="detalleCajaId" value="${detalle.detalleCajaId}">			 	
+					 			 	<input type="hidden" class="btn btn btn-dark" name="eliminarMovimiento" value="Eliminar" />	
+					 			 	<a href="javascript:void(0);"  onclick="$(this).closest('form').submit()">&nbsp;Eliminar&nbsp;</a>	
+				 				 </form:form>
+			 				 </td>
 			 			</tr>	 
 						</c:forEach>
 						</tbody>
@@ -324,6 +332,10 @@
 <script type="text/javascript">
 
 $( document ).ready(function() {
+	
+	$('form[name="deleteForm"]').submit(function() {
+		   return confirm("confirma para continuar");	   
+		});
 	
 	$('.tableShowResultQuery').DataTable();
 	//confirmar eliminar	
@@ -512,8 +524,6 @@ function pagarComision(ventaId){
 		alert("No se recibio el parametro, porfavor recarga la pagina e intentalo de nuevo :( ")
 	}
 }
-
-
 
 </script>
 

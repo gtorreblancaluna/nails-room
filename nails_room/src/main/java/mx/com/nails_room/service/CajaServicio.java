@@ -11,4 +11,5 @@ public interface CajaServicio {
 	public boolean ingresarDetalleCaja(DetalleCajaDTO detalleCaja);
 	public boolean cerrarCaja(CajaDTO caja);
 	public List<CajaDTO> obtenerCajaPorFechas(String feInicial, String feFinal);
+	public void eliminarMovimiento (int id);
 }

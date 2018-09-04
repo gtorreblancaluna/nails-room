@@ -90,5 +90,9 @@
 			fecha_apertura >= CONCAT(#{fechaInicial},' 000000') AND fecha_apertura <= CONCAT(#{fechaFinal},' 235959')
 		]]>
 	</select>
+	
+	<delete id="eliminarMovimiento" parameterType="java.lang.Integer">
+		DELETE FROM k_detalle_caja WHERE cl_detalle_caja = #{id}
+	</delete>
 
 </mapper>
