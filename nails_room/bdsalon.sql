@@ -33,6 +33,14 @@ ds_descripcion VARCHAR(65) NOT NULL,
 PRIMARY KEY(cl_estado_venta)
 )
 ENGINE = InnoDB;
+
+
+CREATE TABLE c_estado_cita(
+cl_estado_cita integer unsigned not null AUTO_INCREMENT,
+ds_descripcion VARCHAR(65) NOT NULL,
+PRIMARY KEY(cl_estado_cita)
+)
+ENGINE = InnoDB;
     
 -- 2018-05-26 GTL - TABLA PUESTOS DEL TRABAJADOR
 CREATE TABLE c_puesto(
@@ -158,6 +166,26 @@ CONSTRAINT fk_cl_estacion_trabajo FOREIGN KEY fk_cl_estacion_trabajo (cl_estacio
 )
 ENGINE = InnoDB;
 
+-- 2018.09.05 
+CREATE TABLE c_cita(
+cl_cita INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+cl_cliente INTEGER UNSIGNED NOT NULL,
+cl_estado_cita INTEGER UNSIGNED NOT NULL,
+fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+fecha_cita TIMESTAMP NULL,
+ds_descripcion VARCHAR(255),
+PRIMARY KEY (cl_cita),
+CONSTRAINT fk_cita_cl_cliente FOREIGN KEY fk_cita_cl_cliente (cl_cliente)
+	REFERENCES c_cliente (cl_cliente)
+	ON DELETE CASCADE
+    ON UPDATE CASCADE,
+CONSTRAINT fk_cl_estado_cita FOREIGN KEY fk_cl_estado_cita (cl_estado_cita)
+	REFERENCES c_estado_cita (cl_estado_cita)
+	ON DELETE CASCADE
+    ON UPDATE CASCADE
+)
+ENGINE = InnoDB;
+
 -- 2018.05.22 GTL DETALLE DE VENTA
 CREATE TABLE k_detalle_venta(
 cl_detalle_venta INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -199,6 +227,11 @@ ENGINE = InnoDB;
 INSERT INTO c_estado_venta (ds_descripcion) VALUES ('Preventa');
 INSERT INTO c_estado_venta (ds_descripcion) VALUES ('Cancelado');
 INSERT INTO c_estado_venta (ds_descripcion) VALUES ('Finalizado');
+
+INSERT INTO c_estado_cita (ds_descripcion) VALUES ('Apartado');
+INSERT INTO c_estado_cita (ds_descripcion) VALUES ('En proceso');
+INSERT INTO c_estado_cita (ds_descripcion) VALUES ('Finalizado');
+INSERT INTO c_estado_cita (ds_descripcion) VALUES ('Cancelado');
 
 INSERT INTO c_puesto (ds_descripcion) VALUES ('Administrador');
 INSERT INTO c_puesto (ds_descripcion) VALUES ('Mostrador');

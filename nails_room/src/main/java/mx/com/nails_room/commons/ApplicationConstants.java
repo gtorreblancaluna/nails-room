@@ -24,6 +24,17 @@ public interface ApplicationConstants {
 	public static final Integer PUESTO_VENDEDOR = 3;
 	/** estado para el puesto PROVEEDOR = 4 */
 	public static final Integer PUESTO_APLICADOR = 4;
+	
+	/** VALORES PARA ESTADO DE LA CITA */
+	/** estado de la cita APARTADO = 1 */
+	public static final int CITA_APARTADO = 1;
+	/** estado de la cita en proceso = 2 */
+	public static final int CITA_EN_PROCESO = 2;
+	/** estado de la cita finalizado = 3 */
+	public static final int CITA_FINALIZADO = 3;
+	/** estado de la cita cancelado = 3 */
+	public static final int CITA_CANCELADO = 4;
+	
 
 	/** Mascara fecha grande */
 	public static final String MASK_DATE_FORMAT = "EEEEEEEE dd 'de' MMMMMMMMMMMMMM, yyyy";

@@ -1,0 +1,83 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mx.com.nails_room.dao.CitasDAO">
+
+	<resultMap id="citaResultMap" type="citaDTO">
+		<result property="citaId" column="cl_cita" />
+		<!-- datos del cliente -->
+		<result property="cliente.clienteId" column="cl_cliente" />
+		<result property="cliente.nombre" column="nombre_cliente" />
+		<result property="cliente.ap_paterno" column="ap_paterno_cliente" />
+		<result property="cliente.ap_materno" column="ap_materno_cliente" />
+		<!-- datos del estado de la cita -->		
+		<result property="estadoCita.estadoCitaId" column="cl_estado_cita" />
+		<result property="estadoCita.descripcion" column="descripcion_estado" />		
+		<result property="fechaRegistro" column="fecha_registro" />
+		<result property="fechaCita" column="fecha_cita" />
+		<result property="descripcion" column="ds_descripcion" />
+				
+	</resultMap>
+	
+	<resultMap id="resultMapEstadoCita" type="estadoCitaDTO">
+		<result property="estadoCitaId" column="cl_estado_cita" />
+		<result property="descripcion" column="ds_descripcion" />
+	</resultMap>
+	
+	<select id="obtenerCitasPorFiltro" parameterType="filtroCitas" resultMap="citaResultMap">
+		SELECT cita.*,
+		cliente.nombre AS nombre_cliente,
+		cliente.ap_paterno AS ap_paterno_cliente,
+		cliente.ap_materno AS ap_materno_cliente,
+		estado.ds_descripcion AS descripcion_estado
+		FROM c_cita cita
+		INNER JOIN c_cliente cliente ON (cita.cl_cliente = cliente.cl_cliente)
+		INNER JOIN c_estado_cita estado ON (cita.cl_estado_cita = estado.cl_estado_cita)
+		<where>
+			<if	test="fechaInicio != null and fechaFin != null and fechaInicio != '' and fechaFin != '' ">
+				<![CDATA[ 
+					AND cita.fecha_cita >= CONCAT(#{fechaInicio},' 000000') AND cita.fecha_cita <= CONCAT(#{fechaFin},' 235959')
+				]]>
+			</if>
+			<if test="nombreCliente != null and nombreCliente != '' ">
+				AND cliente.nombre LIKE CONCAT('%',#{nombreCliente},'%')
+			</if>
+			<if test="apPaternoCliente != null and apPaternoCliente != '' ">
+				AND cliente.ap_paterno LIKE CONCAT('%',#{apPaternoCliente},'%')
+			</if>
+			<if test="apMaternoCliente != null and apMaternoCliente != '' ">
+				AND cliente.ap_materno LIKE CONCAT('%',#{apMaternoCliente},'%')
+			</if>
+			<if test="estadoCitaId != null and estadoCitaId != 0 ">
+				AND venta.cl_estado_cita = #{estadoCitaId}
+			</if>
+		</where>
+		ORDER BY cita.fecha_cita DESC
+	</select>
+	
+	<insert id="agregarCita" parameterType="citaDTO">
+		INSERT INTO c_cita
+		(
+			cl_cliente,
+			cl_estado_cita,
+			fecha_cita,
+			ds_descripcion
+		)
+		VALUES
+		(
+			#{cliente.clienteId},
+			#{estadoCita.estadoCitaId},
+			#{fechaCita},
+			#{descripcion}
+		)
+	</insert>
+	<select id="obtenerEstadosCitas" resultMap="resultMapEstadoCita">
+		SELECT * FROM c_estado_cita ORDER BY ds_descripcion
+	</select>
+	
+	<update id="actualizarEstado" parameterType="citaDTO">
+		UPDATE c_cita 
+		SET cl_estado_cita = #{estadoCita.estadoCitaId}
+		WHERE cl_cita = #{citaId}
+	</update>
+	
+
+</mapper>

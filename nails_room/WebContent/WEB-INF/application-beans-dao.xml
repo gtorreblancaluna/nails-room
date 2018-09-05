@@ -65,4 +65,8 @@ http://www.springframework.org/schema/context/spring-context-3.0.xsd"
 		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
 	</bean>	
 	
+	<bean id="citasDao" class="mx.com.nails_room.dao.impl.SqlMapCitas">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>	
+	
 </beans>
