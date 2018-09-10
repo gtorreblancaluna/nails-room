@@ -47,7 +47,7 @@
 				AND cliente.ap_materno LIKE CONCAT('%',#{apMaternoCliente},'%')
 			</if>
 			<if test="estadoCitaId != null and estadoCitaId != 0 ">
-				AND venta.cl_estado_cita = #{estadoCitaId}
+				AND cita.cl_estado_cita = #{estadoCitaId}
 			</if>
 		</where>
 		ORDER BY cita.fecha_cita DESC

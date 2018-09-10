@@ -1,5 +1,6 @@
 package mx.com.nails_room.view;
 
+import static mx.com.nails_room.commons.ApplicationConstants.CITA_APARTADO;
 import java.time.LocalDate;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -25,6 +26,7 @@ public class CitasController {
 		FiltroCitas filtro = new FiltroCitas();
 		filtro.setFechaInicio(hoy+"");
 		filtro.setFechaFin(hoy+"");
+		filtro.setEstadoCitaId(CITA_APARTADO);
 		List<CitasDTO> citas = citasServicio.obtenerCitasPorFiltro(filtro);
 		model.addAttribute("citas", citas);
 		model.addAttribute("estados" , citasServicio.obtenerEstadosCitas());
@@ -34,18 +36,17 @@ public class CitasController {
 	
 	@PostMapping(value = "citas.do", params="agregar" )
 	public String agregarCita(@ModelAttribute CitasDTO cita, HttpServletRequest request, Model model) {
-		citasServicio.agregar(cita);
-		
+		citasServicio.agregar(cita);		
 		LocalDate hoy = LocalDate.now();
 		FiltroCitas filtro = new FiltroCitas();
 		filtro.setFechaInicio(hoy+"");
 		filtro.setFechaFin(hoy+"");
+		filtro.setEstadoCitaId(CITA_APARTADO);
 		List<CitasDTO> citas = citasServicio.obtenerCitasPorFiltro(filtro);
 		model.addAttribute("citas", citas);
 		model.addAttribute("estados" , citasServicio.obtenerEstadosCitas());
 		model.addAttribute("messageView","Se obtuvieron "+citas.size()+ " resultados |");
-		model.addAttribute("messageView","Se ingreso con exito la cita |");
-		
+		model.addAttribute("messageView","Se ingreso con exito la cita |");		
 		return "cita";
 	}
 	
@@ -54,24 +55,21 @@ public class CitasController {
 		List<CitasDTO> citas = citasServicio.obtenerCitasPorFiltro(filtro);
 		model.addAttribute("citas", citas);
 		model.addAttribute("estados" , citasServicio.obtenerEstadosCitas());
-		model.addAttribute("messageView","Se obtuvieron "+citas.size()+ " resultados");
-		
+		model.addAttribute("messageView","Se obtuvieron "+citas.size()+ " resultados");		
 		return "cita";
 	}
 	
 	@PostMapping(value = "citas.do", params="actualizarEstado" )
 	public String actualizarEstado(@ModelAttribute CitasDTO cita, HttpServletRequest request, Model model) {
-		
-		citasServicio.actualizarEstado(cita);
-		
+		citasServicio.actualizarEstado(cita);		
 		LocalDate hoy = LocalDate.now();
 		FiltroCitas filtro = new FiltroCitas();
 		filtro.setFechaInicio(hoy+"");
 		filtro.setFechaFin(hoy+"");
+		filtro.setEstadoCitaId(CITA_APARTADO);
 		model.addAttribute("citas", citasServicio.obtenerCitasPorFiltro(filtro));
 		model.addAttribute("estados" , citasServicio.obtenerEstadosCitas());
-		model.addAttribute("messageView","Se actualizo con exito ");
-		
+		model.addAttribute("messageView","Se actualizo con exito ");		
 		return "cita";
 	}
 	

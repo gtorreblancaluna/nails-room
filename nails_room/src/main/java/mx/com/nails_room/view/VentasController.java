@@ -97,11 +97,11 @@ public class VentasController {
 	
 	// guardar y finalizar venta
 	@PostMapping(value = "/ventas.do", params = "finalizar")
-	public ModelAndView finalizar(@ModelAttribute VentaDTO venta,HttpServletRequest request, RedirectAttributes redir) {	
+	public ModelAndView finalizar(@ModelAttribute VentaDTO venta,HttpServletRequest request, RedirectAttributes redir, Model model) {	
 		CajaDTO caja = cajaServicio.obtenerCajaAbierta();
 		ModelAndView modelAndView = new ModelAndView();
 		if(caja == null) {
-			redir.addFlashAttribute("messageError","Caja cerrada, no se pueden ingresar ventas cuando la caja esta cerrada");
+			model.addAttribute("messageError","Caja cerrada, no se pueden ingresar ventas cuando la caja esta cerrada");
 			modelAndView.setViewName("ventas");
 			return modelAndView;
 		}

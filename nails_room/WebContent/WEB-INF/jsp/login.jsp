@@ -22,6 +22,16 @@
   			<strong>Error! </strong> ${messageError}
 		</div>
 		</c:if>
+		
+		<div class="page-header">
+		<div class="row">
+			<div class="col">
+				<h1>LOGIN</h1>
+			</div>
+			
+		</div>
+	</div>
+		
 		<form:form modelAttribute="usuarioDTO" action="procesarLogin.do"	method="post" name="loginForm">			
 				<div class="form-group">
 					<label>Email: </label> <input type="text" id="email" name="email"	placeholder="Email" class="form-control">

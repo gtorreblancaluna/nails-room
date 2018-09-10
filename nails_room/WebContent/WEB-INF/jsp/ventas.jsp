@@ -54,10 +54,10 @@
 			<tbody>
 				<tr>
 					<td>
-						<span class="input-group-text">Fecha inicio:<input type="date" name="fechaInicioFiltro" id="" class="form-control"> </span>
+						<span class="input-group-text">Fecha inicio:<input type="date" name="fechaInicioFiltro" id="fechaInicioFiltro" class="form-control"> </span>
 					</td>
 					<td>
-						<span class="input-group-text">Fecha final:<input type="date" name="fechaFinFiltro" id="" class="form-control"> </span>
+						<span class="input-group-text">Fecha final:<input type="date" name="fechaFinFiltro" id="fechaFinFiltro" class="form-control"> </span>
 					</td>
 					<td>
 						<span class="input-group-text">Descripci&oacute;n:<input type="text" name="descripcionFiltro" id="" class="form-control"> </span>

@@ -5,6 +5,10 @@ var cont_update=0;
 var g_clienteIdEditar;
 
 $( document ).ready(function() {
+	
+	document.getElementById('fechaInicioFiltro').valueAsDate = new Date();
+	document.getElementById('fechaFinFiltro').valueAsDate = new Date();
+	
 	$('.tableShowResultQuery').DataTable( {
 //		  "orderClasses": false
 			order: [[ 0, "desc" ]] //column indexes is zero based
@@ -585,18 +589,42 @@ function conteoFilasArticulos(valor){
 	
 	if(valor == '1'){
 	  $(".tablaVentaArticulos tbody tr").each(function () {
-		var x = $(this).find('td').eq(3).find(".descripcion").attr('name');
-		var z = x.replace(/[^a-zA-Z_\W]+/g, total);
+		  
+		var articuloId = $(this).find('td').eq(1).find(".articuloId").attr('name').replace(/[^a-zA-Z_\W]+/g, total);
+		$(this).find('td').eq(1).find(".articuloId").attr('name',articuloId);
+		  
+		var z = $(this).find('td').eq(3).find(".descripcion").attr('name').replace(/[^a-zA-Z_\W]+/g, total);
 		$(this).find('td').eq(3).find(".descripcion").attr('name',z);
+		
+		var cantidad = $(this).find('td').eq(2).find(".cantidad").attr('name').replace(/[^a-zA-Z_\W]+/g, total);
+		$(this).find('td').eq(2).find(".cantidad").attr('name',cantidad);
+		
+		var precio = $(this).find('td').eq(4).find(".precio").attr('name').replace(/[^a-zA-Z_\W]+/g, total);
+		$(this).find('td').eq(4).find(".precio").attr('name',precio);
+
 		$(this).find("td").eq(0).find(".consecutivo").text(++total);
 	  });
+	  
+	  
 	  $('#totalArticulos').text(total);
+	
+	
 	}else{
 		$(".tablaUpdateVentaArticulos tbody tr").each(function () {
 			// esta parte es para reoirganizar la numeracion del arreglo y evitar conflictos en el server
-			var x = $(this).find('td').eq(3).find(".descripcion").attr('name');
-			var z = x.replace(/[^a-zA-Z_\W]+/g, total);
+			
+			var articuloId = $(this).find('td').eq(1).find(".articuloId").attr('name').replace(/[^a-zA-Z_\W]+/g, total);
+			$(this).find('td').eq(1).find(".articuloId").attr('name',articuloId);
+			
+			var z = $(this).find('td').eq(3).find(".descripcion").attr('name').replace(/[^a-zA-Z_\W]+/g, total);
 			$(this).find('td').eq(3).find(".descripcion").attr('name',z);
+			
+			var cantidad = $(this).find('td').eq(2).find(".cantidad").attr('name').replace(/[^a-zA-Z_\W]+/g, total);
+			$(this).find('td').eq(2).find(".cantidad").attr('name',cantidad);
+			
+			var precio = $(this).find('td').eq(4).find(".precio").attr('name').replace(/[^a-zA-Z_\W]+/g, total);
+			$(this).find('td').eq(4).find(".precio").attr('name',precio);
+
 			$(this).find("td").eq(0).find(".consecutivo").text(++total);
 		});
 	  $('#totalArticulosUpdate').text(total);

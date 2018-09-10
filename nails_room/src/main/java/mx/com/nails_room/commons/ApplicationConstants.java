@@ -26,6 +26,7 @@ public interface ApplicationConstants {
 	public static final Integer PUESTO_APLICADOR = 4;
 	
 	/** VALORES PARA ESTADO DE LA CITA */
+	
 	/** estado de la cita APARTADO = 1 */
 	public static final int CITA_APARTADO = 1;
 	/** estado de la cita en proceso = 2 */

@@ -8,7 +8,7 @@
 <head>
 <style type="text/css">
 .panelOpciones{}
-.panelOpciones a {		
+.panelOpciones a {
 	  font: bold 17px Arial;
 	  text-decoration: none;
 	  background-color: #FFF;
@@ -17,12 +17,16 @@
 	  width:150px;
 	  height:150px;
 	  margin: 4%;
-	  border-radius: 3px;
+	  border-radius: 7px;
+	  box-shadow: 0px 1px 25px 11px rgba(0,0,0,0.85);
   }
   
   .panelOpciones a label{		
 	 padding-top: 45%;
+	 cursor:pointer;
+	 
   }
+
 .panelBorder{
 	border-style: solid;
     background-color: #00000059;
@@ -44,18 +48,16 @@
 <div class="container-header">
 	<h1>I N I C I O</h1>
 </div>
-	<div class=" ">
+	<div>
 		<div class="row">
 			<div class="col-sm-12 panelBorder">
 				<div class="panelOpciones text-center">
-					<a href="caja.do"><label>C A J A</label></a>
-					<a href="ventas.do"><label>V E N T A S</label></a>
-					<a href="javascript:void(0);"><label>R E P O R T E S</label></a>					
+					<a href="caja.do" class="hoverclass"><label>C A J A</label></a>
+					<a href="ventas.do" class="hoverclass"><label>V E N T A S</label></a>
+					<a href="citas.do" class="hoverclass"><label>C I T A S</label></a>	
 				</div>
 			</div>			
-		</div>
-		
-		
+		</div>		
 	</div>	
 	
 </div>

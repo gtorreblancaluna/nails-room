@@ -11,3 +11,4 @@ body{background-image: url(../images/back_vintage.jpg);}
 .containerShowResultQuery table tr td{padding:0px 1px 0px 1px !important;background-color: #fff;color:#000;}
 .container-header{color:white; text-align:center;margin: 3%;}
 .page-header {padding:0px;margin: 0px;}
+.infoUsuarioHeader label{color:#fff;padding-left:15px;}

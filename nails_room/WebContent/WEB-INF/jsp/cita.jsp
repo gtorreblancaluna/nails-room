@@ -50,10 +50,10 @@
 			<tbody>
 				<tr>
 					<td>
-						<span class="input-group-text">Fecha inicio:<input type="date" name="fechaInicio" id="" class="form-control"> </span>
+						<span class="input-group-text">Fecha inicio:<input type="date" name="fechaInicio" id="fechaInicio" class="form-control"> </span>
 					</td>
 					<td>
-						<span class="input-group-text">Fecha final:<input type="date" name="fechaFin" id="" class="form-control"> </span>
+						<span class="input-group-text">Fecha final:<input type="date" name="fechaFin" id="fechaFin" class="form-control"> </span>
 					</td>
 					<td>
 						<span class="input-group-text">Nombre cliente:<input type="text" name="nombreCliente" id="" class="form-control"> </span>

@@ -1,5 +1,12 @@
-$( document ).ready(function() {
+$( document ).ready(function() {	
 	
+	$('.tableShowResultQuery').DataTable( {
+		  "orderClasses": false
+//			order: [[ 0, "desc" ]] //column indexes is zero based
+	} );
+		
+	document.getElementById('fechaInicio').valueAsDate = new Date();
+	document.getElementById('fechaFin').valueAsDate = new Date();
 	// buscar clientes via AJAX
 	$( '.buscarCliente' ).keyup(function(){
 		var valor = $(this).val();
@@ -9,6 +16,19 @@ $( document ).ready(function() {
 	
 	$('.tableShowResultQuery').DataTable();
 	//confirmar eliminar	
+	$('form[name="filtro"]').submit(function() {
+		var valid = true;
+		var $form = $('#filtro');
+		var fechaInicio = $form.find('#fechaInicio').val();
+		var fechaFin = $form.find('#fechaFin').val();
+		
+		if(fechaInicio == '' && fechaFin == ''){
+			valid = false;
+			alert('Introduce fecha inicial y fecha final para continuar ')
+		}
+		return valid;				
+	});
+	
 	$('form[name="actualizarEstadoForm"]').submit(function() {
 	   var valid = true;
 	   var $form = $('#actualizarEstadoForm');
