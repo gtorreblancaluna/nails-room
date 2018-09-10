@@ -9,6 +9,31 @@ public class DetalleVentaDTO {
 	private Float precioArticulo;
 	private int ordenEntrada;
 	
+	// variables para mostrar en el reporte
+	private int cantidadVendida;
+	private float totalVendidoPorArticulo;
+	private String nombreCliente;
+	
+	
+	
+	public String getNombreCliente() {
+		return nombreCliente;
+	}
+	public void setNombreCliente(String nombreCliente) {
+		this.nombreCliente = nombreCliente;
+	}
+	public int getCantidadVendida() {
+		return cantidadVendida;
+	}
+	public void setCantidadVendida(int cantidadVendida) {
+		this.cantidadVendida = cantidadVendida;
+	}
+	public float getTotalVendidoPorArticulo() {
+		return totalVendidoPorArticulo;
+	}
+	public void setTotalVendidoPorArticulo(float totalVendidoPorArticulo) {
+		this.totalVendidoPorArticulo = totalVendidoPorArticulo;
+	}
 	public int getDetalleVentaId() {
 		return detalleVentaId;
 	}

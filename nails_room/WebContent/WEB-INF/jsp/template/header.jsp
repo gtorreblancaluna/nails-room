@@ -25,8 +25,7 @@
 			</c:if>
 			<c:if test="${not empty userSession.usuario.email}">
 			
-				<li class="active"><a href="logout.do">Salir</a></li>
-				<!-- Validamos que el usuario sea diferente a proovedor -->
+				<li class="active"><a href="logout.do">Salir</a></li>				
 
 				<li class="dropdown"><a class="dropdown-toggle"
 					data-toggle="dropdown" href="javascript:void(0);">Sistema</a>
@@ -43,6 +42,13 @@
 						<li><a href="ventas.do">Ventas</a></li>
 						<li><a href="caja.do">Caja</a></li>
 						<li><a href="citas.do">Citas</a></li>
+					</ul>
+				</li>
+				
+				<li class="dropdown"><a class="dropdown-toggle"
+					data-toggle="dropdown" href="javascript:void(0);">Reportes</a>
+					<ul class="dropdown-menu">
+						<li><a href="reportes.do">Reportes</a></li>						
 					</ul>
 				</li>
 

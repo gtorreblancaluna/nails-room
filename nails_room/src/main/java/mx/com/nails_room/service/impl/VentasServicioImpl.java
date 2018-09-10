@@ -9,6 +9,7 @@ import mx.com.nails_room.dao.InventarioDAO;
 import mx.com.nails_room.dao.VentasDAO;
 import mx.com.nails_room.forms.FiltroVentas;
 import mx.com.nails_room.model.ArticuloDTO;
+import mx.com.nails_room.model.DetalleVentaDTO;
 import mx.com.nails_room.model.EstacionTrabajoDTO;
 import mx.com.nails_room.model.EstadoVentaDTO;
 import mx.com.nails_room.model.VentaDTO;
@@ -136,6 +137,18 @@ public class VentasServicioImpl implements VentasServicio {
 	public void actualizarVenta(VentaDTO venta) {
 		ventasDao.actualizarVenta(venta);
 		
+	}
+
+	@Override
+	public List<DetalleVentaDTO> obtenerReporteVentas(FiltroVentas filtroVentas) {
+		// TODO Auto-generated method stub
+		return ventasDao.obtenerReporteVentas(filtroVentas);
+	}
+
+	@Override
+	public List<DetalleVentaDTO> obtenerReporteClientesMayorConsumo(FiltroVentas filtroVentas) {
+		// TODO Auto-generated method stub
+		return ventasDao.obtenerReporteClientesMayorConsumo(filtroVentas);
 	}
 
 }

@@ -4,6 +4,7 @@ import java.util.List;
 import mx.com.nails_room.forms.FiltroUsuario;
 import mx.com.nails_room.forms.FiltroVentas;
 import mx.com.nails_room.model.ClienteDTO;
+import mx.com.nails_room.model.DetalleVentaDTO;
 import mx.com.nails_room.model.EstacionTrabajoDTO;
 import mx.com.nails_room.model.EstadoVentaDTO;
 import mx.com.nails_room.model.VentaDTO;
@@ -24,5 +25,7 @@ public interface VentasServicio {
 	public float obtenerTotalVenta(int ventaId);
 	public List<VentaDTO> obtenerVentasAgrupadasPorUsuario(FiltroVentas filtroVentas);
 	public void actualizarVenta(VentaDTO venta);
+	public List<DetalleVentaDTO> obtenerReporteVentas(FiltroVentas filtroVentas);
+	public List<DetalleVentaDTO> obtenerReporteClientesMayorConsumo(FiltroVentas filtroVentas);
 	
 }

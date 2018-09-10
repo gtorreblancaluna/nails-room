@@ -77,6 +77,13 @@
 	
 	</resultMap>
 	
+	<resultMap id="ventaDetalleReporteResultMap" type="detalleVentaDTO">
+		<result property="nombreCliente" column="nombre_cliente" />			
+		<result property="cantidadVendida" column="cantidad" />	
+		<result property="totalVendidoPorArticulo" column="total" />
+		<result property="articulo.descripcion" column="descripcion_articulo" />			
+	</resultMap>
+	
 	<select id="obtenerVentasPorFiltro" parameterType="filtroVentas" resultMap="ventaResultMap">
 		SELECT venta.*,
 		cliente.nombre AS nombre_cliente,
@@ -271,6 +278,57 @@
 	</update>
 	<select id="obtenerTotalVenta" parameterType="java.lang.Integer" resultType="java.lang.Float">
 		SELECT SUM(cantidad*precio_articulo) FROM k_detalle_venta WHERE cl_venta = #{ventaId}
+	</select>
+	
+	<select id="obtenerReporteVentas" parameterType="filtroVentas" resultMap="ventaDetalleReporteResultMap">
+		SELECT articulo.descripcion AS descripcion_articulo,
+		SUM(detalle.cantidad) AS cantidad,
+		SUM(detalle.cantidad*detalle.precio_articulo) AS total
+		FROM k_detalle_venta detalle
+		INNER JOIN c_articulo articulo ON (articulo.cl_articulo = detalle.cl_articulo)
+		INNER JOIN c_venta venta ON (venta.cl_venta = detalle.cl_venta)
+		WHERE venta.cl_estado_venta = 3			
+			<if test="descripcionFiltro != null and descripcionFiltro != '' ">
+				AND venta.ds_descripcion LIKE CONCAT('%',#{descripcionFiltro},'%')
+			</if>				
+			<if	test="fechaInicioFiltro != null and fechaFinFiltro != null and fechaInicioFiltro != '' and fechaFinFiltro != '' ">
+				<![CDATA[ 
+					AND venta.fecha_registro >= CONCAT(#{fechaInicioFiltro},' 000000') AND venta.fecha_registro <= CONCAT(#{fechaFinFiltro},' 235959')
+				]]>
+			</if>
+			<if	test="fechaInicioFiltro != null and fechaFinFiltro == null and fechaInicioFiltro != '' ">
+				<![CDATA[ 
+					AND venta.fecha_registro >= CONCAT(#{fechaInicioFiltro},' 000000')
+				]]>
+			</if>					
+		GROUP BY detalle.cl_articulo
+		ORDER BY cantidad DESC
+	</select>
+	
+	<select id="obtenerReporteClientesMayorConsumo" parameterType="filtroVentas" resultMap="ventaDetalleReporteResultMap">
+		SELECT CONCAT(cliente.nombre," ",cliente.ap_paterno) AS nombre_cliente,
+		SUM(detalle.cantidad) AS cantidad,
+		SUM(detalle.cantidad*detalle.precio_articulo) AS total
+		FROM k_detalle_venta detalle
+		INNER JOIN c_articulo articulo ON (articulo.cl_articulo = detalle.cl_articulo)
+		INNER JOIN c_venta venta ON (venta.cl_venta = detalle.cl_venta)
+		INNER JOIN c_cliente cliente ON (cliente.cl_cliente = venta.cl_cliente)
+		WHERE venta.cl_estado_venta = 3			
+			<if test="descripcionFiltro != null and descripcionFiltro != '' ">
+				AND venta.ds_descripcion LIKE CONCAT('%',#{descripcionFiltro},'%')
+			</if>				
+			<if	test="fechaInicioFiltro != null and fechaFinFiltro != null and fechaInicioFiltro != '' and fechaFinFiltro != '' ">
+				<![CDATA[ 
+					AND venta.fecha_registro >= CONCAT(#{fechaInicioFiltro},' 000000') AND venta.fecha_registro <= CONCAT(#{fechaFinFiltro},' 235959')
+				]]>
+			</if>
+			<if	test="fechaInicioFiltro != null and fechaFinFiltro == null and fechaInicioFiltro != '' ">
+				<![CDATA[ 
+					AND venta.fecha_registro >= CONCAT(#{fechaInicioFiltro},' 000000')
+				]]>
+			</if>					
+		GROUP BY venta.cl_cliente
+		ORDER BY cantidad DESC
 	</select>
 
 </mapper>

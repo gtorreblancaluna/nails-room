@@ -124,4 +124,16 @@ public class SqlMapVentas extends SqlSessionDaoSupport implements VentasDAO {
 		
 	}
 
+	@Override
+	public List<DetalleVentaDTO> obtenerReporteVentas(FiltroVentas filtroVentas) {
+		// TODO Auto-generated method stub
+		return getSqlSession().selectList("obtenerReporteVentas",filtroVentas);
+	}
+
+	@Override
+	public List<DetalleVentaDTO> obtenerReporteClientesMayorConsumo(FiltroVentas filtroVentas) {
+		// TODO Auto-generated method stub
+		return getSqlSession().selectList("obtenerReporteClientesMayorConsumo",filtroVentas);
+	}
+
 }

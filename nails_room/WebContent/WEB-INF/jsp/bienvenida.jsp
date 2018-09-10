@@ -54,7 +54,8 @@
 				<div class="panelOpciones text-center">
 					<a href="caja.do" class="hoverclass"><label>C A J A</label></a>
 					<a href="ventas.do" class="hoverclass"><label>V E N T A S</label></a>
-					<a href="citas.do" class="hoverclass"><label>C I T A S</label></a>	
+					<a href="citas.do" class="hoverclass"><label>C I T A S</label></a>
+					<a href="reportes.do" class="hoverclass"><label>R E P O R T E S</label></a>	
 				</div>
 			</div>			
 		</div>		
