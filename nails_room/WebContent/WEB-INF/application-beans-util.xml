@@ -29,9 +29,6 @@
         		<value>classpath:nails_room.properties</value>
       		</list>
     	</property>
-  	</bean>
-  		
- 
-  
+  	</bean>  
 	
 </beans>

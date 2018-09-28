@@ -4,8 +4,8 @@ var cont_update=0;
 // variable para almacenar el id del usuario cuando selecciona editar
 var g_clienteIdEditar;
 
-$( document ).ready(function() {
-	
+$( document ).ready(function() {	
+
 	document.getElementById('fechaInicioFiltro').valueAsDate = new Date();
 	document.getElementById('fechaFinFiltro').valueAsDate = new Date();
 	

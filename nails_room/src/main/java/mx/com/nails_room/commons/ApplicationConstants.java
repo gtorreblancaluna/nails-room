@@ -40,6 +40,6 @@ public interface ApplicationConstants {
 	/** Mascara fecha grande */
 	public static final String MASK_DATE_FORMAT = "EEEEEEEE dd 'de' MMMMMMMMMMMMMM, yyyy";
 	/** ruta para tomar las imagenes en PDF */
-	public static final String RUTA_IMAGENES_PDF = "C:/herramientas/eclipseoxygen-nails-room/webapps/nails_room/images/";
+	public static final String RUTA_IMAGENES_PDF = "webapps/nails_room/images/";
 	
 }

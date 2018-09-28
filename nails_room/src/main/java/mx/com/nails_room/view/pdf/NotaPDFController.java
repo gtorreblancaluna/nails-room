@@ -32,6 +32,7 @@ import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -47,10 +48,12 @@ public class NotaPDFController {
 
 	@Autowired
 	private VentasServicio ventaServicio;
+	@Autowired
+	public MessageSource messageSource;
 	
 		@RequestMapping(value = "/generar_nota.do", method = RequestMethod.GET)
 		public String printPdf(HttpServletRequest request,  HttpServletResponse response) throws IOException {
-			
+			String rutaPdfImagen = messageSource.getMessage("ruta.pdf.imagen", null, null);
 			String ventaId = ( request.getParameter("ventaId") != null ? request.getParameter("ventaId") : null );
 			
 			if(ventaId == null)
@@ -89,7 +92,7 @@ public class NotaPDFController {
 			    try {
 			    	// añadiendo membretado
 			    	PdfContentByte canvas = writer.getDirectContentUnder();
-					Image image = Image.getInstance(RUTA_IMAGENES_PDF + "membretado.png");
+					Image image = Image.getInstance(rutaPdfImagen + RUTA_IMAGENES_PDF + "membretado.png");
 					image.scaleAbsolute(PageSize.LETTER.width(), PageSize.LETTER.height());
 					image.setAbsolutePosition(0, 0);
 					canvas.addImage(image);

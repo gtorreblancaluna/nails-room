@@ -51,6 +51,13 @@
 						<li><a href="reportes.do">Reportes</a></li>						
 					</ul>
 				</li>
+				
+<!-- 				<li class="dropdown"><a class="dropdown-toggle" -->
+<!-- 					data-toggle="dropdown" href="javascript:void(0);">Email</a> -->
+<!-- 					<ul class="dropdown-menu"> -->
+<!-- 						<li><a href="email.do">Enviar email</a></li>						 -->
+<!-- 					</ul> -->
+<!-- 				</li> -->
 
 
 			</c:if>

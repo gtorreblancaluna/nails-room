@@ -241,25 +241,15 @@ INSERT INTO c_puesto (ds_descripcion) VALUES ('Aplicador');
 INSERT INTO c_usuario (cl_puesto,nombre,ap_paterno,ap_materno,email,password,fg_admin,fg_activo) VALUES ('1','admin','admin','admin','admin','123456','1','1');
 
 INSERT INTO c_cliente (nombre,ap_paterno,ap_materno,email,tel1,tel2,direccion) VALUES ('Gerardo','Torreblanca','Luna','gtorre@email.com','7859621365','5555555555','Calle Juan Aldama 53');
-INSERT INTO c_cliente (nombre,ap_paterno,ap_materno,email,tel1,tel2,direccion) VALUES ('Armando','Gonzales','Borja','armandi@email.com','7859621365','5555555555','Calle Juan Aldama 53');
-INSERT INTO c_cliente (nombre,ap_paterno,ap_materno,email,tel1,tel2,direccion) VALUES ('Gabriela','Villegas','Alarcon','gabi@email.com','7859621365','5555555555','Calle Juan Aldama 53');
-INSERT INTO c_cliente (nombre,ap_paterno,ap_materno,email,tel1,tel2,direccion) VALUES ('Luis','Lopez','Garcia','luis@email.com','7859621365','5555555555','Calle Juan Aldama 53');
-INSERT INTO c_cliente (nombre,ap_paterno,ap_materno,email,tel1,tel2,direccion) VALUES ('Gerardo','Torreblanca','Luna','gtorre@email.com','7859621365','5555555555','Calle Juan Aldama 53');
-INSERT INTO c_cliente (nombre,ap_paterno,ap_materno,email,tel1,tel2,direccion) VALUES ('Gerardo','Torreblanca','Luna','gtorre@email.com','7859621365','5555555555','Calle Juan Aldama 53');
 
 
 INSERT INTO c_articulo (descripcion,unidad_medida,precio_venta,cantidad_existente) VALUES ('Crema depiladora','PZA',500,10);
-INSERT INTO c_articulo (descripcion,unidad_medida,precio_venta,cantidad_existente) VALUES ('Crema dog show','PZA',100,10);
-INSERT INTO c_articulo (descripcion,unidad_medida,precio_venta,cantidad_existente) VALUES ('Crema bronceado','PZA',300,10);
-INSERT INTO c_articulo (descripcion,unidad_medida,precio_venta,cantidad_existente) VALUES ('Crema tripas de gato','PZA',400,10);
-INSERT INTO c_articulo (descripcion,unidad_medida,precio_venta,cantidad_existente) VALUES ('Crema cara','PZA',700,10);
 
-INSERT INTO c_estacion_trabajo (ds_descripcion) VALUES ('estacion1');
-INSERT INTO c_estacion_trabajo (ds_descripcion) VALUES ('estacion2');
-INSERT INTO c_estacion_trabajo (ds_descripcion) VALUES ('estacion3');
-INSERT INTO c_estacion_trabajo (ds_descripcion) VALUES ('estacion4');
-INSERT INTO c_estacion_trabajo (ds_descripcion) VALUES ('estacion5');
-INSERT INTO c_estacion_trabajo (ds_descripcion) VALUES ('estacion6');
+INSERT INTO c_estacion_trabajo (ds_descripcion) VALUES ('Isla 1');
+INSERT INTO c_estacion_trabajo (ds_descripcion) VALUES ('Isla 2');
+INSERT INTO c_estacion_trabajo (ds_descripcion) VALUES ('Isla 3');
+INSERT INTO c_estacion_trabajo (ds_descripcion) VALUES ('Isla 4');
+
 
 
 
