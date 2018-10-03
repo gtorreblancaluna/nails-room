@@ -60,6 +60,7 @@
 				<div class="col-xs-3">
 					<button type="button" class="btn btn-dark" data-toggle="modal" onclick="obtenerComisiones();">Comisiones</button>
 					<input type="date" id="fechaComisiones" name="fechaComisiones" class="form-control">
+					<input type="date" id="fechaComisionesFinal" name="fechaComisionesFinal" class="form-control">
 				</div>		
 				<div class="col-xs-3">
 					<button type="button" class="btn btn-dark btnRegistrarMovimiento" data-toggle="modal" data-target="#modalRegistrarMovimiento">Registrar Ingreso/Egreso</button>
@@ -79,7 +80,7 @@
 						<label>Fecha apertura: <fmt:formatDate value="${caja.fechaApertura}" pattern="EEEE dd 'de' MMMM 'del' yyyy" /></label>
 					</div>
 					<div class="col-xs-6">
-						<label>Total en caja: <fmt:formatNumber value="${totalCaja}" type="currency" currencySymbol="$"/></label>
+						<label>Total en caja: <fmt:formatNumber value="${totalCaja}" type="number" maxFractionDigits="3"/></label>
 					</div>
 				</div>
 				
@@ -88,13 +89,16 @@
 						<label>N&uacute;mero de ventas: ${numeroVentas}</label>
 					</div>
 					<div class="col-xs-3">
-						<label>Total en ventas: <fmt:formatNumber value="${totalVentas}" type="currency" currencySymbol="$"/></label>
+						<fmt:setLocale value="es_MX"/>
+						<label>Total en ventas: <fmt:formatNumber value="${totalVentas}" type="number" maxFractionDigits="3"/></label>
 					</div>
 					<div class="col-xs-3">
-						<label>Ingresos: <fmt:formatNumber value="${ingresos}" type="currency" currencySymbol="$"/></label>
+						<fmt:setLocale value="es_MX"/>
+						<label>Ingresos: <fmt:formatNumber value="${ingresos}" type="number" maxFractionDigits="3"/></label>
 					</div>
 					<div class="col-xs-3">
-						<label>Egresos: <fmt:formatNumber value="${egresos}" type="currency" currencySymbol="$"/></label>
+						<fmt:setLocale value="es_MX"/>
+						<label>Egresos: <fmt:formatNumber value="${egresos}" type="number" maxFractionDigits="3"/></label>
 					</div>
 				</div>
 			</div>
@@ -125,7 +129,7 @@
 		 			<td>${venta.usuario.nombre} ${venta.usuario.ap_paterno}</td>		 			
 		 			<td>${venta.estacionTrabajo.descripcion}</td>
 		 			<td>${venta.estadoVenta.descripcion}</td>	
-		 			<td style="text-align:right;"><fmt:formatNumber value="${venta.totalVenta}" type="currency" currencySymbol="$"/></td>
+		 			<td style="text-align:right;"><fmt:formatNumber value="${venta.totalVenta}" type="number" maxFractionDigits="3"/></td>
 		 			</tr>	 
 					</c:forEach>
 					</tbody>
@@ -147,7 +151,7 @@
 						<tr>			 			
 				 			<td>${fn:substring(detalle.descripcion, 0, 25)}</td>
 				 			<td>${detalle.esIngreso eq '1' ? '(+) Ingreso' : '(-) Egreso'}</td>
-				 			<td style="text-align:right;"><fmt:formatNumber value="${detalle.monto}" type="currency" currencySymbol="$"/>			 			
+				 			<td style="text-align:right;"><fmt:formatNumber value="${detalle.monto}" type="number" maxFractionDigits="3"/>			 			
 			 				<td>
 				 				<form:form modelAttribute="detalleCaja" action="caja.do" method="post" name="deleteForm" id="deleteForm">
 									<input type="hidden" name="detalleCajaId" id="detalleCajaId" value="${detalle.detalleCajaId}">			 	
@@ -393,14 +397,20 @@ function pagarTodo(){
 function obtenerComisiones(){
 	var data = {}
 	var fecha = $('#fechaComisiones').val();
+	var fechaFinal = $('#fechaComisionesFinal').val();
+	var fechas = fecha+"|"+fechaFinal;
 	if(fecha == '')
 		fecha = "hoy";
+	if(fecha == '' || fechaFinal == ''){
+		alert("Debes introducir fecha inicial y final para continuar ");
+		return false;
+	}
 // 	if(valor != ''){
 		$.ajax({
 			type : "POST",
 			contentType : "application/json",
 			url : "obtenerComisiones.do",
-			data : fecha,
+			data : fechas,
 			dataType : 'json',
 			timeout : 100000,
 			success : function(data) {

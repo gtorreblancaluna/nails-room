@@ -115,14 +115,14 @@ public class NotaPDFController {
 		        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 		        headerInfoTable.addCell(cell);
 		        
-		        cell = new PdfPCell(new Phrase("Direccion: Cuauhtemoc 62, San Mateo",new Font(Font.HELVETICA, fontSizeNormal, Font.NORMAL)));
+		        cell = new PdfPCell(new Phrase("Direccion: Juan Ruiz de Alarc\u00F3n 94, Universal, CP 39080, Chilpancingo Gro",new Font(Font.HELVETICA, fontSizeNormal, Font.NORMAL)));
 		        cell.setFixedHeight(cellHeight);
 		        cell.setColspan(3);
 		        cell.setBorder(Rectangle.NO_BORDER);
 		        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 		        headerInfoTable.addCell(cell);
 		        
-		        cell = new PdfPCell(new Phrase("Telefonos: 555555555, 555555555",new Font(Font.HELVETICA, fontSizeNormal, Font.NORMAL)));
+		        cell = new PdfPCell(new Phrase("Telefono: 7475450508",new Font(Font.HELVETICA, fontSizeNormal, Font.NORMAL)));
 		        cell.setFixedHeight(cellHeight);
 		        cell.setColspan(3);
 		        cell.setBorder(Rectangle.NO_BORDER);
@@ -137,14 +137,14 @@ public class NotaPDFController {
 				tablaInfoVenta.setTotalWidth(new float[]{ 200, 160, 160 });
 				tablaInfoVenta.setLockedWidth(true);
 				
-				cell = new PdfPCell(new Phrase("Cliente: "+venta.getUsuario().getNombre()+" "+venta.getUsuario().getAp_paterno()+" "+venta.getUsuario().getAp_materno(),new Font(Font.HELVETICA, fontSizeNormal, Font.NORMAL)));
+				cell = new PdfPCell(new Phrase("Atendi\u00F3: "+venta.getUsuario().getNombre()+" "+venta.getUsuario().getAp_paterno()+" "+venta.getUsuario().getAp_materno(),new Font(Font.HELVETICA, fontSizeNormal, Font.NORMAL)));
 		        cell.setFixedHeight(cellHeight);
 //		        cell.setColspan(3);
 		        cell.setBorder(Rectangle.NO_BORDER);
 		        cell.setHorizontalAlignment(Element.ALIGN_LEFT);
 		        tablaInfoVenta.addCell(cell);	
 		        
-		        cell = new PdfPCell(new Phrase("Atendi\u00F3: "+venta.getCliente().getNombre()+" "+venta.getCliente().getAp_paterno()+" "+venta.getCliente().getAp_materno(),new Font(Font.HELVETICA, fontSizeNormal, Font.NORMAL)));
+		        cell = new PdfPCell(new Phrase("Cliente: "+venta.getCliente().getNombre()+" "+venta.getCliente().getAp_paterno()+" "+venta.getCliente().getAp_materno(),new Font(Font.HELVETICA, fontSizeNormal, Font.NORMAL)));
 		        cell.setFixedHeight(cellHeight);
 //		        cell.setColspan(3);
 		        cell.setBorder(Rectangle.NO_BORDER);

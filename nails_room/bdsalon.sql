@@ -191,7 +191,7 @@ CREATE TABLE k_detalle_venta(
 cl_detalle_venta INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
 cl_venta INTEGER UNSIGNED NOT NULL,
 cl_articulo INTEGER UNSIGNED NOT NULL,
-cantidad INTEGER NOT NULL,
+cantidad DECIMAL(9,2) NOT NULL,
 precio_articulo DECIMAL(9,2),
 -- orden entrada, sirve para agrupar el orden en que se agregaron los articulos, 1, 2, 3
 orden_entrada INTEGER NOT NULL,
@@ -223,6 +223,8 @@ CONSTRAINT fk_cl_detalle_caja FOREIGN KEY fk_cl_detalle_caja (cl_caja)
 ENGINE = InnoDB;
 
 -- FIN DEL SCRIPT
+
+ALTER TABLE k_detalle_venta ALTER COLUMN cantidad decimal(9,2)
 
 INSERT INTO c_estado_venta (ds_descripcion) VALUES ('Preventa');
 INSERT INTO c_estado_venta (ds_descripcion) VALUES ('Cancelado');

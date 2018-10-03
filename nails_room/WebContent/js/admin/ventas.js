@@ -24,6 +24,7 @@ $( document ).ready(function() {
 		
 		if(validarForm(1)){
 			var $form = $('#addForm');
+			$form.find('.cantidad').prop( "disabled", false );
 			var clienteId = $form.find('#clienteId').val();
 			if(clienteId == '')
 				$form.find('#clienteId').val(0);
@@ -124,6 +125,31 @@ $( document ).ready(function() {
 		
 		conteoFilasArticulos(1);
 		--u_cont;
+	});	
+	
+	// incrementar valor en uno a la cantidad de articulo
+	$(".tablaVentaArticulos tbody").on('click','.incrementar', function(){
+		
+		$tr = $(this).closest('tr');
+		var cantidad = $tr.find('.cantidad').val();
+		if(cantidad <= 999){
+			$tr.find('.cantidad').val(++cantidad);
+			var precio = $tr.find('.precio').val();
+			$tr.find('.subtotal').val(cantidad*precio);
+			totalAPagar("1");
+		}
+	});	
+	
+	// incrementar valor en uno a la cantidad de articulo
+	$(".tablaVentaArticulos tbody").on('click','.decrementar', function(){		
+		$tr = $(this).closest('tr');
+		var cantidad = $tr.find('.cantidad').val();
+		if(cantidad > 1){
+			$tr.find('.cantidad').val(--cantidad);		
+			var precio = $tr.find('.precio').val();
+			$tr.find('.subtotal').val(cantidad*precio);
+			totalAPagar("1");
+		}
 	});	
 	
 	// funcion para eliminar una fila de la tabla
@@ -434,7 +460,7 @@ function elegirArticulo(articulo,valor){
 			$(".tablaVentaArticulos tbody").append("<tr>"	
 					+"<td><span class='consecutivo'></span></td>"
 					+"<td><input type='hidden' class='form-control articuloId' name='detalleVenta["+u_cont+"].articulo.articuloId' value="+articulo.articuloId+">"+ articulo.articuloId +"</td>"
-					+"<td><input type='number' class='form-control cantidad' name='detalleVenta["+u_cont+"].cantidad' value="+(1)+"></td>"
+					+"<td><input type='number' style='width:25%; text-align:center;' class='form-control cantidad cellCantidad' name='detalleVenta["+u_cont+"].cantidad' value="+(1)+" disabled><button type='button' class='cellCantidad decrementar'> - </button><button type='button' class='cellCantidad incrementar'> + </button></td>"
 					+"<td><input type='text' class='form-control descripcion' name='detalleVenta["+u_cont+"].articulo.descripcion' value='"+descripcion+"' disabled></td>"
 					+"<td><input type='number' class='form-control precio' name='detalleVenta["+u_cont+"].precioArticulo' value="+(precio*1)+"></td>"
 					+"<td><input type='number' class='form-control subtotal' value="+(precio*1)+" disabled></td>"

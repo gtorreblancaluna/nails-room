@@ -102,7 +102,7 @@
 		 			<td style="text-align:center;">${articulo.articuloId}</td>
 		 			<td style="text-align:center;"><fmt:formatDate value="${articulo.fechaAlta}" pattern="dd-MM-yyyy" /></td>
 		 			<td>${fn:substring(articulo.descripcion, 0, 35)}</td>		 			
-		 			<td style="text-align:right;"><fmt:formatNumber value="${articulo.precioVenta}" type="currency" currencySymbol="$"/></td>
+		 			<td style="text-align:right;"><fmt:formatNumber value="${articulo.precioVenta}" type="number" maxFractionDigits="3"/></td>
 		 			<td style="text-align:center;">${articulo.cantidadExistente}</td>
 		 			<td style="text-align:center;">${articulo.unidadMedida}</td>
 		 			<td style="text-align:center;">${articulo.esProducto eq '1' ? 'Producto' : 'Servicio'}</td> 			

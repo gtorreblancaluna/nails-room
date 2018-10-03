@@ -123,7 +123,7 @@
 <!-- 					<td><button type="button" class="btn btn-dark btnUpdateUser" id="btnUpdateUser" data-toggle="modal" data-target="#modalUpdateUser">Editar</button></td> -->
 <!-- 		 			<td><button type="button" class="btn btn-dark btnUpdatePassw" id="btnUpdatePassw" data-toggle="modal" data-target="#modalActualizarContrasenia">Contrase&ntilde;a</button></td> -->
 		 			<td><a href="javascript:void(0);" class="btnUpdateUser" id="btnUpdateUser" data-toggle="modal" data-target="#modalUpdateUser">Editar</a></td>
-		 			<td><a href="javascript:void(0);" data-toggle="modal" data-target="#modalActualizarContrasenia">Contrase&ntilde;a</a></td>
+		 			<td><a href="javascript:void(0);" data-toggle="modal" data-idUser="${usuario.usuarioId}" class="btnUpdatePassw" data-target="#modalActualizarContrasenia">Contrase&ntilde;a</a></td>
 		 					 			
 		 			<td>		 			
 			 			<form:form modelAttribute="usuarioDTO" action="usuarios.do" method="post" name="deleteUserForm" id="deleteUserForm">
@@ -335,17 +335,25 @@ $( document ).ready(function() {
 		$('#mostrarPorcentajeUpdate').text($(this).val()+" %");
 	});
 	
-	$( '.btnUpdatePassw' ).click(function() {
+// 	$( '.btnUpdatePassw' ).click(function() {
+// 		var $updatePassword = $("#updatePassword");
+// 		var idUsuario = $(this).attr('data-idUser').val();
+// 		$updatePassword.find('#usuarioId').val(idUsuario);
+// 		var $row = jQuery(this).closest('tr');
+// 		var $columns = $row.find('td');
+// 		$columns.addClass('row-highlight');
+// 	    var values = "";
+// 	    jQuery.each($columns, function(i, item) {
+// 	        values = values + 'td' + (i + 1) + ':' + item.innerHTML + '<br/>';
+// 	        if(i===0)
+// 	        	$updatePassword.find('#usuarioId').val(item.innerHTML);
+// 	    });	    
+// 	});
+	
+	$(".btnUpdatePassw").bind('click', function() {
 		var $updatePassword = $("#updatePassword");
-		var $row = jQuery(this).closest('tr');
-		var $columns = $row.find('td');
-		$columns.addClass('row-highlight');
-	    var values = "";
-	    jQuery.each($columns, function(i, item) {
-	        values = values + 'td' + (i + 1) + ':' + item.innerHTML + '<br/>';
-	        if(i===0)
-	        	$updatePassword.find('#usuarioId').val(item.innerHTML);
-	    });	    
+		var idUsuario = $(this).attr('data-idUser');
+		$updatePassword.find('#usuarioId').val(idUsuario);
 	});
 	
 	$( '.btnUpdateUser' ).click(function() {

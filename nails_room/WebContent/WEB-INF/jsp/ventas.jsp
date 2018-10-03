@@ -12,6 +12,7 @@
 .tablaVentaArticulos {font-size:11px;}
 .tablaUpdateVentaArticulos .form-control {height: 22px; font-size:11px;}
 .tablaUpdateVentaArticulos {font-size:11px;}
+.cellCantidad{display: table-cell;margin-left: 12px;}
 </style>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Nails Room :: Ventas</title>

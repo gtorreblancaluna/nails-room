@@ -91,7 +91,7 @@
 		 		<tr>		 			
 		 			<td>${resultado.articulo.descripcion}</td>
 		 			<td style="text-align:center;"><fmt:formatNumber value="${resultado.cantidadVendida}" type="number" /></td>		 			
-		 			<td style="text-align:center;"><fmt:formatNumber value="${resultado.totalVendidoPorArticulo}" type="currency" currencySymbol="$"/></td>		 			
+		 			<td style="text-align:center;"><fmt:formatNumber value="${resultado.totalVendidoPorArticulo}" type="number" maxFractionDigits="3" /></td>		 			
 		 		</tr>	 	
 	 		</c:forEach>
 	 	</tbody>
@@ -114,7 +114,7 @@
 		 		<tr>		 			
 		 			<td>${res.nombreCliente}</td>
 		 			<td style="text-align:center;"><fmt:formatNumber value="${res.cantidadVendida}" type="number" /></td>		 			
-		 			<td style="text-align:center;"><fmt:formatNumber value="${res.totalVendidoPorArticulo}" type="currency" currencySymbol="$"/></td>		 			
+		 			<td style="text-align:center;"><fmt:formatNumber value="${res.totalVendidoPorArticulo}" type="number" maxFractionDigits="3"/></td>		 			
 		 		</tr>	 	
 	 		</c:forEach>
 	 	</tbody>

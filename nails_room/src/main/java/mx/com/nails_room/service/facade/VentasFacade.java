@@ -122,8 +122,9 @@ public class VentasFacade {
 			filtroVentas.setFechaInicioFiltro(hoy.toString());
 			filtroVentas.setFechaFinFiltro(hoy.toString());
 		}else {
-			filtroVentas.setFechaInicioFiltro(fecha);
-			filtroVentas.setFechaFinFiltro(fecha);
+			String[] aux = fecha.split("\\|");
+			filtroVentas.setFechaInicioFiltro(aux[0]);
+			filtroVentas.setFechaFinFiltro(aux[1]);
 		}
 		
 		List<VentaDTO> ventas =  ventasServicio.obtenerPorFiltro(filtroVentas);
