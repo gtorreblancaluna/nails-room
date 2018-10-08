@@ -53,9 +53,9 @@
 		
 		<div class="form-group row">					
 			
-			<div class="col-xs-3">
-				<button type="button" class="btn btn-dark" data-toggle="modal" data-target="#modalFiltro">Buscar por filtro</button>
-			</div>
+<!-- 			<div class="col-xs-3"> -->
+<!-- 				<button type="button" class="btn btn-dark" data-toggle="modal" data-target="#modalFiltro">Buscar por filtro</button> -->
+<!-- 			</div> -->
 			<c:if test="${not empty caja}">	
 				<div class="col-xs-3">
 					<button type="button" class="btn btn-dark" data-toggle="modal" onclick="obtenerComisiones();">Comisiones</button>

@@ -271,7 +271,10 @@
 	      	ds_descripcion = #{descripcion},
 	      </if>
 	      <if test="comisionPagada != null and comisionPagada != '' ">
-	      	comision_pagada = #{comisionPagada}
+	      	comision_pagada = #{comisionPagada},
+	      </if>
+	      <if test="estadoVenta != null and estadoVenta.estadoVentaId != null ">
+	      	cl_estado_venta = #{estadoVenta.estadoVentaId}
 	      </if>
 	    </set>
 	    WHERE cl_venta = #{ventaId}

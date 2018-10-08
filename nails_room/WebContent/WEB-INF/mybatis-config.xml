@@ -27,7 +27,8 @@
 		<typeAlias alias="filtroArticulo"   type="mx.com.nails_room.forms.FiltroArticulo" />	
 		<typeAlias alias="filtroVentas"   type="mx.com.nails_room.forms.FiltroVentas" />
 		<typeAlias alias="filtroCitas"   type="mx.com.nails_room.forms.FiltroCitas" />		
-				
+		<typeAlias alias="filtroCaja"   type="mx.com.nails_room.forms.FiltroCaja" />		
+			
 
 	</typeAliases>
 	

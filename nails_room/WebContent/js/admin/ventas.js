@@ -35,6 +35,11 @@ $( document ).ready(function() {
 		
 	});
 	
+	// validacion para cancelar venta
+	$('form[name="cancelarForm"]').submit(function() {		
+		return confirm("Confirma para cancelar venta\nNota: se devolveran todos los articulos al inventario, solo si la venta esta como FINALIZADA ");		
+	});
+	
 	// validacion del formulario editar
 	$('form[name="updateForm"]').submit(function() {	
 		var valid = false;
@@ -304,6 +309,8 @@ function obtenerVentaPorId(ventaId){
 function llenarVenta(venta){
 	// deshabilitar 
 	var $formUpdate = $('#updateForm');
+	$formUpdate.find('#atencion').text('');
+	$('.navUpdate li:eq(1) a').tab('show');
 	$formUpdate.find('input[name="actualizar"]').prop( "disabled", true );
 	$formUpdate.find('input[name="actualizarFinalizar"]').prop( "disabled", true );
 	$formUpdate.find('input[name="finalizarUp"]').prop( "disabled", true );
@@ -336,12 +343,13 @@ function llenarVenta(venta){
 //	conteoFilasArticulos(2);
 	var estadoVentaId = venta.estadoVenta.estadoVentaId;
 	
-	if(estadoVentaId == '3'){
-		// si la venta esta finalizada no podra editar btnEditarNota
+	if(estadoVentaId == '3' || estadoVentaId == '2'){
+		// si la venta esta finalizada o cancelada, no podra editar btnEditarNota
 		$formUpdate.find('.btnEditarNota').prop( "disabled", true );
-		$formUpdate.find('.btnEditarNota').attr('title', 'Esta nota esta finalizada, no podras editar');
+		$formUpdate.find('.btnEditarNota').attr('title', 'Esta nota esta finalizada o cancelada, no podras editar');
 		$formUpdate.find('.btnEditarClienteUpdate').attr('title', 'Nota finalizada');
 		$formUpdate.find('.btnEditarClienteUpdate').prop( "disabled", true );
+		$formUpdate.find('#atencion').text('ATENCION: ESTA NOTA NO SE PUEDE ACTUALIZAR ');
 	}
 	
 	$('#modalUpdate').modal('show');

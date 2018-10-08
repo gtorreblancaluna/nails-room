@@ -133,7 +133,14 @@
 		 			<td>${venta.usuario.nombre} ${venta.usuario.ap_paterno}</td>
 		 			<td style="text-align:center;"><fmt:formatDate value="${venta.caja.fechaApertura}" pattern="dd-MM-yyyy" /></td>
 		 			<td>${venta.estacionTrabajo.descripcion}</td>
-		 			<td>${venta.estadoVenta.descripcion}</td>	
+<%-- 		 			<td>${venta.estadoVenta.descripcion}</td> --%>
+		 			<td>
+		 			<form:form modelAttribute="venta" action="ventas.do" method="post" name="cancelarForm" id="cancelarForm">
+							<input type="hidden" name="ventaId" id="ventaId" value="${venta.ventaId}">			 	
+			 			 	<input type="hidden" class="btn btn btn-dark" name="cancelar" value="Cancelar" />	
+			 			 	<a href="javascript:void(0);"  onclick="$(this).closest('form').submit()">${venta.estadoVenta.descripcion}</a>
+			 		</form:form>
+			 		</td>	
 		 			<td>${venta.pagoEfectivo eq '1' ? 'Efectivo' : 'TC'}</td>
 		 			<td><a href="javascript:void(0);" onclick='imprimir("${venta.ventaId}");'>Imprimir</a></td>
 		 		</tr>	 	
@@ -311,6 +318,9 @@
       <div class="modal-body">     
 		<form:form modelAttribute="venta" action="ventas.do" method="post" name="updateForm" id="updateForm">
 		<input type="hidden" id="ventaId" name="ventaId">
+		<div class="pulsate">
+			<p id="atencion" ></p>
+		</div>
 		<ul class="nav nav-tabs navUpdate">
 		  <li class="active"><a data-toggle="tab" href="#tabClientesUp">Clientes</a></li>
 		  <li><a data-toggle="tab" href="#tabVentasUp">Nota</a></li>
@@ -505,7 +515,7 @@
     </div>
 
 <script type="text/javascript" src="js/data-tables.js"></script>
-<script type="text/javascript" src="js/admin/ventas.js"></script>
+<script type="text/javascript" src="js/admin/ventas.js?v1.0"></script>
 
 </body>
 </html>

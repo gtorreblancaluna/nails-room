@@ -41,6 +41,7 @@
 					<ul class="dropdown-menu">
 						<li><a href="ventas.do">Ventas</a></li>
 						<li><a href="caja.do">Caja</a></li>
+						<li><a href="caja_detalle.do">Detalle Caja</a></li>
 						<li><a href="citas.do">Citas</a></li>
 					</ul>
 				</li>

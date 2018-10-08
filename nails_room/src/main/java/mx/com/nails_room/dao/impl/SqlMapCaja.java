@@ -63,4 +63,14 @@ public class SqlMapCaja extends SqlSessionDaoSupport implements CajaDAO {
 		getSqlSession().delete("eliminarMovimiento",id);		
 	}
 
+	@Override
+	public CajaDTO obtenerCajaPorId(int cajaId) {
+		// TODO Auto-generated method stub
+		CajaDTO caja = getSqlSession().selectOne("obtenerCajaPorId",cajaId);
+		if(caja != null)
+			caja.setDetalleCaja(getSqlSession().selectList("obtenerDetalleCaja",caja.getCajaId()));
+		
+		return caja;
+	}
+
 }

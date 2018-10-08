@@ -84,15 +84,25 @@
 		WHERE cl_caja = #{cajaId}		
 	</update>
 	<select id="obtenerCajaPorFechas" resultMap="cajaResultMap" parameterType="java.util.Map">
-		SELECT * FROM c_caja
+		SELECT * 
+		FROM c_caja caja
+		INNER JOIN c_usuario usuario ON (caja.cl_usuario = usuario.cl_usuario)
 		WHERE
 		<![CDATA[ 
-			fecha_apertura >= CONCAT(#{fechaInicial},' 000000') AND fecha_apertura <= CONCAT(#{fechaFinal},' 235959')
+			caja.fecha_apertura >= CONCAT(#{fechaInicial},' 000000') AND caja.fecha_apertura <= CONCAT(#{fechaFinal},' 235959')
 		]]>
 	</select>
 	
 	<delete id="eliminarMovimiento" parameterType="java.lang.Integer">
 		DELETE FROM k_detalle_caja WHERE cl_detalle_caja = #{id}
 	</delete>
+	
+	<select id="obtenerCajaPorId" resultMap="cajaResultMap" parameterType="java.lang.Integer">
+		SELECT * 
+		FROM c_caja caja
+		INNER JOIN c_usuario usuario ON (caja.cl_usuario = usuario.cl_usuario)
+		WHERE
+		caja.cl_caja = #{cajaId}
+	</select>
 
 </mapper>

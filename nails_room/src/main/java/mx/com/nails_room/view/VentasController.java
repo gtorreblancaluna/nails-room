@@ -137,6 +137,19 @@ public class VentasController {
 			modelAndView.setViewName("redirect:/exito.do");
 			return modelAndView;
 		}
+		
+		// cancelar
+		@PostMapping(value = "/ventas.do", params = "cancelar")
+		public String cancelar(@ModelAttribute VentaDTO venta,HttpServletRequest request,  Model model) {	
+			String respuesta = ventasServicio.cancelar(venta);
+			if(respuesta.startsWith("Error"))
+				model.addAttribute("messageError", respuesta);
+			else
+				model.addAttribute("messageView", respuesta);
+			this.obtenerValoresModel(model);
+			return "ventas";
+		}
+			
 	
 	public Model obtenerValoresModel(Model model) {
 	

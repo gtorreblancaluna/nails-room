@@ -1,7 +1,10 @@
 package mx.com.nails_room.model;
 
 import java.sql.Timestamp;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class VentaDTO {
 	
@@ -18,6 +21,7 @@ public class VentaDTO {
 	private EstadoVentaDTO estadoVenta;	
 	private List<DetalleVentaDTO> detalleVenta;
 	private String comisionPagada;
+	private String fechaRegistroFormatoNormal;
 	// suma total de la venta
 	private float totalVenta;
 	// total de comision por la venta
@@ -71,7 +75,9 @@ public class VentaDTO {
 		return fechaRegistro;
 	}
 	public void setFechaRegistro(Timestamp fechaRegistro) {
+		Format formatoFecha = new SimpleDateFormat("dd-MM-yyyy", new Locale("es", "MX"));
 		this.fechaRegistro = fechaRegistro;
+		this.fechaRegistroFormatoNormal = formatoFecha.format(fechaRegistro);
 	}
 	public ClienteDTO getCliente() {
 		return cliente;
@@ -120,6 +126,12 @@ public class VentaDTO {
 	}
 	public void setPagoTarjeta(String pagoTarjeta) {
 		this.pagoTarjeta = pagoTarjeta;
+	}
+	public String getFechaRegistroFormatoNormal() {
+		return fechaRegistroFormatoNormal;
+	}
+	public void setFechaRegistroFormatoNormal(String fechaRegistroFormatoNormal) {
+		this.fechaRegistroFormatoNormal = fechaRegistroFormatoNormal;
 	}
 
 }

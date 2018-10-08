@@ -27,5 +27,6 @@ public interface VentasServicio {
 	public void actualizarVenta(VentaDTO venta);
 	public List<DetalleVentaDTO> obtenerReporteVentas(FiltroVentas filtroVentas);
 	public List<DetalleVentaDTO> obtenerReporteClientesMayorConsumo(FiltroVentas filtroVentas);
+	public String cancelar(VentaDTO venta);
 	
 }

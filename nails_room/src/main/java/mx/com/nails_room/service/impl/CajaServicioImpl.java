@@ -51,4 +51,10 @@ public class CajaServicioImpl implements CajaServicio {
 		cajaDao.eliminarMovimiento(id);		
 	}
 
+	@Override
+	public CajaDTO obtenerCajaPorId(int cajaId) {
+		// TODO Auto-generated method stub
+		return cajaDao.obtenerCajaPorId(cajaId);
+	}
+
 }
