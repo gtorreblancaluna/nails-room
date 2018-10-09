@@ -337,6 +337,9 @@
 
 $( document ).ready(function() {
 	
+	document.getElementById('fechaComisiones').valueAsDate = new Date();
+	document.getElementById('fechaComisionesFinal').valueAsDate = new Date();
+	
 	$('form[name="deleteForm"]').submit(function() {
 		   return confirm("confirma para continuar");	   
 		});

@@ -12,6 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import mx.com.nails_room.commons.ApplicationConstants;
 import mx.com.nails_room.forms.FiltroArticulo;
 import mx.com.nails_room.forms.FiltroVentas;
 import mx.com.nails_room.model.ArticuloDTO;
@@ -126,7 +128,7 @@ public class VentasFacade {
 			filtroVentas.setFechaInicioFiltro(aux[0]);
 			filtroVentas.setFechaFinFiltro(aux[1]);
 		}
-		
+		filtroVentas.setEstadoVentaFiltro(ApplicationConstants.VENTA_FINALIZADO+"");
 		List<VentaDTO> ventas =  ventasServicio.obtenerPorFiltro(filtroVentas);
 		List<VentaDTO> ventasComisiones =  ventasServicio.obtenerVentasAgrupadasPorUsuario(filtroVentas);
 		if(ventas != null) {

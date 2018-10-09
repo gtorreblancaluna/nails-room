@@ -151,6 +151,9 @@
 					AND venta.fecha_registro >= CONCAT(#{fechaInicioFiltro},' 000000') AND venta.fecha_registro <= CONCAT(#{fechaFinFiltro},' 235959')
 				]]>
 		</if>
+		<if test="estadoVentaFiltro != null and estadoVentaFiltro != 0 ">
+				AND venta.cl_estado_venta = #{estadoVentaFiltro}
+		</if>	
 		GROUP BY venta.cl_usuario
 	</select>
 	

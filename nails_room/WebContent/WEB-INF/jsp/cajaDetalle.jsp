@@ -168,6 +168,11 @@
 <script type="text/javascript">
 
 $( document ).ready(function() {
+	$('.tableShowResultQuery').DataTable( {
+//		  "orderClasses": false
+			order: [[ 0, "desc" ]] //column indexes is zero based
+	} );
+	
 	document.getElementById('fechaInicioFiltro').valueAsDate = new Date();
 	document.getElementById('fechaFinFiltro').valueAsDate = new Date();
 	
