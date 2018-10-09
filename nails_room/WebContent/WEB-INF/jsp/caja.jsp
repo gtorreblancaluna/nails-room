@@ -57,15 +57,21 @@
 <!-- 				<button type="button" class="btn btn-dark" data-toggle="modal" data-target="#modalFiltro">Buscar por filtro</button> -->
 <!-- 			</div> -->
 			<c:if test="${not empty caja}">	
-				<div class="col-xs-3">
-					<button type="button" class="btn btn-dark" data-toggle="modal" onclick="obtenerComisiones();">Comisiones</button>
+					
+				<div class="col-xs-2">					
 					<input type="date" id="fechaComisiones" name="fechaComisiones" class="form-control">
+
+				</div>	
+				<div class="col-xs-2">					
 					<input type="date" id="fechaComisionesFinal" name="fechaComisionesFinal" class="form-control">
-				</div>		
-				<div class="col-xs-3">
+				</div>	
+				<div class="col-xs-2">
+					<button type="button" class="btn btn-dark" data-toggle="modal" onclick="obtenerComisiones();">Comisiones</button>					
+				</div>	
+				<div class="col-xs-2">
 					<button type="button" class="btn btn-dark btnRegistrarMovimiento" data-toggle="modal" data-target="#modalRegistrarMovimiento">Registrar Ingreso/Egreso</button>
 				</div>
-				<div class="col-xs-3">
+				<div class="col-xs-2">
 					<form:form modelAttribute="caja" action="caja.do" method="post" name="cerrarCaja" id="cerrarCaja">
 						<input type="hidden" name="cajaId" id="cajaId" value="${caja.cajaId}">
 						<input type="submit" class="btn btn-dark btnCerrarCaja " name="cerrarCaja" value="Cerrar caja" />
@@ -283,16 +289,18 @@
  <div class="modal-content modal-content-comisiones" style="">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Comisiones</h4>
+        <h4 class="modal-title">Comisiones por venta</h4>
       </div>
       <div class="modal-body"> 
       <div id="formComisiones">   
       	<div class="form-group row">		
 			<div class="col-xs-8">  			
 				<table class="table tablaComisiones table-bordered table-sm">
+				<caption>Desglose de comisiones</caption>
 					<thead>
 						<tr>
-							<th>Id venta</th>
+							<th>Id</th>
+							<th>Fecha</th>
 							<th>Nombre usuario</th>
 							<th>Comisi&oacute;n</th>
 							<th>Descripci&oacute;n venta</th>
@@ -308,6 +316,7 @@
 			</div>
 			<div class="col-xs-4">  			
 				<table class="table tablaComisionesAgrupadas table-bordered table-sm">
+				<caption>Comisiones agrupadas</caption>
 					<thead>
 						<tr>							
 							<th>Nombre usuario</th>
@@ -444,8 +453,9 @@ function llenarTablaComisiones(ventas,ventasComisiones){
 	$.each(ventas, function(index, venta) {
 		$form.find(".tablaComisiones tbody").append(
 		"<tr>"	
-// 				+"<td>"+ ++contador +"</td>"
+// 				+"<td>"+ ++contador +"</td>"				
 				+"<td style='text-align:center;'><span class='ventaId'>"+ venta.ventaId +"</span></td>"
+				+"<td>"+venta.fechaRegistroFormatoNormal+"</td>"
 				+"<td>"+ (venta.usuario.nombre +' '+ venta.usuario.ap_paterno).substring(0, 25) +"</td>"
 				+"<td style='text-align:center;'>"+ (venta.usuario.comision +' %') +"</td>"
 				+"<td>"+ venta.descripcion.substring(0, 25) +"</td>"

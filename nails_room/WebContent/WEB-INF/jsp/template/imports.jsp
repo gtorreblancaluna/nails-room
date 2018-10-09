@@ -7,6 +7,7 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, user-scalable=1">
 
+<link rel="shortcut icon" type="images/x-icon" href="images/ico_logo.ico">
 <link rel="stylesheet" href="css/bootstrap.css" type="text/css" media="screen">
 <link rel="stylesheet" href="css/custom.css" type="text/css" media="screen">
 <script type="text/javascript" src="js/jquery.min.js"></script>
