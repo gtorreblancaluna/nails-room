@@ -52,6 +52,12 @@
 						<li><a href="reportes.do">Reportes</a></li>						
 					</ul>
 				</li>
+				<li class="dropdown"><a class="dropdown-toggle"
+					data-toggle="dropdown" href="javascript:void(0);">Configuraci&oacute;n</a>
+					<ul class="dropdown-menu">
+						<li><a href="configuracion.do">Datos empresa</a></li>						
+					</ul>
+				</li>
 				
 <!-- 				<li class="dropdown"><a class="dropdown-toggle" -->
 <!-- 					data-toggle="dropdown" href="javascript:void(0);">Email</a> -->

@@ -1,0 +1,29 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mx.com.nails_room.dao.SystemDAO">
+
+	<resultMap id="configuracionResultMap" type="configuracionDTO">
+	
+		<result property="configuracionId" column="cl_configuracion" />		
+		<result property="nombreEmpresa" column="nombre_empresa" />
+		<result property="direccionEmpresa" column="direccion_empresa" />
+		<result property="telefonoUno" column="telefono_uno" />
+		<result property="telefonoDos" column="telefono_dos" />
+			
+	</resultMap>
+	
+	<select id="obtenerConfiguracion" resultMap="configuracionResultMap">	
+		SELECT * FROM c_configuracion;	
+	</select>
+	<update id="guardarConfiguracion" parameterType="configuracionDTO">
+		UPDATE c_configuracion
+		SET
+		nombre_empresa = #{nombreEmpresa},
+		direccion_empresa = #{direccionEmpresa},
+		telefono_uno = #{telefonoUno},
+		telefono_dos = #{telefonoDos}
+		WHERE
+		cl_configuracion = 1
+	</update>
+	
+
+</mapper>

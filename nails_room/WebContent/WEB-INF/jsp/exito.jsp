@@ -27,9 +27,9 @@
   			<strong>Error! </strong> ${messageError}
 		</div>
 		</c:if>		
-	</div>
+</div>
 	
-	<script type="text/javascript">
+<script type="text/javascript">
 
 $( document ).ready(function() {		
 	if('${ventaId}' != '')

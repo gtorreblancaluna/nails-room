@@ -38,8 +38,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import static mx.com.nails_room.commons.ApplicationConstants.MASK_DATE_FORMAT;
 import static mx.com.nails_room.commons.ApplicationConstants.RUTA_IMAGENES_PDF;
+
+import mx.com.nails_room.model.ConfiguracionDTO;
 import mx.com.nails_room.model.DetalleVentaDTO;
 import mx.com.nails_room.model.VentaDTO;
+import mx.com.nails_room.service.SystemService;
 import mx.com.nails_room.service.VentasServicio;
 
 
@@ -50,6 +53,8 @@ public class NotaPDFController {
 	private VentasServicio ventaServicio;
 	@Autowired
 	public MessageSource messageSource;
+	@Autowired
+	private SystemService systemService;
 	
 		@RequestMapping(value = "/generar_nota.do", method = RequestMethod.GET)
 		public String printPdf(HttpServletRequest request,  HttpServletResponse response) throws IOException {
@@ -60,6 +65,7 @@ public class NotaPDFController {
 				throw new RuntimeException("No se encontro la operacion");
 			
 			VentaDTO venta = ventaServicio.obtenerVentaPorId(new Integer(ventaId));
+			ConfiguracionDTO configuracion = systemService.obtenerConfiguracion();
 			
 			Document document = null;	   
 		    PdfWriter writer = null;
@@ -108,21 +114,21 @@ public class NotaPDFController {
 				headerInfoTable.setLockedWidth(true);
 				headerInfoTable.setWidthPercentage(100f);			   
 			    
-			    PdfPCell cell = new PdfPCell(new Phrase(" NAILS ROOM ",new Font(Font.HELVETICA, fontSizeNormal, Font.NORMAL)));
+			    PdfPCell cell = new PdfPCell(new Phrase(configuracion.getNombreEmpresa(),new Font(Font.HELVETICA, fontSizeNormal, Font.NORMAL)));
 		        cell.setFixedHeight(cellHeight);
 		        cell.setColspan(3);
 		        cell.setBorder(Rectangle.NO_BORDER);
 		        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 		        headerInfoTable.addCell(cell);
 		        
-		        cell = new PdfPCell(new Phrase("Direccion: Juan Ruiz de Alarc\u00F3n 94, Universal, CP 39080, Chilpancingo Gro",new Font(Font.HELVETICA, fontSizeNormal, Font.NORMAL)));
+		        cell = new PdfPCell(new Phrase(configuracion.getDireccionEmpresa(),new Font(Font.HELVETICA, fontSizeNormal, Font.NORMAL)));
 		        cell.setFixedHeight(cellHeight);
 		        cell.setColspan(3);
 		        cell.setBorder(Rectangle.NO_BORDER);
 		        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 		        headerInfoTable.addCell(cell);
 		        
-		        cell = new PdfPCell(new Phrase("Telefono: 7475450508",new Font(Font.HELVETICA, fontSizeNormal, Font.NORMAL)));
+		        cell = new PdfPCell(new Phrase("TELEFONOS: "+configuracion.getTelefonoUno()+" "+configuracion.getTelefonoDos() == null ? "" : configuracion.getTelefonoDos(),new Font(Font.HELVETICA, fontSizeNormal, Font.NORMAL)));
 		        cell.setFixedHeight(cellHeight);
 		        cell.setColspan(3);
 		        cell.setBorder(Rectangle.NO_BORDER);

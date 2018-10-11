@@ -294,6 +294,7 @@
 						<input type="submit" class="btn btn-dark" name="agregar" value="Agregar venta" style="width: 100%;"/>					
 					</div>
 				</div>
+				
 				<div class="form-group row">
 					<div class="col-xs-12">
 						<input type="submit" class="btn btn-dark" name="finalizar" value="Guardar y finalizar venta" style="width: 100%;"/>					

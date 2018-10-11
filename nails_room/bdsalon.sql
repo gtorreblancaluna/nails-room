@@ -22,6 +22,10 @@ ENGINE = InnoDB;
 
 CREATE TABLE c_configuracion(
 cl_configuracion INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+nombre_empresa VARCHAR(255),
+direccion_empresa VARCHAR(455),
+telefono_uno VARCHAR(55),
+telefono_dos VARCHAR(255),
 ds_descripcion VARCHAR(255),
 PRIMARY KEY (cl_configuracion)
 )
@@ -252,6 +256,5 @@ INSERT INTO c_estacion_trabajo (ds_descripcion) VALUES ('Isla 2');
 INSERT INTO c_estacion_trabajo (ds_descripcion) VALUES ('Isla 3');
 INSERT INTO c_estacion_trabajo (ds_descripcion) VALUES ('Isla 4');
 
-
-
+INSERT INTO c_configuracion (nombre_empresa,direccion_empresa,telefono_uno,telefono_dos) VALUES ('NAILS ROOM','Abasolo 33, centro, chilpancingo gro','55555555','555555555')
 
